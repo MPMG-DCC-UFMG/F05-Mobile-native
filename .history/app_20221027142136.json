@@ -1,0 +1,59 @@
+{
+  "expo": {
+    "name": "Trena",
+    "slug": "Trena",
+    "scheme": "Trena",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./app/assets/logo-trena.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./app/assets/splash-trena.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#73FF00"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.george.trena",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./app/assets/logo-trena.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.george.trena",
+      "versionCode": 1
+    },
+    "web": {
+      "favicon": "./app/assets/logo-trena.png"
+    },
+    "description": "Aplicativo do MPMG para vistorias e acompanhamento de obras públicas",
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./app/assets/logo-trena.png",
+          "color": "#73FF00"
+        }
+      ]
+    ],
+    "extra": {
+      "bugsnag": {
+        "apiKey": "d22ee9b91da506f9b443aa0fef53efda"
+      }
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "@bugsnag/expo/hooks/post-publish.js",
+          "config": {}
+        }
+      ]
+    }
+  }
+}
