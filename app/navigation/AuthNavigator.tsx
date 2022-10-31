@@ -1,4 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import colors from "../config/colors";
 
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
@@ -9,9 +10,10 @@ const Stack = createStackNavigator();
 export default function AuthNavigator() {
   return (
     <Stack.Navigator
-    // screenOptions={{
-    //   headerShown: false,
-    // }}
+      screenOptions={{
+        headerTintColor: colors.white,
+        headerTransparent: true
+      }}
     >
       <Stack.Screen
         name={routes.WELCOME}

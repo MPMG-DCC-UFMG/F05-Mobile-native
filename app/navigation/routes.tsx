@@ -16,4 +16,5 @@ export default Object.freeze({
   COLLECT_EDIT: "Dados da Coleta",
   INSPECTION_COLLECT_EDIT: "Envio de Vistoria",
   GET_PHOTO: "GetPhoto",
+  GET_VIDEO: "GetVideo",
 });

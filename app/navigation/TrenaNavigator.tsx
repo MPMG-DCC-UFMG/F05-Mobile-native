@@ -12,6 +12,7 @@ import PublicWorksNavigator from "./PublicWorksNavigator";
 import InspectionsNavigator from "./InspectionsNavigator";
 import colors from "../config/colors";
 import MapScreen from "../screens/MapScreen";
+
 const Tab = createBottomTabNavigator();
 
 export default function TrenaNavigator() {
@@ -22,6 +23,8 @@ export default function TrenaNavigator() {
       tabBarOptions={{
         activeBackgroundColor: colors.medium,
         inactiveBackgroundColor: colors.medium,
+        inactiveTintColor: colors.white,
+        activeTintColor: colors.trenaGreen,
         style: { borderTopWidth: 0 },
       }}
     >

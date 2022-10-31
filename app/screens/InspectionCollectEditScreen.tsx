@@ -140,8 +140,8 @@ export default function InspectionCollectEditScreen({
           comments: route.params.collect ? route.params.collect.comments : "",
           status: route.params.collect
             ? getPublicWorkStatusFromFlag(
-                route.params.collect.public_work_status
-              )
+              route.params.collect.public_work_status
+            )
             : null,
           images: [],
         }}
@@ -152,25 +152,29 @@ export default function InspectionCollectEditScreen({
           title="Tirar Foto"
           onPress={() => navigation.navigate(routes.GET_PHOTO)}
         ></AppButton> */}
-        <TrenaFormMediaPicker name="images"></TrenaFormMediaPicker>
-        <AppFormField
-          maxLength={255}
-          name="comments"
-          multiline
-          placeholder="Comentários gerais"
-        ></AppFormField>
-        <AppFormPicker
-          items={workStatus}
-          name="status"
-          numberOfColumns={1}
-          PickerItemComponent={StatusPickerItem}
-          placeholder="Status"
-          width="60%"
-        ></AppFormPicker>
-        <SubmitButton
-          color={colors.trenaGreen}
-          title="Confirmar"
-        ></SubmitButton>
+        <View style={styles.iconPhoto}>
+          <TrenaFormMediaPicker name="images"></TrenaFormMediaPicker>
+        </View>
+        <View style={styles.form}>
+          <AppFormField
+            maxLength={255}
+            name="comments"
+            multiline
+            placeholder="Comentários gerais"
+          ></AppFormField>
+          <AppFormPicker
+            items={workStatus}
+            name="status"
+            numberOfColumns={1}
+            PickerItemComponent={StatusPickerItem}
+            placeholder="Status"
+            width="60%"
+          ></AppFormPicker>
+          <SubmitButton
+            color={colors.trenaGreen}
+            title="Confirmar"
+          ></SubmitButton>
+        </View>
       </AppForm>
     </View>
   );
@@ -181,5 +185,14 @@ const styles = StyleSheet.create({
     padding: 12,
     flex: 1,
     backgroundColor: colors.dark,
+    paddingTop: "25%",
   },
+  iconPhoto: {
+    width: "100%",
+    height: "15%",
+    alignItems: 'center'
+  },
+  form: {
+    alignItems: "center"
+  }
 });

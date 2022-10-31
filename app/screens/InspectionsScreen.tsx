@@ -1,25 +1,14 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { FlatList, ImageSourcePropType, StyleSheet, View } from "react-native";
-import { useNetInfo } from "@react-native-community/netinfo";
 
-import Card from "../components/Card";
-import Screen from "../components/Screen";
 import colors from "../config/colors";
 import routes from "../navigation/routes";
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 import ActivityIndicatior from "../components/ActivityIndicatior";
-import useApi from "../hooks/useApi";
-import PublicWorkCard from "../components/PublicWorkCard";
-import { insert } from "formik";
 import useAuth from "../auth/useAuth";
 import InspectionCard from "../components/InspectionCard";
-import typeWorksApi from "../api/typeWorks";
-import typePhotosApi from "../api/typePhotos";
-import workStatusApi from "../api/workStatus";
-import inspectionsApi from "../api/inspections";
-import publicWorksApi from "../api/publicWorks";
+
 import { SessionContext } from "../context/SessionContext";
 export interface Listing {
   id: string;
@@ -107,6 +96,7 @@ export default function InspectionsScreen({ navigation }: any) {
           </>
         )}
         <FlatList
+          style={styles.list}
           data={inspectionsUser}
           keyExtractor={(inspection) => inspection.flag.toString()}
           renderItem={({ item: inspection }) => (
@@ -139,8 +129,12 @@ export default function InspectionsScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   screen: {
+    flex: 1,
     padding: 20,
     backgroundColor: colors.black,
-    flex: 1,
+    justifyContent: 'center',
   },
+  list: {
+    marginTop: "20%"
+  }
 });

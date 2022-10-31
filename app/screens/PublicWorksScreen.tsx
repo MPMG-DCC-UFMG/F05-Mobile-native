@@ -50,6 +50,7 @@ export default function PublicWorksScreen({ navigation }: any) {
           </>
         )}
         <FlatList
+          style={styles.list}
           data={publicWorks}
           keyExtractor={(publicWork) => publicWork.id.toString()}
           renderItem={({ item: publicWork }) => (
@@ -75,4 +76,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.dark,
     flex: 1,
   },
+  list: {
+    marginTop: "20%"
+  }
 });

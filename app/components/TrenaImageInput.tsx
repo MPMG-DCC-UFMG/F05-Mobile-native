@@ -1,39 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
   Alert,
-  BackHandler,
-  Button,
-  FlatList,
   Image,
   Modal,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import * as Yup from "yup";
+import { Camera, CameraType } from 'expo-camera';
 
 import colors from "../config/colors";
-import Screen from "./Screen";
 import AppButton from "./AppButton";
 import {
-  AppForm,
-  AppFormField,
-  AppFormPicker,
   ErrorMessage,
-  SubmitButton,
 } from "./forms";
-import AppFormImagePicker from "./forms/AppFormImagePicker";
-import PickerItem from "./PickerItem";
 import StatusPickerItem from "./StatusPickerItem";
-import { createIconSetFromFontello } from "react-native-vector-icons";
-import { useFormikContext } from "formik";
-import AppText from "./AppText";
 import AppTextInput from "./AppTextInput";
 import AppPicker from "./AppPicker";
 import { SessionContext } from "../context/SessionContext";
+import routes from "../navigation/routes";
 
 // const typePhotos = [
 //   {
@@ -72,13 +60,14 @@ const validationSchema = Yup.object().shape({
   images: Yup.array().min(1, "O envio de mídia é obrigatório"),
 });
 
-export default function TrenaImageInput({ media, onChangeMedia }: any) {
+export default function TrenaImageInput({ media, onChangeMedia, navigation }: any) {
   const { typePhotos } = useContext(SessionContext);
   const [currentImageUri, setCurrentImageUri] = useState(
     media ? media.uri : undefined
   );
   const [comments, setComments] = useState<string>(media ? media.comments : "");
   const [type, setType] = useState<string>(media ? media.type : "");
+  const [typeVideo, setTypeVideo] = useState(CameraType.back);
   const [submited, setSubmited] = useState(false);
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -88,9 +77,9 @@ export default function TrenaImageInput({ media, onChangeMedia }: any) {
   }, []);
 
   const requestPermission = async () => {
-    const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const { granted } = await ImagePicker.requestCameraPermissionsAsync();
     if (!granted)
-      alert("Você precisa permitir o acesso às mídias do dispositivo");
+      alert("Você precisa permitir o acesso a câmera do dispositivo");
   };
 
   const handlePress = () => {
@@ -121,7 +110,7 @@ export default function TrenaImageInput({ media, onChangeMedia }: any) {
 
   const selectImage = async () => {
     try {
-      const result = await ImagePicker.launchImageLibraryAsync({
+      const result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         quality: 0.5,
       });
@@ -132,6 +121,11 @@ export default function TrenaImageInput({ media, onChangeMedia }: any) {
       console.log("Erro ao carregar a imagem", error);
     }
   };
+
+  function handleVideo() {
+    navigation.navigate(routes.GET_VIDEO)
+  }
+
 
   return (
     <>
@@ -151,6 +145,15 @@ export default function TrenaImageInput({ media, onChangeMedia }: any) {
       <Modal visible={modalVisible} animationType="slide">
         {/* <Screen> */}
         <View style={styles.modalContainer}>
+          <View style={styles.closeButton}>
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <MaterialCommunityIcons
+                name="close"
+                size={40}
+                color={colors.trenaGreen}
+              ></MaterialCommunityIcons>
+            </TouchableOpacity>
+          </View>
           <View style={styles.headerContainer}>
             <TouchableOpacity onPress={selectImage}>
               <View style={styles.cameraIconLargeContainer}>
@@ -168,15 +171,24 @@ export default function TrenaImageInput({ media, onChangeMedia }: any) {
                 )}
               </View>
             </TouchableOpacity>
-            <View style={styles.closeButton}>
-              <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <MaterialCommunityIcons
-                  name="close"
-                  size={40}
-                  color={colors.trenaGreen}
-                ></MaterialCommunityIcons>
-              </TouchableOpacity>
-            </View>
+
+            <TouchableOpacity onPress={() => Alert.alert("Em construção")}>
+              <View style={styles.cameraIconLargeContainer}>
+                {currentImageUri ? (
+                  <Image
+                    source={{ uri: currentImageUri }}
+                    style={styles.image}
+                  ></Image>
+                ) : (
+                  <MaterialCommunityIcons
+                    name="video"
+                    size={40}
+                    color={colors.medium}
+                  ></MaterialCommunityIcons>
+                )}
+              </View>
+            </TouchableOpacity>
+
           </View>
           <ErrorMessage
             error={"Favor enviar uma foto ou vídeo"}
@@ -223,8 +235,9 @@ const styles = StyleSheet.create({
     padding: 12,
     flex: 1,
     justifyContent: "flex-start",
-    alignItems: "flex-start",
+    alignItems: "center",
     backgroundColor: colors.black,
+    paddingTop: "10%"
   },
   cameraIconSmallContainer: {
     alignItems: "center",
@@ -239,19 +252,21 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     width: "100%",
+    marginBottom: 10
   },
   cameraIconLargeContainer: {
     alignItems: "center",
     alignSelf: "center",
     backgroundColor: colors.light,
     borderRadius: 4,
-    height: 240,
+    height: 100,
     justifyContent: "center",
-    width: 240,
+    width: 100,
     borderColor: colors.trenaGreen,
     borderWidth: 1,
+    marginRight: 10,
   },
   image: {
     borderRadius: 4,
@@ -260,6 +275,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   closeButton: {
-    alignSelf: "flex-start",
+    alignSelf: "flex-end",
   },
 });
