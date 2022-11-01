@@ -32,7 +32,6 @@ export default function AppTextInput({
 
 const styles = StyleSheet.create({
   container: {
-    height: 100,
     backgroundColor: defaultStyles.colors.light,
     borderRadius: 4,
     flexDirection: "row",
