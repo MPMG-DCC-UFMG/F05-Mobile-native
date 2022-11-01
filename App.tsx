@@ -16,7 +16,12 @@ import { StatusBar } from "react-native";
 
 export default function App() {
   const [user, setUser] = useState();
+<<<<<<< HEAD
   const [appIsReady, setAppIsReady] = useState(false);
+=======
+  const [userData, setUserData] = useState();
+  const [isReady, setIsReady] = useState(false);
+>>>>>>> master
 
   const restoreUser = async () => {
     const user: any = await authStorage.getUser();
@@ -65,8 +70,12 @@ export default function App() {
     // <Screen>
     //   <Text>cddsdfdf</Text>
     // </Screen>
+<<<<<<< HEAD
     <AuthContext.Provider value={{ user, setUser }}>
       <StatusBar barStyle='light-content' translucent backgroundColor='transparent'/>
+=======
+    <AuthContext.Provider value={{ user, setUser, userData, setUserData }}>
+>>>>>>> master
       <SessionProvider>
         <OfflineNotice />
         <NavigationContainer ref={navigationRef} theme={navigationTheme}>

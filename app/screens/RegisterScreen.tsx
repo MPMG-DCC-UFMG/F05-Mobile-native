@@ -54,7 +54,8 @@ export default function RegisterScreen() {
       userInfo.email,
       userInfo.password
     );
-    auth.logIn(data);
+    console.log("loginApi data: ", data);
+    auth.logIn(data.access_token);
   };
 
   return (
