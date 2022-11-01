@@ -18,8 +18,9 @@ export default function PublicWorksNavigator() {
     <Stack.Navigator
       mode="modal"
       screenOptions={{
-        headerTintColor: colors.dark,
-        // headerShown: false,
+        headerTintColor: colors.white,
+        headerTransparent: true,
+        headerTitleAlign: "center"
       }}
     >
       <Stack.Screen

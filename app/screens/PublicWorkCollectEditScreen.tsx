@@ -152,7 +152,10 @@ export default function PublicWorkCollectEditScreen({
           title="Tirar Foto"
           onPress={() => navigation.navigate(routes.GET_PHOTO)}
         ></AppButton> */}
+        <View style={styles.iconPhoto}>
         <TrenaFormMediaPicker name="images"></TrenaFormMediaPicker>
+        </View>
+        <View style={styles.form}>
         <AppFormField
           maxLength={255}
           name="comments"
@@ -171,6 +174,7 @@ export default function PublicWorkCollectEditScreen({
           color={colors.trenaGreen}
           title="Confirmar"
         ></SubmitButton>
+        </View>
       </AppForm>
     </View>
   );
@@ -181,5 +185,14 @@ const styles = StyleSheet.create({
     padding: 12,
     flex: 1,
     backgroundColor: colors.dark,
+    paddingTop: "25%",
   },
+  iconPhoto: {
+    width: "100%",
+    height: "15%",
+    alignItems: 'center'
+  },
+  form: {
+    alignItems: "center"
+  }
 });

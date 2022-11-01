@@ -24,7 +24,7 @@ export default function LoginScreen() {
   const [loginFailed, setLoginFailed] = useState(false);
 
   const handleSubmit = async ({ email, password }: any) => {
-    const result = await authApi.login(email, password);
+    const result = await authApi.login(email, password) as any
     console.log({ username: email, password: password });
     console.log(result);
     if (!result.ok) return setLoginFailed(true);
@@ -47,7 +47,7 @@ export default function LoginScreen() {
         <ErrorMessage
           error="Invalid email and/or password."
           visible={loginFailed}
-        ></ErrorMessage>
+        />
         <AppFormField
           autoCapitalize="none"
           autoCorrect={false}

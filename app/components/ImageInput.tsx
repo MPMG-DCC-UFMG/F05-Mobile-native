@@ -1,11 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import { Camera, CameraType } from 'expo-camera';
 
 import colors from "../config/colors";
 
+
 export default function ImageInput({ imageUri, onChangeImage }: any) {
+  const [type, setType] = useState(CameraType.back);
+  const [permission, setRequestPermission] = Camera.useCameraPermissions();
+
+  if(!permission) {
+    alert("Você precisa permitir o acesso às mídias do dispositivo");
+  }
+
+  if(permission?.granted) {
+    toggleCameraType()
+  }
+  
   useEffect(() => {
     requestPermission();
   }, []);
@@ -41,6 +54,10 @@ export default function ImageInput({ imageUri, onChangeImage }: any) {
       console.log("Erro ao carregar a imagem", error);
     }
   };
+
+  function toggleCameraType() {
+    setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
+  }
 
   return (
     <TouchableOpacity onPress={handlePress}>

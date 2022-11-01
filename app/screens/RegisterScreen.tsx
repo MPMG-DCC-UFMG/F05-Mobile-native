@@ -105,6 +105,7 @@ export default function RegisterScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    justifyContent: "center",
     padding: 12,
     backgroundColor: colors.black,
   },

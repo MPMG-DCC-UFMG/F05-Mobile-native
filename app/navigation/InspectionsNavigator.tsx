@@ -10,12 +10,19 @@ import GetPhotoScreen from "../screens/GetPhotoScreen";
 import GetPhotoScreen2 from "../screens/GetPhotoScreen2";
 import InspectionsScreen from "../screens/InspectionsScreen";
 import InspectionCollectEditScreen from "../screens/InspectionCollectEditScreen";
+import colors from "../config/colors";
+import TrenaVideoInput  from "../components/TrenaVideoInput";
 
 const Stack = createStackNavigator();
 export default function InspectionsNavigator() {
   return (
     <Stack.Navigator
       mode="modal"
+      screenOptions={{
+        headerTintColor: colors.white,
+        headerTransparent: true,
+        headerTitleAlign: "center"
+      }}
       // screenOptions={{
       //   headerShown: false,
       // }}
@@ -24,6 +31,10 @@ export default function InspectionsNavigator() {
       <Stack.Screen
         name={routes.INSPECTION_COLLECT_EDIT}
         component={InspectionCollectEditScreen}
+      />
+      <Stack.Screen
+        name={routes.GET_VIDEO}
+        component={TrenaVideoInput}
       />
       {/* <Stack.Screen
         name={routes.PUBLIC_WORK_COLLECTS}
