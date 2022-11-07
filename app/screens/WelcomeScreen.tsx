@@ -29,6 +29,17 @@ import authApi from "../api/auth";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import AppText from "../components/AppText";
 import ListItemSeparator from "../components/ListItemSeparator";
+import * as AuthSession from "expo-auth-session";
+import useApi from "../hooks/useApi";
+import usersApi from "../api/users";
+import { environment } from "../../enviroment";
+
+interface AuthResponse {
+  params: {
+    access_token: string;
+  };
+  type: string;
+}
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().label("Email"),
@@ -38,6 +49,9 @@ const validationSchema = Yup.object().shape({
 export default function WelcomeScreen() {
   const navigation = useNavigation();
   const auth = useAuth();
+  const loginApi = useApi(authApi.login);
+  const registerApi = useApi(usersApi.register);
+
   const [loginFailed, setLoginFailed] = useState(false);
   const [showLogo, setShowLogo] = useState(true);
 
@@ -111,7 +125,6 @@ export default function WelcomeScreen() {
               style={styles.logo}
               source={require("../assets/trena_dark.png")}
             ></Image>
-            {/* <Text style={styles.tagLine}>Sell what you don't need</Text> */}
           </View>
         )}
         <View style={styles.buttonsContainer}>
@@ -131,7 +144,7 @@ export default function WelcomeScreen() {
               keyboardType="email-address"
               name="email"
               placeholder="Email"
-              textContetType="emailAddress" //Autofill from keychain (iOS only)
+              textContetType="emailAddress"
             ></AppFormField>
             <AppFormField
               autoCapitalize="none"
@@ -147,12 +160,6 @@ export default function WelcomeScreen() {
               title="Entrar"
             ></SubmitButton>
           </AppForm>
-
-          {/* <AppButton
-          title="Login"
-          color="primary"
-          onPress={() => navigation.navigate(routes.LOGIN)}
-        ></AppButton> */}
           <View style={styles.registerContainer}>
             <AppText style={styles.newUserText}>Não tem conta?</AppText>
             <TouchableOpacity
@@ -169,35 +176,21 @@ export default function WelcomeScreen() {
           <TouchableOpacity onPress={handleGoogleSignIn}>
             <View style={styles.googleButton}>
               <Image
-                style={styles.googleIcon}
+                style={styles.socialIcon}
                 source={require("../assets/google.png")}
               ></Image>
-              <Text style={styles.googleText}>Entre com Google</Text>
+              <Text style={styles.googleText}>Entrar com Google</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => alert("Disponível em breve")}>
             <View style={styles.facebookButton}>
               <Image
-                style={styles.googleIcon}
+                style={styles.socialIcon}
                 source={require("../assets/facebook.png")}
               ></Image>
-              <Text style={styles.facebookText}>Entre com Facebook</Text>
+              <Text style={styles.facebookText}>Entrar com Facebook</Text>
             </View>
           </TouchableOpacity>
-
-          {/* <AppButton
-            title="Entre com Google"
-            color={colors.light}
-            onPress={() => navigation.navigate(routes.REGISTER)}
-          ></AppButton> */}
-          {/* <View style={styles.googleButton}>
-
-          </View> */}
-          {/* <AppButton
-          title="Register"
-          color="secondary"
-          onPress={() => navigation.navigate(routes.REGISTER)}
-        ></AppButton> */}
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -236,7 +229,6 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     top: 70,
-    position: "absolute",
     alignItems: "center",
   },
   googleButton: {
@@ -252,7 +244,6 @@ const styles = StyleSheet.create({
   },
   googleText: {
     color: colors.medium,
-    // textTransform: "uppercase",
     fontSize: 18,
     paddingLeft: 32,
     fontWeight: "bold",
@@ -268,7 +259,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     flexDirection: "row",
   },
-  googleIcon: {
+  socialIcon: {
     width: 24,
     height: 24,
   },
