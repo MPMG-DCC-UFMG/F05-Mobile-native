@@ -33,16 +33,16 @@ export default function AccountScreen({ navigation }: any) {
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
-        {userData.picture ? (
+        {userData?.picture ? (
           <ListItem
-            title={userData.full_name}
+            title={userData?.full_name}
             subTitle={user.email}
-            image={{ uri: userData.picture }}
+            image={{ uri: userData?.picture }}
             // image={require("../assets/george.jpeg")}
           ></ListItem>
         ) : (
           <ListItem
-            title={userData.full_name}
+            title={userData?.full_name}
             subTitle={user.email}
             IconComponent={
               <Icon name={"account"} backgroundColor={colors.medium}></Icon>
