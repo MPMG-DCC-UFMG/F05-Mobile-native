@@ -21,9 +21,7 @@ import useAuth from "../auth/useAuth";
 
 const validationSchema = Yup.object().shape({
   comments: Yup.string().required().min(1).label("Comentários"),
-  // price: Yup.number().required().min(1).max(10000).label("Price"),
   status: Yup.object().required().nullable().label("Status"),
-  // description: Yup.string().label("Description"),
   images: Yup.array().min(1, "Please select at least one image."),
 });
 
@@ -98,22 +96,16 @@ export default function CollectEditScreen({ navigation, route }: any) {
       <AppForm
         initialValues={{
           comments: route.params.collect ? route.params.collect.comments : "",
-          // price: "",
           status: route.params.collect
             ? getPublicWorkStatusFromFlag(
                 route.params.collect.public_work_status
               )
             : null,
-          // description: "",
           images: [],
         }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {/* <Button
-          title="Tirar Foto"
-          onPress={() => navigation.navigate(routes.GET_PHOTO)}
-        ></Button> */}
         <AppFormImagePicker name="images"></AppFormImagePicker>
         <AppFormField
           maxLength={255}
@@ -121,13 +113,6 @@ export default function CollectEditScreen({ navigation, route }: any) {
           multiline
           placeholder="Comentarios"
         ></AppFormField>
-        {/* <AppFormField
-          maxLength={8}
-          name="price"
-          keyboardType="numeric"
-          placeholder="Price"
-          width={120}
-        ></AppFormField> */}
         <AppFormPicker
           items={statusOptions}
           name="status"
@@ -136,13 +121,6 @@ export default function CollectEditScreen({ navigation, route }: any) {
           placeholder="Status"
           width="50%"
         ></AppFormPicker>
-        {/* <AppFormField
-          maxLength={255}
-          multiline
-          autoCapitalize="none"
-          name="description"
-          placeholder="Description"
-        ></AppFormField> */}
         <SubmitButton title="Confirmar"></SubmitButton>
       </AppForm>
     </Screen>

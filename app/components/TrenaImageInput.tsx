@@ -10,13 +10,11 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import * as Yup from "yup";
-import { Camera, CameraType } from 'expo-camera';
+import { Camera, CameraType } from "expo-camera";
 
 import colors from "../config/colors";
 import AppButton from "./AppButton";
-import {
-  ErrorMessage,
-} from "./forms";
+import { ErrorMessage } from "./forms";
 import StatusPickerItem from "./StatusPickerItem";
 import AppTextInput from "./AppTextInput";
 import AppPicker from "./AppPicker";
@@ -60,7 +58,11 @@ const validationSchema = Yup.object().shape({
   images: Yup.array().min(1, "O envio de mídia é obrigatório"),
 });
 
-export default function TrenaImageInput({ media, onChangeMedia, navigation }: any) {
+export default function TrenaImageInput({
+  media,
+  onChangeMedia,
+  navigation,
+}: any) {
   const { typePhotos } = useContext(SessionContext);
   const [currentImageUri, setCurrentImageUri] = useState(
     media ? media.uri : undefined
@@ -122,10 +124,21 @@ export default function TrenaImageInput({ media, onChangeMedia, navigation }: an
     }
   };
 
-  function handleVideo() {
-    navigation.navigate(routes.GET_VIDEO)
-  }
-
+  const selectVideo = async () => {
+    try {
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+        allowsEditing: true,
+        quality: 1,
+        aspect: [16, 9],
+      });
+      if (!result.cancelled) {
+        setCurrentImageUri(result.uri);
+      }
+    } catch (error) {
+      console.log("Erro ao carregar a imagem", error);
+    }
+  };
 
   return (
     <>
@@ -143,7 +156,6 @@ export default function TrenaImageInput({ media, onChangeMedia, navigation }: an
         </View>
       </TouchableOpacity>
       <Modal visible={modalVisible} animationType="slide">
-        {/* <Screen> */}
         <View style={styles.modalContainer}>
           <View style={styles.closeButton}>
             <TouchableOpacity onPress={() => setModalVisible(false)}>
@@ -172,7 +184,8 @@ export default function TrenaImageInput({ media, onChangeMedia, navigation }: an
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => Alert.alert("Em construção")}>
+            {/* <TouchableOpacity onPress={() => Alert.alert("Em construção")}> */}
+            <TouchableOpacity onPress={selectVideo}>
               <View style={styles.cameraIconLargeContainer}>
                 {currentImageUri ? (
                   <Image
@@ -188,7 +201,6 @@ export default function TrenaImageInput({ media, onChangeMedia, navigation }: an
                 )}
               </View>
             </TouchableOpacity>
-
           </View>
           <ErrorMessage
             error={"Favor enviar uma foto ou vídeo"}
@@ -224,7 +236,6 @@ export default function TrenaImageInput({ media, onChangeMedia, navigation }: an
             onPress={handleSubmit}
           />
         </View>
-        {/* </Screen> */}
       </Modal>
     </>
   );
@@ -235,9 +246,8 @@ const styles = StyleSheet.create({
     padding: 12,
     flex: 1,
     justifyContent: "flex-start",
-    alignItems: "center",
     backgroundColor: colors.black,
-    paddingTop: "10%"
+    paddingTop: "10%",
   },
   cameraIconSmallContainer: {
     alignItems: "center",
@@ -248,13 +258,12 @@ const styles = StyleSheet.create({
     width: 100,
     borderColor: colors.trenaGreen,
     borderWidth: 1,
-    marginBottom: 12,
   },
   headerContainer: {
     flexDirection: "row",
     justifyContent: "center",
     width: "100%",
-    marginBottom: 10
+    marginBottom: 10,
   },
   cameraIconLargeContainer: {
     alignItems: "center",

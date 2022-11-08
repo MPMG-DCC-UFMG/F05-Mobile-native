@@ -148,32 +148,28 @@ export default function PublicWorkCollectEditScreen({
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {/* <AppButton
-          title="Tirar Foto"
-          onPress={() => navigation.navigate(routes.GET_PHOTO)}
-        ></AppButton> */}
         <View style={styles.iconPhoto}>
-        <TrenaFormMediaPicker name="images"></TrenaFormMediaPicker>
+          <TrenaFormMediaPicker name="images"></TrenaFormMediaPicker>
         </View>
-        <View style={styles.form}>
-        <AppFormField
-          maxLength={255}
-          name="comments"
-          multiline
-          placeholder="Comentários gerais"
-        ></AppFormField>
-        <AppFormPicker
-          items={statusOptions}
-          name="status"
-          numberOfColumns={1}
-          PickerItemComponent={StatusPickerItem}
-          placeholder="Status"
-          width="60%"
-        ></AppFormPicker>
-        <SubmitButton
-          color={colors.trenaGreen}
-          title="Confirmar"
-        ></SubmitButton>
+        <View>
+          <AppFormField
+            maxLength={255}
+            name="comments"
+            multiline
+            placeholder="Comentários gerais"
+          ></AppFormField>
+          <AppFormPicker
+            items={statusOptions}
+            name="status"
+            numberOfColumns={1}
+            PickerItemComponent={StatusPickerItem}
+            placeholder="Status"
+            width="60%"
+          ></AppFormPicker>
+          <SubmitButton
+            color={colors.trenaGreen}
+            title="Confirmar"
+          ></SubmitButton>
         </View>
       </AppForm>
     </View>
@@ -189,10 +185,6 @@ const styles = StyleSheet.create({
   },
   iconPhoto: {
     width: "100%",
-    height: "15%",
-    alignItems: 'center'
+    paddingBottom: 12,
   },
-  form: {
-    alignItems: "center"
-  }
 });

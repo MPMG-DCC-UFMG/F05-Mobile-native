@@ -1,47 +1,67 @@
-import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import ListingEditScreen from "../screens/ListingEditScreen";
-import FeedNavigator from "./FeedNavigator";
 import AccountNavigator from "./AccountNavigator";
-import NewListingButton from "./NewListingButton";
 import routes from "./routes";
 import useNotifications from "../hooks/useNotifications";
 import PublicWorksNavigator from "./PublicWorksNavigator";
+import InspectionsNavigator from "./InspectionsNavigator";
+import colors from "../config/colors";
+import MapScreen from "../screens/MapScreen";
+
 const Tab = createBottomTabNavigator();
 
 export default function AppNavigator() {
   useNotifications();
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      tabBarOptions={{
+        activeBackgroundColor: colors.medium,
+        inactiveBackgroundColor: colors.medium,
+        inactiveTintColor: colors.white,
+        activeTintColor: colors.trenaGreen,
+        style: { borderTopWidth: 0 },
+      }}
+    >
+      <Tab.Screen
+        name={routes.INSPECTIONS}
+        component={InspectionsNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="magnify-expand"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
       <Tab.Screen
         name={routes.PUBLIC_WORKS}
         component={PublicWorksNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name={routes.LISTING_EDIT}
-        component={ListingEditScreen}
-        options={({ navigation }) => ({
-          tabBarButton: () => (
-            <NewListingButton
-              onPress={() => navigation.navigate("ListingEdit")}
-            />
-          ),
-          tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
-              name="plus-circle"
+              name="account-hard-hat"
               color={color}
               size={size}
             />
           ),
-        })}
+        }}
+      />
+      <Tab.Screen
+        name={routes.MAP}
+        component={MapScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="map-marker-radius"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
       />
       <Tab.Screen
         name={routes.ACCOUNT}

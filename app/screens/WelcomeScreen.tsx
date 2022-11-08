@@ -42,8 +42,11 @@ interface AuthResponse {
 }
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().required().label("Email"),
-  password: Yup.string().required().min(4).label("Password"),
+  email: Yup.string().required("O campo email é obrigatório").label("Email"),
+  password: Yup.string()
+    .required("O campo senha é obrigatório")
+    .min(4)
+    .label("Senha"),
 });
 
 export default function WelcomeScreen() {
@@ -228,7 +231,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#73FF00",
   },
   logoContainer: {
-    top: 70,
+    padding: 12,
     alignItems: "center",
   },
   googleButton: {

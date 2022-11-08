@@ -32,45 +32,6 @@ export default function InspectionsScreen({ navigation }: any) {
     loadDataFromServer,
   } = useContext(SessionContext);
 
-  // const {
-  //   data: inspections,
-  //   error,
-  //   loading,
-  //   request: loadInspections,
-  // } = useApi(inspectionsApi.getInspections);
-
-  // const { data: publicWorks, request: loadPublicWorks } = useApi(
-  //   publicWorksApi.getPublicWorks
-  // );
-
-  // const { data: typeWorks, request: loadTypeWorks } = useApi(
-  //   typeWorksApi.getTypeWorks
-  // );
-
-  // const { data: typePhoto, request: loadTypePhotos } = useApi(
-  //   typePhotosApi.getTypePhotos
-  // );
-
-  // const { data: workStatus, request: loadWorkStatus } = useApi(
-  //   workStatusApi.getWorkStatus
-  // );
-
-  // const loadDataFromServer = async () => {
-  //   await loadTypeWorks();
-  //   await loadWorkStatus();
-  //   await loadTypePhotos();
-  //   await loadPublicWorks();
-  //   await loadInspections();
-  //   // console.log(typeWorks);
-  //   // console.log(workStatus);
-  //   // console.log(typePhoto);
-  //   // console.log(publicWorks);
-  // };
-
-  // useEffect(() => {
-  //   loadDataFromServer();
-  // }, []);
-
   const getPublicWorkOfInspection = (publicWorkId: string) => {
     const pw = publicWorks.find((publicWork: any) => {
       return publicWork.id === publicWorkId;
@@ -132,9 +93,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: colors.black,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   list: {
-    marginTop: "20%"
-  }
+    marginTop: "20%",
+  },
 });

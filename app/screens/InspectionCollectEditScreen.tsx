@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
-import { Alert, Button, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import * as Yup from "yup";
+import { useToast } from "native-base";
 
-import Screen from "../components/Screen";
 import {
   AppForm,
   AppFormField,
@@ -22,6 +22,7 @@ import AppButton from "../components/AppButton";
 import TrenaFormMediaPicker from "../components/forms/TrenaFormMediaPicker";
 import colors from "../config/colors";
 import { SessionContext } from "../context/SessionContext";
+import { useNavigation } from "@react-navigation/native";
 
 const validationSchema = Yup.object().shape({
   comments: Yup.string()
@@ -96,11 +97,10 @@ const validationSchema = Yup.object().shape({
 //   },
 // ];
 
-export default function InspectionCollectEditScreen({
-  navigation,
-  route,
-}: any) {
+export default function InspectionCollectEditScreen({ route }: any) {
   const { user } = useAuth();
+  const toast = useToast();
+  const { navigate } = useNavigation();
   const { workStatus } = useContext(SessionContext);
   const inspection = route.params.inspection;
 
@@ -116,10 +116,22 @@ export default function InspectionCollectEditScreen({
       (progress: number) => setProgress(progress)
     );
 
+    console.log(result);
+
     if (!result.ok) {
       setUploadVisible(false);
-      return alert("Não foi possível salvar a coleta.");
+      return toast.show({
+        title: "Não foi possível salvar a coleta.",
+        placement: "top",
+        bgColor: "red.500",
+      });
     }
+    toast.show({
+      title: "Vistoria enviada com sucesso!",
+      // placement: "top",
+      bgColor: colors.trenaGreen,
+    });
+    navigate(routes.INSPECTIONS);
 
     formikBag.resetForm();
   };
@@ -140,8 +152,8 @@ export default function InspectionCollectEditScreen({
           comments: route.params.collect ? route.params.collect.comments : "",
           status: route.params.collect
             ? getPublicWorkStatusFromFlag(
-              route.params.collect.public_work_status
-            )
+                route.params.collect.public_work_status
+              )
             : null,
           images: [],
         }}
@@ -155,7 +167,7 @@ export default function InspectionCollectEditScreen({
         <View style={styles.iconPhoto}>
           <TrenaFormMediaPicker name="images"></TrenaFormMediaPicker>
         </View>
-        <View style={styles.form}>
+        <View>
           <AppFormField
             maxLength={255}
             name="comments"
@@ -189,10 +201,6 @@ const styles = StyleSheet.create({
   },
   iconPhoto: {
     width: "100%",
-    height: "15%",
-    alignItems: 'center'
+    paddingBottom: 12,
   },
-  form: {
-    alignItems: "center"
-  }
 });

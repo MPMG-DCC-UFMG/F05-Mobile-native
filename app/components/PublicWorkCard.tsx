@@ -40,8 +40,8 @@ CardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 8,
-    backgroundColor: colors.medium,
+    borderRadius: 4,
+    backgroundColor: colors.gray[800],
     marginBottom: 20,
     overflow: "hidden",
     borderColor: colors.trenaGreen,
@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
     height: 200,
   },
   subTitle: {
-    color: colors.white,
+    color: colors.gray[200],
     fontWeight: "bold",
   },
   title: {
     marginBottom: 8,
-    color: colors.white,
+    color: colors.gray[100],
   },
 });

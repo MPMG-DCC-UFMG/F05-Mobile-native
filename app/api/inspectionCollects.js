@@ -25,6 +25,7 @@ const addInspectionCollect = async (data, onUploadProgress) => {
 
  
   const photoFilesData = new FormData();
+  let responsePhotoUpload;
   for (let index = 0; index < data.images.length; index++) {
     const media = data.images[index];
     
@@ -55,7 +56,7 @@ const addInspectionCollect = async (data, onUploadProgress) => {
             uri: media.uri,
           },
     );
-    const responsePhotoUpload = await client.post(endpointPhotoUpload, photoFilesData, {
+    responsePhotoUpload = await client.post(endpointPhotoUpload, photoFilesData, {
       onUploadProgress: (progress) =>
         onUploadProgress(progress.loaded / progress.total),
     });

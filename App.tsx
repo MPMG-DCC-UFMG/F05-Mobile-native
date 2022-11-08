@@ -8,7 +8,7 @@ import AuthNavigator from "./app/navigation/AuthNavigator";
 import AuthContext from "./app/auth/context";
 import authStorage from "./app/auth/storage";
 import { navigationRef } from "./app/navigation/rootNavigation";
-import TrenaNavigator from "./app/navigation/TrenaNavigator";
+import AppNavigator from "./app/navigation/AppNavigator";
 import { SessionProvider } from "./app/context/SessionContext";
 import { StatusBar } from "react-native";
 
@@ -75,7 +75,7 @@ export default function App() {
       <SessionProvider>
         <OfflineNotice />
         <NavigationContainer ref={navigationRef} theme={navigationTheme}>
-          {user ? <TrenaNavigator /> : <AuthNavigator />}
+          {user ? <AppNavigator /> : <AuthNavigator />}
         </NavigationContainer>
       </SessionProvider>
     </AuthContext.Provider>

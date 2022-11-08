@@ -49,6 +49,7 @@ export default function PublicWorkCollectsScreen({ navigation, route }: any) {
           </>
         )}
         <FlatList
+          style={styles.list}
           data={publicWorkCollects}
           keyExtractor={(collect) => collect.id.toString()}
           renderItem={({ item: collect }) => (
@@ -82,5 +83,8 @@ const styles = StyleSheet.create({
   screen: {
     padding: 20,
     backgroundColor: colors.dark,
+  },
+  list: {
+    marginTop: "20%",
   },
 });

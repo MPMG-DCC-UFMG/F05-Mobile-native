@@ -58,8 +58,8 @@ CardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 15,
-    backgroundColor: colors.medium,
+    borderRadius: 4,
+    backgroundColor: colors.gray[800],
     marginBottom: 20,
     borderWidth: 1,
     borderColor: colors.trenaGreen,

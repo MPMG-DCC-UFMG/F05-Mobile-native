@@ -1,6 +1,7 @@
 import React from "react";
 import LottieView from "lottie-react-native";
 import { StyleSheet, View } from "react-native";
+import colors from "../config/colors";
 
 export default function ActivityIndicatior({ visible = false }) {
   if (!visible) return null;
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
     height: "100%",
     opacity: 0.8,
     width: "100%",
-    backgroundColor: "white",
+    backgroundColor: colors.dark,
     zIndex: 1,
   },
 });
