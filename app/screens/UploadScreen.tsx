@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     justifyContent: "center",
+    backgroundColor: colors.dark,
   },
   animation: {
     width: 160,

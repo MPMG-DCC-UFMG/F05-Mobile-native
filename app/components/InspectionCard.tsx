@@ -25,7 +25,16 @@ export default function InspectionCard({
   const { latitude, longitude } = useLocation();
   const { workStatus } = useContext(SessionContext);
 
-  console.log(workStatus);
+  const publicWorkStatus = workStatus.find(
+    (status) => status.flag === publicWork.user_status
+  );
+
+  function getProgress() {
+    const step = 100 / workStatus.length;
+    const progress = workStatus.indexOf(publicWorkStatus);
+    if (progress === -1) return 0;
+    return (progress + 1) * step;
+  }
 
   return (
     <TouchableOpacity onPress={onPress}>
@@ -67,7 +76,7 @@ export default function InspectionCard({
           ></MaterialCommunityIcons>
           <AppText style={styles.subTitle}>{"Pendente"}</AppText>
         </View> */}
-        {inspection.status !== 0 ? (
+        {inspection.status === 0 ? (
           <View style={styles.detailsContainer}>
             <View style={styles.pendingStatusCard}>
               <AppText style={styles.pendingStatusText}>{"Pendente"}</AppText>
@@ -97,14 +106,16 @@ export default function InspectionCard({
           </View>
         </View> */}
         <Center w="100%" pb={4}>
-          <Text color={colors.trenaGreen}>Em andamento</Text>
+          <AppText style={styles.subTitle}>
+            {publicWorkStatus ? publicWorkStatus.name : "Não informado"}
+          </AppText>
           <Box w="100%">
             <Progress
               bg="coolGray.100"
               _filledTrack={{
                 bg: "lime.500",
               }}
-              value={75}
+              value={getProgress()}
               mx="4"
             />
           </Box>
