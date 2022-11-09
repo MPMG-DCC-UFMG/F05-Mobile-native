@@ -44,6 +44,14 @@ export default function NewCollectCard({ collect, onPress }: any) {
           ></MaterialCommunityIcons>
           <AppText style={styles.subTitle}>{when}</AppText>
         </View>
+        <View style={styles.propContainer}>
+          <MaterialCommunityIcons
+            name={"account"}
+            size={12}
+            color={colors.primary}
+          ></MaterialCommunityIcons>
+          <AppText style={styles.subTitle}>{collect.user_email}</AppText>
+        </View>
         {/* <View style={styles.propContainer}>
           <MaterialCommunityIcons
             name={"list-status"}

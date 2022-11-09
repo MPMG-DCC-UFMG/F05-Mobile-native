@@ -1,6 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useEffect, useState } from "react";
-import { FlatList, ImageSourcePropType, StyleSheet, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  ImageSourcePropType,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -90,12 +97,21 @@ export default function PublicWorksScreen({ navigation }: any) {
             onChangeText={(text) => setSearchName(text)}
             value={searchName}
           />
-          <MaterialCommunityIcons
-            style={styles.filterIcon}
-            name={"filter-variant"}
-            size={20}
-            color={colors.gray[100]}
-          ></MaterialCommunityIcons>
+          <TouchableOpacity
+            onPress={() =>
+              Alert.alert(
+                "Em construção",
+                "Funcionalidade estará disponível em breve."
+              )
+            }
+          >
+            <MaterialCommunityIcons
+              style={styles.filterIcon}
+              name={"filter-variant"}
+              size={20}
+              color={colors.gray[100]}
+            ></MaterialCommunityIcons>
+          </TouchableOpacity>
         </View>
         <FlatList
           style={styles.list}

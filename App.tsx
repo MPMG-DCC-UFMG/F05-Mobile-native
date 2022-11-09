@@ -11,7 +11,7 @@ import { navigationRef } from "./app/navigation/rootNavigation";
 import AppNavigator from "./app/navigation/AppNavigator";
 import { SessionProvider } from "./app/context/SessionContext";
 import { StatusBar } from "react-native";
-import { NativeBaseProvider } from "native-base";
+import { NativeBaseProvider, useToast } from "native-base";
 import { THEME } from "./app/config/theme";
 
 // logger.start();
@@ -20,7 +20,6 @@ export default function App() {
   const [user, setUser] = useState();
   const [appIsReady, setAppIsReady] = useState(false);
   const [userData, setUserData] = useState();
-  const [isReady, setIsReady] = useState(false);
 
   const restoreUser = async () => {
     const user: any = await authStorage.getUser();
@@ -62,7 +61,7 @@ export default function App() {
     return null;
   }
 
-  console.log(user);
+  console.log("USER:", user);
 
   return (
     <NativeBaseProvider theme={THEME}>

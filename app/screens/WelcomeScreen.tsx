@@ -151,7 +151,7 @@ export default function WelcomeScreen() {
             <AppFormField
               autoCapitalize="none"
               autoCorrect={false}
-              // caretHidden={false}
+              caretHidden={false}
               icon="email"
               keyboardType="email-address"
               name="email"
