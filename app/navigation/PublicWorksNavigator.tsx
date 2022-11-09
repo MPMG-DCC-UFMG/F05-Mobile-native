@@ -21,15 +21,15 @@ export default function PublicWorksNavigator() {
       <Stack.Screen
         name={routes.PUBLIC_WORKS}
         component={PublicWorksScreen}
-        options={{
-          headerRight: () => (
-            <MaterialCommunityIcons
-              onPress={() => alert("A desenvolver!")}
-              name="filter-outline"
-              size={32}
-            />
-          ),
-        }}
+        // options={{
+        //   headerRight: () => (
+        //     <MaterialCommunityIcons
+        //       onPress={() => alert("A desenvolver!")}
+        //       name="filter-outline"
+        //       size={32}
+        //     />
+        //   ),
+        // }}
       />
       <Stack.Screen
         name={routes.PUBLIC_WORK_COLLECTS}

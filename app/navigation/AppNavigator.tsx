@@ -17,9 +17,9 @@ export default function AppNavigator() {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeBackgroundColor: colors.medium,
-        inactiveBackgroundColor: colors.medium,
-        inactiveTintColor: colors.white,
+        activeBackgroundColor: colors.gray[800],
+        inactiveBackgroundColor: colors.gray[800],
+        inactiveTintColor: colors.gray[100],
         activeTintColor: colors.trenaGreen,
         style: { borderTopWidth: 0 },
       }}

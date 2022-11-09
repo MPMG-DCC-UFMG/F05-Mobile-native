@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { ProgressSteps, ProgressStep } from "react-native-progress-steps";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import dayjs from "dayjs";
 import ptBR from "dayjs/locale/pt-br";
 

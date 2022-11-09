@@ -45,8 +45,8 @@ export default function InspectionCard({
               longitude,
               publicWork.address.latitude,
               publicWork.address.longitude
-            )}{" "}
-            km
+            ).toFixed(2)}
+            {" km"}
           </AppText>
         </View>
         <View style={styles.propContainer}>
