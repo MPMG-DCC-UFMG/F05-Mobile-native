@@ -17,12 +17,12 @@ export default function AppTextInput({
         <MaterialCommunityIcons
           name={icon}
           size={20}
-          color={defaultStyles.colors.medium}
+          color={defaultStyles.colors.gray[100]}
           style={styles.icon}
         ></MaterialCommunityIcons>
       )}
       <TextInput
-        placeholderTextColor={defaultStyles.colors.medium}
+        placeholderTextColor={defaultStyles.colors.gray[300]}
         style={defaultStyles.text}
         {...otherProps}
       ></TextInput>
@@ -32,7 +32,7 @@ export default function AppTextInput({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: defaultStyles.colors.light,
+    backgroundColor: defaultStyles.colors.gray[800],
     borderRadius: 4,
     flexDirection: "row",
     padding: 12,

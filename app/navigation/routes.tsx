@@ -15,6 +15,6 @@ export default Object.freeze({
   PUBLIC_WORK_COLLECTS: "Coletas da Obra",
   COLLECT_EDIT: "Dados da Coleta",
   INSPECTION_COLLECT_EDIT: "Envio de Vistoria",
-  GET_PHOTO: "GetPhoto",
-  GET_VIDEO: "GetVideo",
+  // GET_PHOTO: "GetPhoto",
+  // GET_VIDEO: "GetVideo",
 });

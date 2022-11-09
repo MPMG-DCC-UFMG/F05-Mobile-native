@@ -6,13 +6,13 @@ import colors from "../config/colors";
 import AppText from "./AppText";
 import { useNetInfo } from "@react-native-community/netinfo";
 
-export default function OfflineNotice(props: any) {
+export default function OfflineNotice() {
   const netInfo = useNetInfo();
 
   if (netInfo.type !== "unknown" && netInfo.isInternetReachable === false)
     return (
       <View style={styles.container}>
-        <AppText style={styles.text}>No Internet Connection</AppText>
+        <AppText style={styles.text}>Sem conexão com a Internet</AppText>
       </View>
     );
   return null;
@@ -21,16 +21,15 @@ export default function OfflineNotice(props: any) {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: colors.primary,
+    backgroundColor: colors.trenaGreen,
     height: 48,
     justifyContent: "center",
-    // position: "absolute",
-    // top: Constants.statusBarHeight,
+    position: "absolute",
     marginTop: Constants.statusBarHeight,
     width: "100%",
     zIndex: 1,
   },
   text: {
-    color: colors.white,
+    color: colors.dark,
   },
 });

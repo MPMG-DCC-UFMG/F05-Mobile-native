@@ -13,8 +13,6 @@ import { TextInput, TouchableWithoutFeedback } from "react-native";
 import defaultStyles from "../config/styles";
 import AppText from "./AppText";
 import Screen from "./Screen";
-import PickerItem from "./PickerItem";
-import CategoryPickerItem from "./CategoryPickerItem";
 import ListItemSeparator from "./ListItemSeparator";
 import AppButton from "./AppButton";
 import colors from "../config/colors";
@@ -24,7 +22,7 @@ export default function AppPicker({
   items,
   numberOfColumns = 1,
   onSelectItem,
-  PickerItemComponent = CategoryPickerItem,
+  PickerItemComponent,
   selectedItem,
   placeholder,
   width = "100%",
@@ -56,7 +54,7 @@ export default function AppPicker({
         </View>
       </TouchableOpacity>
       <Modal style={styles.modal} visible={modalVisible} animationType="slide">
-        <Screen>
+        <Screen style={styles.modal}>
           <AppButton
             color={colors.trenaGreen}
             title="Fechar"
@@ -85,7 +83,7 @@ export default function AppPicker({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.light,
+    backgroundColor: colors.gray[800],
     borderRadius: 4,
     flexDirection: "row",
     padding: 12,
@@ -99,12 +97,14 @@ const styles = StyleSheet.create({
   },
   placeholder: {
     flex: 1,
-    color: defaultStyles.colors.medium,
+    color: colors.gray[300],
   },
   modal: {
     backgroundColor: colors.dark,
+    flex: 1,
   },
   text: {
     flex: 1,
+    color: colors.gray[100],
   },
 });

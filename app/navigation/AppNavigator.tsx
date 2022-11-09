@@ -30,7 +30,7 @@ export default function AppNavigator() {
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
-              name="magnify-expand"
+              name="briefcase-search"
               color={color}
               size={size}
             />

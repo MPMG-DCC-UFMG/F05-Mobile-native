@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import ImageInput from "./ImageInput";
-import TrenaImageInput from "./TrenaImageInput";
 
 export default function ImageInputList({
   medias = [],
@@ -21,16 +20,16 @@ export default function ImageInputList({
           {medias.map((media: any) => {
             return (
               <View style={styles.image} key={media.uri}>
-                <TrenaImageInput
+                <ImageInput
                   media={media}
                   onChangeMedia={() => onRemoveMedia(media)}
-                ></TrenaImageInput>
+                ></ImageInput>
               </View>
             );
           })}
-          <TrenaImageInput
+          <ImageInput
             onChangeMedia={(media: any) => onAddMedia(media)}
-          ></TrenaImageInput>
+          ></ImageInput>
         </View>
       </ScrollView>
     </View>

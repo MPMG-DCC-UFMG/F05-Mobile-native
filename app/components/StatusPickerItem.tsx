@@ -27,11 +27,11 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     alignItems: "flex-start",
     width: "100%",
-    backgroundColor: colors.medium,
+    backgroundColor: colors.gray[800],
   },
   label: {
     marginTop: 4,
-    color: colors.light,
+    color: colors.gray[100],
     textAlign: "left",
     width: "100%",
   },

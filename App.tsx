@@ -11,6 +11,8 @@ import { navigationRef } from "./app/navigation/rootNavigation";
 import AppNavigator from "./app/navigation/AppNavigator";
 import { SessionProvider } from "./app/context/SessionContext";
 import { StatusBar } from "react-native";
+import { NativeBaseProvider } from "native-base";
+import { THEME } from "./app/config/theme";
 
 // logger.start();
 
@@ -63,21 +65,20 @@ export default function App() {
   console.log(user);
 
   return (
-    // <Screen>
-    //   <Text>cddsdfdf</Text>
-    // </Screen>
-    <AuthContext.Provider value={{ user, setUser, userData, setUserData }}>
-      <StatusBar
-        barStyle="light-content"
-        translucent
-        backgroundColor="transparent"
-      />
-      <SessionProvider>
-        <OfflineNotice />
-        <NavigationContainer ref={navigationRef} theme={navigationTheme}>
-          {user ? <AppNavigator /> : <AuthNavigator />}
-        </NavigationContainer>
-      </SessionProvider>
-    </AuthContext.Provider>
+    <NativeBaseProvider theme={THEME}>
+      <AuthContext.Provider value={{ user, setUser, userData, setUserData }}>
+        <StatusBar
+          barStyle="light-content"
+          translucent
+          backgroundColor="transparent"
+        />
+        <SessionProvider>
+          <OfflineNotice />
+          <NavigationContainer ref={navigationRef} theme={navigationTheme}>
+            {user ? <AppNavigator /> : <AuthNavigator />}
+          </NavigationContainer>
+        </SessionProvider>
+      </AuthContext.Provider>
+    </NativeBaseProvider>
   );
 }

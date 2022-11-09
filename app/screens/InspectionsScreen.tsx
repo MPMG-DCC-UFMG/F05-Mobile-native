@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 20,
+    paddingBottom: 0,
     backgroundColor: colors.black,
     justifyContent: "center",
   },

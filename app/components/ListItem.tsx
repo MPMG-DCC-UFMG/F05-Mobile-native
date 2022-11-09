@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 16,
-    backgroundColor: colors.light,
+    backgroundColor: colors.gray[800],
     borderColor: colors.trenaGreen,
     borderWidth: 1,
   },
@@ -83,9 +83,10 @@ const styles = StyleSheet.create({
     borderRadius: 32,
   },
   subTitle: {
-    color: colors.medium,
+    color: colors.gray[200],
   },
   title: {
     fontWeight: "500",
+    color: colors.gray[100],
   },
 });

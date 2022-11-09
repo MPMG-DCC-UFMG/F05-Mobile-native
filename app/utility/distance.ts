@@ -3,7 +3,7 @@ export default function getDistanceFromLatLonInKm(
   currLong: number,
   goalLat: number,
   goalLong: number
-) {
+): number {
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(goalLat - currLat); // deg2rad below
   var dLon = deg2rad(goalLong - currLong);
@@ -15,7 +15,8 @@ export default function getDistanceFromLatLonInKm(
       Math.sin(dLon / 2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = R * c; // Distance in km
-  return d.toFixed(2);
+  // console.log(d.toFixed(2), typeof(d.toFixed(2)));
+  return d; 
 }
 
 function deg2rad(deg: number) {

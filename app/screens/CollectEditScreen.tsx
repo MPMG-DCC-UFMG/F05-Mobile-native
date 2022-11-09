@@ -9,7 +9,6 @@ import {
   AppFormPicker,
   SubmitButton,
 } from "../components/forms";
-import CategoryPickerItem from "../components/CategoryPickerItem";
 import AppFormImagePicker from "../components/forms/AppFormImagePicker";
 import useLocation from "../hooks/useLocation";
 import collectsApi from "../api/collects";

@@ -9,17 +9,13 @@ import {
   AppFormPicker,
   SubmitButton,
 } from "../components/forms";
-import CategoryPickerItem from "../components/CategoryPickerItem";
-import AppFormImagePicker from "../components/forms/AppFormImagePicker";
 import useLocation from "../hooks/useLocation";
 import inspectionCollectsApi from "../api/inspectionCollects";
 import UploadScreen from "./UploadScreen";
-import GetPhotoScreen from "./GetPhotoScreen";
 import routes from "../navigation/routes";
 import StatusPickerItem from "../components/StatusPickerItem";
 import useAuth from "../auth/useAuth";
-import AppButton from "../components/AppButton";
-import TrenaFormMediaPicker from "../components/forms/TrenaFormMediaPicker";
+import FormMediaPicker from "../components/forms/FormMediaPicker";
 import colors from "../config/colors";
 import { SessionContext } from "../context/SessionContext";
 import { useNavigation } from "@react-navigation/native";
@@ -35,67 +31,6 @@ const validationSchema = Yup.object().shape({
     .label("Status"),
   images: Yup.array().min(1, "Favor enviar ao menos uma imagem/vídeo."),
 });
-
-// const workStatus = [
-//   {
-//     flag: 1,
-//     name: "Não iniciada",
-//     description: "Não iniciada",
-//   },
-//   {
-//     flag: 2,
-//     name: "Não localizada",
-//     description: "Não localizada",
-//   },
-//   {
-//     flag: 3,
-//     name: "Paralisado",
-//     description: "Paralisado",
-//   },
-//   {
-//     flag: 4,
-//     name: "Em execução",
-//     description: "Em execução",
-//   },
-//   {
-//     flag: 5,
-//     name: "Concluída",
-//     description: "Concluída",
-//   },
-//   {
-//     flag: 6,
-//     name: "Em funcionamento",
-//     description: "Em funcionamento",
-//   },
-// ];
-
-// const typePhotos = [
-//   {
-//     flag: 1,
-//     name: "Outros",
-//     description: "Outros",
-//   },
-//   {
-//     flag: 2,
-//     name: "Fachada",
-//     description: "Não localizada",
-//   },
-//   {
-//     flag: 3,
-//     name: "Serviços externos",
-//     description: "Paralisado",
-//   },
-//   {
-//     flag: 4,
-//     name: "Ambiente/cômodo",
-//     description: "Em execução",
-//   },
-//   {
-//     flag: 5,
-//     name: "Danos na construção",
-//     description: "Concluída",
-//   },
-// ];
 
 export default function InspectionCollectEditScreen({ route }: any) {
   const { user } = useAuth();
@@ -127,8 +62,8 @@ export default function InspectionCollectEditScreen({ route }: any) {
       });
     }
     toast.show({
-      title: "Vistoria enviada com sucesso!",
-      // placement: "top",
+      title: "Vistoria enviada com sucesso",
+      placement: "top",
       bgColor: colors.trenaGreen,
     });
     navigate(routes.INSPECTIONS);
@@ -165,7 +100,7 @@ export default function InspectionCollectEditScreen({ route }: any) {
           onPress={() => navigation.navigate(routes.GET_PHOTO)}
         ></AppButton> */}
         <View style={styles.iconPhoto}>
-          <TrenaFormMediaPicker name="images"></TrenaFormMediaPicker>
+          <FormMediaPicker name="images"></FormMediaPicker>
         </View>
         <View>
           <AppFormField
@@ -179,8 +114,8 @@ export default function InspectionCollectEditScreen({ route }: any) {
             name="status"
             numberOfColumns={1}
             PickerItemComponent={StatusPickerItem}
-            placeholder="Status"
-            width="60%"
+            placeholder="Status da obra"
+            width="100%"
           ></AppFormPicker>
           <SubmitButton
             color={colors.trenaGreen}

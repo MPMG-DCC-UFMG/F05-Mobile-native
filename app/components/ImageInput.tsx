@@ -1,94 +1,302 @@
-import React, { useEffect, useState } from "react";
-import { Alert, Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import {
+  Alert,
+  Image,
+  Modal,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { Camera, CameraType } from 'expo-camera';
+import * as Yup from "yup";
+import { CameraType } from "expo-camera";
 
 import colors from "../config/colors";
+import AppButton from "./AppButton";
+import { ErrorMessage } from "./forms";
+import StatusPickerItem from "./StatusPickerItem";
+import AppTextInput from "./AppTextInput";
+import AppPicker from "./AppPicker";
+import { SessionContext } from "../context/SessionContext";
+import AppText from "./AppText";
 
+interface ImagePickerResult {
+  assetId: any;
+  base64: any;
+  cancelled: boolean;
+  exif: any;
+  height: number;
+  type: string;
+  uri: string;
+  width: number;
+}
+const validationSchema = Yup.object().shape({
+  comments: Yup.string().label("Comentário"),
+  type: Yup.object()
+    .required("Tipo é um campo obrigatório")
+    .nullable()
+    .label("Tipo"),
+  images: Yup.array().min(1, "O envio de mídia é obrigatório"),
+});
 
-export default function ImageInput({ imageUri, onChangeImage }: any) {
-  const [type, setType] = useState(CameraType.back);
-  const [permission, setRequestPermission] = Camera.useCameraPermissions();
+export default function ImageInput({ media, onChangeMedia, navigation }: any) {
+  const { typePhotos } = useContext(SessionContext);
+  const [currentImageUri, setCurrentImageUri] = useState(
+    media ? media.uri : undefined
+  );
+  const [comments, setComments] = useState<string>(media ? media.comments : "");
+  const [type, setType] = useState<string>(media ? media.type : "");
+  const [typeVideo, setTypeVideo] = useState(CameraType.back);
+  const [submited, setSubmited] = useState(false);
+  const [mediaTypeIsPhoto, setMediaTypeIsPhoto] = useState(true);
 
-  if(!permission) {
-    alert("Você precisa permitir o acesso às mídias do dispositivo");
-  }
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  if(permission?.granted) {
-    toggleCameraType()
-  }
-  
   useEffect(() => {
     requestPermission();
   }, []);
 
   const requestPermission = async () => {
-    const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const { granted } = await ImagePicker.requestCameraPermissionsAsync();
     if (!granted)
-      alert("Você precisa permitir o acesso às mídias do dispositivo");
+      alert("Você precisa permitir o acesso a câmera do dispositivo");
   };
 
   const handlePress = () => {
-    if (!imageUri) selectImage();
-    else
-      Alert.alert("Deletar", "Tem certeza que deseja deletar essa imagem?", [
-        {
-          text: "Não",
-        },
-        {
-          text: "Sim",
-          onPress: () => onChangeImage(null),
-        },
-      ]);
+    if (!media) {
+      Alert.alert(
+        "Tipo de mídia",
+        "Qual tipo de mídia deseja enviar?",
+        [
+          {
+            text: "Vídeo",
+            onPress: () => {
+              setMediaTypeIsPhoto(false);
+              setModalVisible(true);
+            },
+          },
+          {
+            text: "Foto",
+            onPress: () => {
+              setMediaTypeIsPhoto(true);
+              setModalVisible(true);
+            },
+          },
+        ],
+        { cancelable: true }
+      );
+    } else
+      Alert.alert(
+        "Deletar",
+        "Tem certeza que deseja deletar essa imagem?",
+        [
+          {
+            text: "Não",
+          },
+          {
+            text: "Sim",
+            onPress: () => onChangeMedia(null),
+          },
+        ],
+        { cancelable: true }
+      );
+  };
+
+  const handleSubmit = () => {
+    setSubmited(true);
+    if (currentImageUri && type !== "") {
+      onChangeMedia({ uri: currentImageUri, comments: comments, type: type });
+      setModalVisible(false);
+      setCurrentImageUri("");
+      setComments("");
+      setType("");
+      setSubmited(false);
+    }
   };
 
   const selectImage = async () => {
     try {
-      const result = await ImagePicker.launchImageLibraryAsync({
+      const result = (await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         quality: 0.5,
-      });
-      if (!result.cancelled) onChangeImage(result.uri);
+      })) as ImagePickerResult;
+      console.log(result);
+      if (!result.cancelled) {
+        setCurrentImageUri(result.uri);
+      }
     } catch (error) {
       console.log("Erro ao carregar a imagem", error);
     }
   };
 
-  function toggleCameraType() {
-    setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
-  }
+  const selectVideo = async () => {
+    try {
+      const result = (await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+        allowsEditing: true,
+        quality: 1,
+        aspect: [16, 9],
+      })) as ImagePickerResult;
+      if (!result.cancelled) {
+        setCurrentImageUri(result.uri);
+      }
+    } catch (error) {
+      console.log("Erro ao carregar a imagem", error);
+    }
+  };
 
   return (
-    <TouchableOpacity onPress={handlePress}>
-      <View style={styles.container}>
-        {imageUri ? (
-          <Image source={{ uri: imageUri }} style={styles.image}></Image>
-        ) : (
-          <MaterialCommunityIcons
-            name="camera"
-            size={40}
-            color={colors.medium}
-          ></MaterialCommunityIcons>
-        )}
-      </View>
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity onPress={handlePress}>
+        <View style={styles.cameraIconSmallContainer}>
+          {media ? (
+            <Image source={{ uri: media.uri }} style={styles.image}></Image>
+          ) : (
+            <MaterialCommunityIcons
+              name="camera-plus"
+              size={40}
+              color={colors.gray[300]}
+            ></MaterialCommunityIcons>
+          )}
+        </View>
+      </TouchableOpacity>
+      <Modal visible={modalVisible} animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.header}>
+            <AppText color={colors.white}>{`Adicionar ${
+              mediaTypeIsPhoto ? "foto" : "vídeo"
+            }`}</AppText>
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <MaterialCommunityIcons
+                name="close"
+                size={40}
+                color={colors.trenaGreen}
+              ></MaterialCommunityIcons>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.headerContainer}>
+            {mediaTypeIsPhoto ? (
+              <TouchableOpacity onPress={selectImage}>
+                <View style={styles.cameraIconLargeContainer}>
+                  {currentImageUri ? (
+                    <Image
+                      source={{ uri: currentImageUri }}
+                      style={styles.image}
+                    ></Image>
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="camera"
+                      size={40}
+                      color={colors.gray[300]}
+                    ></MaterialCommunityIcons>
+                  )}
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={selectVideo}>
+                <View style={styles.cameraIconLargeContainer}>
+                  {currentImageUri ? (
+                    <Image
+                      source={{ uri: currentImageUri }}
+                      style={styles.image}
+                    ></Image>
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="video"
+                      size={40}
+                      color={colors.gray[300]}
+                    ></MaterialCommunityIcons>
+                  )}
+                </View>
+              </TouchableOpacity>
+            )}
+          </View>
+          <ErrorMessage
+            error={"Favor enviar uma foto ou vídeo"}
+            visible={currentImageUri === undefined && submited === true}
+          ></ErrorMessage>
+          <AppTextInput
+            maxLength={255}
+            name="comments"
+            multiline
+            value={comments}
+            onChangeText={(text: string) => setComments(text)}
+            placeholder="Comentários"
+          />
+          <AppPicker
+            items={typePhotos}
+            numberOfColumns={1}
+            onSelectItem={(item: any) => {
+              console.log(item);
+              setType(item);
+            }}
+            PickerItemComponent={StatusPickerItem}
+            placeholder="Tipo de foto"
+            width="100%"
+            selectedItem={type}
+          ></AppPicker>
+          <ErrorMessage
+            error={"Tipo é um campo obrigatório"}
+            visible={type === "" && submited === true}
+          ></ErrorMessage>
+          <AppButton
+            color={colors.trenaGreen}
+            title="Adicionar"
+            onPress={handleSubmit}
+          />
+        </View>
+      </Modal>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  modalContainer: {
+    padding: 12,
+    flex: 1,
+    justifyContent: "flex-start",
+    backgroundColor: colors.black,
+    paddingTop: "10%",
+  },
+  cameraIconSmallContainer: {
     alignItems: "center",
-    backgroundColor: colors.light,
-    borderRadius: 16,
+    backgroundColor: colors.gray[800],
+    borderRadius: 4,
     height: 100,
     justifyContent: "center",
     width: 100,
+    borderColor: colors.trenaGreen,
+    borderWidth: 1,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "100%",
+    marginBottom: 10,
+  },
+  cameraIconLargeContainer: {
+    alignItems: "center",
+    backgroundColor: colors.gray[800],
+    borderRadius: 4,
+    height: 200,
+    justifyContent: "center",
+    width: 200,
+    borderColor: colors.trenaGreen,
+    borderWidth: 1,
+    marginRight: 10,
   },
   image: {
-    borderRadius: 16,
+    borderRadius: 4,
     height: "100%",
     overflow: "hidden",
     width: "100%",
+    color: colors.gray[300],
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingBottom: 12,
   },
 });

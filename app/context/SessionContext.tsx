@@ -51,10 +51,10 @@ const SessionProvider = ({ children }: { children?: React.ReactNode }) => {
     await loadTypePhotos();
     await loadPublicWorks();
     await loadInspections();
-    console.log(typeWorks);
-    console.log(workStatus);
-    console.log(typePhotos);
-    console.log(publicWorks);
+    // console.log(typeWorks);
+    // console.log(workStatus);
+    // console.log(typePhotos);
+    // console.log(publicWorks);
   };
 
   useEffect(() => {

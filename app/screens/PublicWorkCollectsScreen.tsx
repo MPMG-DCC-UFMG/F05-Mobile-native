@@ -12,8 +12,7 @@ import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 import ActivityIndicatior from "../components/ActivityIndicatior";
 import useApi from "../hooks/useApi";
-import PublicWorkCard from "../components/PublicWorkCard";
-import CollectCard from "../components/CollectCard";
+import NewCollectCard from "../components/CollectCard";
 export interface Listing {
   id: string;
   title: string;
@@ -34,9 +33,13 @@ export default function PublicWorkCollectsScreen({ navigation, route }: any) {
     loadCollects();
   }, []);
 
-  const publicWorkCollects = collects.filter((collect: any) => {
-    return collect.public_work_id === publicWork.id;
-  });
+  const publicWorkCollects = collects
+    .filter((collect: any) => {
+      return collect.public_work_id === publicWork.id;
+    })
+    .sort(function (a, b) {
+      return b.date - a.date;
+    });
 
   return (
     <>
@@ -53,9 +56,8 @@ export default function PublicWorkCollectsScreen({ navigation, route }: any) {
           data={publicWorkCollects}
           keyExtractor={(collect) => collect.id.toString()}
           renderItem={({ item: collect }) => (
-            <CollectCard
-              title={collect.comments}
-              subTitle={collect.date}
+            <NewCollectCard
+              collect={collect}
               // imageUrl={publicWork.images[0].url}
               onPress={() =>
                 navigation.navigate(routes.COLLECT_EDIT, {
@@ -82,6 +84,7 @@ export default function PublicWorkCollectsScreen({ navigation, route }: any) {
 const styles = StyleSheet.create({
   screen: {
     padding: 20,
+    paddingBottom: 0,
     backgroundColor: colors.dark,
   },
   list: {

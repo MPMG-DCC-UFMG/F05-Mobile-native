@@ -33,6 +33,7 @@ import * as AuthSession from "expo-auth-session";
 import useApi from "../hooks/useApi";
 import usersApi from "../api/users";
 import { environment } from "../../enviroment";
+import { useToast } from "native-base";
 
 interface AuthResponse {
   params: {
@@ -50,6 +51,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function WelcomeScreen() {
+  const toast = useToast();
   const navigation = useNavigation();
   const auth = useAuth();
   const loginApi = useApi(authApi.login);
@@ -100,7 +102,13 @@ export default function WelcomeScreen() {
     const result = (await authApi.login(email, password)) as any;
     console.log({ username: email, password: password });
     console.log(result);
-    if (!result.ok) return setLoginFailed(true);
+    if (!result.ok) {
+      toast.show({
+        title: "Email ou senha inválidos",
+        placement: "top",
+        bgColor: "red.500",
+      });
+    } //return setLoginFailed(true);
     setLoginFailed(false);
     console.log(result.data.access_token);
     auth.logIn(result.data.access_token);
@@ -137,12 +145,13 @@ export default function WelcomeScreen() {
             validationSchema={validationSchema}
           >
             <ErrorMessage
-              error="Invalid email and/or password."
+              error="Email ou senha inválido."
               visible={loginFailed}
             ></ErrorMessage>
             <AppFormField
               autoCapitalize="none"
               autoCorrect={false}
+              // caretHidden={false}
               icon="email"
               keyboardType="email-address"
               name="email"

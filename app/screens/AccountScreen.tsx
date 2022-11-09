@@ -38,7 +38,6 @@ export default function AccountScreen({ navigation }: any) {
             title={userData?.full_name}
             subTitle={user.email}
             image={{ uri: userData?.picture }}
-            // image={require("../assets/george.jpeg")}
           ></ListItem>
         ) : (
           <ListItem
@@ -98,7 +97,7 @@ export default function AccountScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 20,
+    marginTop: "20%",
   },
   screen: {
     backgroundColor: colors.dark,
