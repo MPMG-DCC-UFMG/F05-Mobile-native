@@ -2,8 +2,10 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useEffect, useState } from "react";
 import {
   Alert,
+  Text,
   FlatList,
   ImageSourcePropType,
+  Modal,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -42,6 +44,7 @@ export default function PublicWorksScreen({ navigation }: any) {
   const [refreshing, setRefreshing] = useState(false);
   const [searchName, setSearchName] = useState("");
   const { loadDataFromServer } = useContext(SessionContext);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     loadPublicWorks();
@@ -52,8 +55,8 @@ export default function PublicWorksScreen({ navigation }: any) {
   const filteredPublicWorks =
     searchName.length > 2
       ? publicWorks.filter((publicWork) =>
-          publicWork.name.toLowerCase().includes(searchName.toLowerCase())
-        )
+        publicWork.name.toLowerCase().includes(searchName.toLowerCase())
+      )
       : publicWorks;
 
   const sortedPublicWorks = publicWorks.sort(function (a, b) {
@@ -62,6 +65,59 @@ export default function PublicWorksScreen({ navigation }: any) {
       getDistanceFromLatLonInKm(latitude, longitude, b.latitude, b.longitude)
     );
   });
+
+  console.log(filteredPublicWorks)
+
+  function handleFilter(filtro: string) {
+    switch (filtro) {
+      case "AZ":
+        filteredPublicWorks.sort(function (a, b) {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        })
+
+        setModalVisible(!modalVisible);
+
+      break;
+
+      case "ZA":
+        filteredPublicWorks.sort(function (a, b) {
+          if (b.name < a.name) {
+            return -1;
+          }
+          if (b.name > a.name) {
+            return 1;
+          }
+          return 0;
+        })
+
+        setModalVisible(!modalVisible);
+      
+      break;
+
+      case "dist":
+        filteredPublicWorks.sort(function (a, b) {
+
+          if(getDistanceFromLatLonInKm(latitude, longitude, a.latitude, a.longitude) -
+          getDistanceFromLatLonInKm(latitude, longitude, b.latitude, b.longitude)) {
+            return -1
+          }
+          return 0
+        })
+
+        setModalVisible(!modalVisible);
+      
+      break;
+
+      default:
+        return
+    }
+  }
 
   // .sort(function (a, b) {
   //   return (
@@ -99,10 +155,7 @@ export default function PublicWorksScreen({ navigation }: any) {
           />
           <TouchableOpacity
             onPress={() =>
-              Alert.alert(
-                "Em construção",
-                "Funcionalidade estará disponível em breve."
-              )
+              setModalVisible(!modalVisible)
             }
           >
             <MaterialCommunityIcons
@@ -131,6 +184,69 @@ export default function PublicWorksScreen({ navigation }: any) {
           }}
         ></FlatList>
       </View>
+      <TouchableOpacity
+        style={styles.buttonAdd}
+        onPress={() =>
+          navigation.navigate(routes.PUBLIC_WORK_ADD)
+        }
+      >
+        <MaterialCommunityIcons
+          style={styles.addWorkIcon}
+          name={"plus"}
+          size={60}
+          color={colors.gray[100]}
+        ></MaterialCommunityIcons>
+      </TouchableOpacity>
+
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.modal}>
+          <Text style={styles.titleModal}>Selecione os filtros</Text>
+
+          <Text style={styles.subTitleModal}>Ordernar por</Text>
+
+          <AppButton
+            color={colors.trenaGreen}
+            title="Ordem alfabética (A-Z)"
+            onPress={ () =>
+              handleFilter("AZ")
+            }
+          />
+          <AppButton
+            color={colors.trenaGreen}
+            title="Ordem alfabética (Z-A)"
+            onPress={ () =>
+              handleFilter("ZA")
+            }
+          />
+          <AppButton
+            color={colors.trenaGreen}
+            title="Distância da obra"
+            onPress={ () =>
+              handleFilter("dist")
+            }
+          />
+
+          <AppButton
+            style={styles.closeButtonModal}
+            color={colors.trenaGreen}
+            title="Fechar"
+            onPress={() =>
+              setModalVisible(!modalVisible)
+            }
+          ></AppButton>
+
+        </View>
+
+      </Modal>
     </>
   );
 }
@@ -159,4 +275,41 @@ const styles = StyleSheet.create({
   list: {
     // marginTop: "20%",
   },
+  buttonAdd: {
+    borderRadius: 25,
+  },
+  addWorkIcon: {
+    padding: 2,
+    backgroundColor: colors.trenaGreen,
+    position: "absolute",
+    bottom: 30,
+    right: 20,
+    borderRadius: 40,
+    fontSize: 50
+  },
+  modal: {
+    marginTop: "15%",
+    alignSelf: "center",
+    padding: 10,
+    borderColor: colors.trenaGreen,
+    borderWidth: 1,
+    borderRadius: 25,
+    backgroundColor: colors.dark,
+    width: "95%",
+    height: 600
+  },
+  titleModal: {
+    textAlign: "center",
+    color: colors.white,
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  subTitleModal: {
+    marginTop: 10,
+    color: colors.white,
+    fontSize: 20,
+  },
+  closeButtonModal: {
+    alignSelf: "flex-end"
+  }
 });

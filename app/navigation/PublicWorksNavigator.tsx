@@ -6,6 +6,7 @@ import routes from "./routes";
 import colors from "../config/colors";
 import PublicWorkCollectEditScreen from "../screens/PublicWorkCollectEditScreen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import PublicWorkAddScreen from "../screens/PublicWorkAddScreen";
 
 const Stack = createStackNavigator();
 export default function PublicWorksNavigator() {
@@ -38,6 +39,10 @@ export default function PublicWorksNavigator() {
       <Stack.Screen
         name={routes.COLLECT_EDIT}
         component={PublicWorkCollectEditScreen}
+      />
+      <Stack.Screen
+        name={routes.PUBLIC_WORK_ADD}
+        component={PublicWorkAddScreen}
       />
     </Stack.Navigator>
   );
