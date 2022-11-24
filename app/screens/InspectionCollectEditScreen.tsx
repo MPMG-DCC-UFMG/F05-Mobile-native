@@ -65,6 +65,7 @@ export default function InspectionCollectEditScreen({ route }: any) {
       title: "Vistoria enviada com sucesso",
       placement: "top",
       bgColor: colors.trenaGreen,
+      color: colors.black,
     });
     navigate(routes.INSPECTIONS);
 

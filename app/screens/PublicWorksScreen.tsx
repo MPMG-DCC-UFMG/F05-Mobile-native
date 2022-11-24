@@ -55,18 +55,34 @@ export default function PublicWorksScreen({ navigation }: any) {
   const filteredPublicWorks =
     searchName.length > 2
       ? publicWorks.filter((publicWork) =>
-        publicWork.name.toLowerCase().includes(searchName.toLowerCase())
-      )
+          publicWork.name.toLowerCase().includes(searchName.toLowerCase())
+        )
       : publicWorks;
 
-  const sortedPublicWorks = publicWorks.sort(function (a, b) {
-    return (
-      getDistanceFromLatLonInKm(latitude, longitude, a.latitude, a.longitude) -
-      getDistanceFromLatLonInKm(latitude, longitude, b.latitude, b.longitude)
+  const sortByDistance = (a, b) => {
+    let distA = getDistanceFromLatLonInKm(
+      latitude,
+      longitude,
+      a.address.latitude,
+      a.address.longitude
     );
-  });
+    let distB = getDistanceFromLatLonInKm(
+      latitude,
+      longitude,
+      b.address.latitude,
+      b.address.longitude
+    );
 
+    if (distA < distB) {
+      return -1;
+    }
+    if (distA > distB) {
+      return 1;
+    }
+    return 0;
+  };
 
+  filteredPublicWorks.sort(sortByDistance);
 
   function handleFilter(filtro: string) {
     switch (filtro) {
@@ -79,9 +95,7 @@ export default function PublicWorksScreen({ navigation }: any) {
             return 1;
           }
           return 0;
-        })
-
-        setModalVisible(!modalVisible);
+        });
 
         break;
 
@@ -94,45 +108,20 @@ export default function PublicWorksScreen({ navigation }: any) {
             return 1;
           }
           return 0;
-        })
-
-        setModalVisible(!modalVisible);
+        });
 
         break;
 
       case "dist":
-        filteredPublicWorks.sort(function (a, b) {
-
-          let distA = getDistanceFromLatLonInKm(latitude, longitude, a.address.latitude, a.address.longitude)
-          let distB = getDistanceFromLatLonInKm(latitude, longitude, b.address.latitude, b.address.longitude)
-
-          if (distA < distB) {
-            return -1;
-          }
-          if (distA > distB) {
-            return 1;
-          }
-          return 0;
-        })
-
-        setModalVisible(!modalVisible);
+        filteredPublicWorks.sort(sortByDistance);
 
         break;
 
       default:
-        return
+        return;
     }
+    setModalVisible(!modalVisible);
   }
-
-  // .sort(function (a, b) {
-  //   return (
-  //     a.name - b.name
-  //     // getDistanceFromLatLonInKm(latitude, longitude, a.latitude, a.longitude) -
-  //     // getDistanceFromLatLonInKm(latitude, longitude, b.latitude, b.longitude)
-  //   );
-  // });
-
-  // console.log(publicWorks);
 
   return (
     <>
@@ -158,11 +147,7 @@ export default function PublicWorksScreen({ navigation }: any) {
             onChangeText={(text) => setSearchName(text)}
             value={searchName}
           />
-          <TouchableOpacity
-            onPress={() =>
-              setModalVisible(!modalVisible)
-            }
-          >
+          <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
             <MaterialCommunityIcons
               style={styles.filterIcon}
               name={"filter-variant"}
@@ -191,18 +176,15 @@ export default function PublicWorksScreen({ navigation }: any) {
       </View>
       <TouchableOpacity
         style={styles.buttonAdd}
-        onPress={() =>
-          navigation.navigate(routes.PUBLIC_WORK_ADD)
-        }
+        onPress={() => navigation.navigate(routes.PUBLIC_WORK_ADD)}
       >
         <MaterialCommunityIcons
           style={styles.addWorkIcon}
           name={"plus"}
           size={60}
-          color={colors.gray[100]}
+          color={colors.dark}
         ></MaterialCommunityIcons>
       </TouchableOpacity>
-
 
       <Modal
         animationType="fade"
@@ -221,36 +203,26 @@ export default function PublicWorksScreen({ navigation }: any) {
           <AppButton
             color={colors.trenaGreen}
             title="Ordem alfabética (A-Z)"
-            onPress={() =>
-              handleFilter("AZ")
-            }
+            onPress={() => handleFilter("AZ")}
           />
           <AppButton
             color={colors.trenaGreen}
             title="Ordem alfabética (Z-A)"
-            onPress={() =>
-              handleFilter("ZA")
-            }
+            onPress={() => handleFilter("ZA")}
           />
           <AppButton
             color={colors.trenaGreen}
             title="Distância da obra"
-            onPress={() =>
-              handleFilter("dist")
-            }
+            onPress={() => handleFilter("dist")}
           />
 
           <AppButton
             style={styles.closeButtonModal}
             color={colors.trenaGreen}
             title="Fechar"
-            onPress={() =>
-              setModalVisible(!modalVisible)
-            }
+            onPress={() => setModalVisible(!modalVisible)}
           />
-
         </View>
-
       </Modal>
     </>
   );
@@ -287,10 +259,10 @@ const styles = StyleSheet.create({
     padding: 2,
     backgroundColor: colors.trenaGreen,
     position: "absolute",
-    bottom: 30,
+    bottom: 20,
     right: 20,
     borderRadius: 40,
-    fontSize: 50
+    fontSize: 50,
   },
   modal: {
     marginTop: "15%",
@@ -301,7 +273,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: colors.dark,
     width: "95%",
-    height: 600
+    height: 600,
   },
   titleModal: {
     textAlign: "center",
@@ -315,6 +287,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   closeButtonModal: {
-    alignSelf: "flex-end"
-  }
+    alignSelf: "flex-end",
+  },
 });

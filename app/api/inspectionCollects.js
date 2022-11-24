@@ -29,9 +29,6 @@ const addInspectionCollect = async (data, onUploadProgress) => {
   for (let index = 0; index < data.images.length; index++) {
     const media = data.images[index];
     
-  // }
-  // data.images.forEach(async (media, index) => {
-
     // Identifiyng the media type/extension
     const imageUriParts = media.uri.split(".")
     const extension = imageUriParts[imageUriParts.length - 1]
@@ -61,7 +58,8 @@ const addInspectionCollect = async (data, onUploadProgress) => {
         onUploadProgress(progress.loaded / progress.total),
     });
     console.log("photoUpload: ", responsePhotoUpload.ok);
-  }//);
+  }
+  
   return responsePhotoUpload;
 };
 

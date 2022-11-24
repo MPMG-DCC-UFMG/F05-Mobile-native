@@ -24,12 +24,10 @@ const addCollect = async (data, onUploadProgress) => {
   console.log("collect: ", response.ok)
 
   const photoFilesData = new FormData();
+  let responsePhotoUpload;
   for (let index = 0; index < data.images.length; index++) {
     const media = data.images[index];
     
-  // }
-  // data.images.forEach(async (media, index) => {
-
     // Identifiyng the media type/extension
     const imageUriParts = media.uri.split(".")
     const extension = imageUriParts[imageUriParts.length - 1]
@@ -54,45 +52,15 @@ const addCollect = async (data, onUploadProgress) => {
             uri: media.uri,
           },
     );
-    const responsePhotoUpload = await client.post(endpointPhotoUpload, photoFilesData, {
+    responsePhotoUpload = await client.post(endpointPhotoUpload, photoFilesData, {
       onUploadProgress: (progress) =>
         onUploadProgress(progress.loaded / progress.total),
     });
     console.log("photoUpload: ", responsePhotoUpload.ok);
-  }//);
+  }
+  
   return responsePhotoUpload;
 };
-
-//   const photoData = {
-//     id: timestamp.toString(),
-//     collect_id: response.data.id,
-//     type: "1",
-//     filepath: "images/" + data.publicWork.id + "_" + timestamp + ".jpeg",
-//     latitude: data.location.latitude,
-//     longitude: data.location.longitude,
-//     comment: "teste",
-//     timestamp: timestamp
-//   }
-//   const responsePhoto = await client.post(endpointPhotoAdd, photoData);
-//   console.log("photo: ", responsePhoto.ok)
-  
-//   const photoFilesData = new FormData();
-//   data.images.forEach((image, index) => {
-//     photoFilesData.append("file",  
-//          {
-//             name: data.publicWork.id + "_" + timestamp + ".jpeg",
-//             type: "image/jpeg",
-//             uri: image,
-//           },
-//     );
-//   });
-//   const responsePhotoUpload = await client.post(endpointPhotoUpload, photoFilesData, {
-//     onUploadProgress: (progress) =>
-//       onUploadProgress(progress.loaded / progress.total),
-//   });
-//   console.log("photoUpload: ", responsePhotoUpload.ok);
-//   return responsePhotoUpload;
-// };
 
 export default {
   getCollects,

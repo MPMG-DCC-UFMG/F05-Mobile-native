@@ -16,6 +16,9 @@ import useAuth from "../auth/useAuth";
 import FormMediaPicker from "../components/forms/FormMediaPicker";
 import colors from "../config/colors";
 import { SessionContext } from "../context/SessionContext";
+import { useToast } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+import routes from "../navigation/routes";
 
 const validationSchema = Yup.object().shape({
   comments: Yup.string()
@@ -34,8 +37,10 @@ export default function PublicWorkCollectEditScreen({
   route,
 }: any) {
   const { user } = useAuth();
+  const toast = useToast();
   const publicWork = route.params.publicWork;
   const { workStatus } = useContext(SessionContext);
+  const { navigate } = useNavigation();
 
   const location = useLocation();
   const [uploadVisible, setUploadVisible] = useState(false);
@@ -49,10 +54,23 @@ export default function PublicWorkCollectEditScreen({
       (progress: number) => setProgress(progress)
     );
 
+    console.log(result);
+
     if (!result.ok) {
       setUploadVisible(false);
-      return alert("Não foi possível salvar a coleta.");
+      return toast.show({
+        title: "Não foi possível salvar a coleta.",
+        placement: "top",
+        bgColor: "red.500",
+      });
     }
+    toast.show({
+      title: "Vistoria enviada com sucesso",
+      placement: "top",
+      bgColor: colors.trenaGreen,
+      color: colors.black,
+    });
+    navigate(routes.PUBLIC_WORK_COLLECTS);
 
     formikBag.resetForm();
   };
