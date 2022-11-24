@@ -12,6 +12,8 @@ import { SessionContext } from "../context/SessionContext";
 import { AppForm, AppFormField, AppFormPicker, ErrorMessage, SubmitButton } from "../components/forms";
 import StatusPickerItem from "../components/StatusPickerItem";
 import AppPicker from "../components/AppPicker";
+import publicWorkCollects from "../api/publicWorkCollects";
+import useLocation from "../hooks/useLocation";
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -19,7 +21,11 @@ const windowHeight = Dimensions.get('window').height;
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().required("O campo nome da obra é obrigatório"),
-    street: Yup.string().required("O campo rua é obrigatório")
+    street: Yup.string().required("O campo rua é obrigatório"),
+    cep: Yup.string().required("O campo cep é obrigatório"),
+    number: Yup.string().required("O campo número é obrigatório"),
+    district: Yup.string().required("O campo bairro é obrigatório"),
+    city: Yup.string().required("O campo cidade é obrigatório"),
 });
 
 
@@ -27,22 +33,47 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
     const { typeWorks } = useContext(SessionContext);
     const [type, setType] = useState("");
     const [cep, setCep] = useState("");
+    const [district, setDistrict] = useState("");
+    const [city, setCity] = useState("");
     const [error, setError] = useState(false);
+    const [progress, setProgress] = useState(0);
+    const { latitude, longitude } = useLocation();
 
+    const handleSubmit = async ({ name, street, cep, number, district, city }, formikBag : any) => {
+        setProgress(0);
 
-    const handleSubmit = async ({ name, street, cep }: any) => {
+        let teste = city.split("-")
 
+        const result = await publicWorkCollects.addPublicWorkCollect(
+            {
+                name: name,
+                type_work_flag: type.flag,
+                address: {
+                    street: street,
+                    district: district,
+                    number: number,
+                    latitude: latitude,
+                    longitude: longitude,
+                    city: teste[0].replace(" ", ""),
+                    state: teste[1].replace(" ", ""),
+                    cep: cep,
+                },
 
+            },
+            
+        ) as any
 
+       console.log(result)
     }
 
     useEffect(() => {
 
-        if(cep !== "") {
-            fetch(`https://ws.apicep.com/cep/${cep}.json`)
+        fetch(`https://ws.apicep.com/cep/${cep}.json`)
             .then(res => res.json())
             .then(data => {
-                console.log(data)
+       
+                setCity(`${data.city} - ${data.state}`)
+                setDistrict(data.district)
                 setError(false)
 
             })
@@ -50,11 +81,8 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
                 setError(true)
 
             )
-        }
-        
-    }, [cep])
 
-
+    }, [cep.length >= 8])
 
 
     return (
@@ -76,7 +104,14 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
                         selectedItem={type}
                     />
                     <AppForm
-                        initialValues={{ name: "", rua: "", cep: "" }}
+                        initialValues={{
+                            name: "",
+                            street: "",
+                            cep: "",
+                            number: "",
+                            district: "",
+                            city: "",
+                        }}
                         onSubmit={handleSubmit}
                         validationSchema={validationSchema}
                     >
@@ -102,8 +137,7 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
                                 width={(windowWidth / 2) - 23}
                                 placeholder="CEP"
                                 keyboardType='numeric'
-                                onChangeText={setCep}
-                                value={cep}
+                                
                             />
                             <AppFormField
                                 autoCapitalize="none"
@@ -113,22 +147,24 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
                                 placeholder="Número"
                             />
                         </View>
-                        <ErrorMessage
+                        {/* <ErrorMessage
                             error="CEP informado é inválido "
                             visible={error}
-                        />
+                        /> */}
 
                         <AppFormField
                             autoCapitalize="none"
                             autoCorrect={false}
                             name="district"
                             placeholder="Bairro"
+                            
                         />
                         <AppFormField
                             autoCapitalize="none"
                             autoCorrect={false}
                             name="city"
                             placeholder="Cidade"
+                            
                         />
 
                         <SubmitButton

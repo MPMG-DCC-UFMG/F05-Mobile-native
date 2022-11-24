@@ -10,6 +10,7 @@ export default function AccountNavigator() {
       screenOptions={{
         headerTintColor: colors.white,
         headerTransparent: true,
+        headerTitleAlign: "center",
       }}
     >
       <Stack.Screen name={routes.ACCOUNT} component={AccountScreen} />

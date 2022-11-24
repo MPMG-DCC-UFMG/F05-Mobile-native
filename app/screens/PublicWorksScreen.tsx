@@ -66,7 +66,7 @@ export default function PublicWorksScreen({ navigation }: any) {
     );
   });
 
-  console.log(filteredPublicWorks)
+
 
   function handleFilter(filtro: string) {
     switch (filtro) {
@@ -83,7 +83,7 @@ export default function PublicWorksScreen({ navigation }: any) {
 
         setModalVisible(!modalVisible);
 
-      break;
+        break;
 
       case "ZA":
         filteredPublicWorks.sort(function (a, b) {
@@ -97,22 +97,27 @@ export default function PublicWorksScreen({ navigation }: any) {
         })
 
         setModalVisible(!modalVisible);
-      
-      break;
+
+        break;
 
       case "dist":
         filteredPublicWorks.sort(function (a, b) {
 
-          if(getDistanceFromLatLonInKm(latitude, longitude, a.latitude, a.longitude) -
-          getDistanceFromLatLonInKm(latitude, longitude, b.latitude, b.longitude)) {
-            return -1
+          let distA = getDistanceFromLatLonInKm(latitude, longitude, a.address.latitude, a.address.longitude)
+          let distB = getDistanceFromLatLonInKm(latitude, longitude, b.address.latitude, b.address.longitude)
+
+          if (distA < distB) {
+            return -1;
           }
-          return 0
+          if (distA > distB) {
+            return 1;
+          }
+          return 0;
         })
 
         setModalVisible(!modalVisible);
-      
-      break;
+
+        break;
 
       default:
         return
@@ -216,21 +221,21 @@ export default function PublicWorksScreen({ navigation }: any) {
           <AppButton
             color={colors.trenaGreen}
             title="Ordem alfabética (A-Z)"
-            onPress={ () =>
+            onPress={() =>
               handleFilter("AZ")
             }
           />
           <AppButton
             color={colors.trenaGreen}
             title="Ordem alfabética (Z-A)"
-            onPress={ () =>
+            onPress={() =>
               handleFilter("ZA")
             }
           />
           <AppButton
             color={colors.trenaGreen}
             title="Distância da obra"
-            onPress={ () =>
+            onPress={() =>
               handleFilter("dist")
             }
           />
@@ -242,7 +247,7 @@ export default function PublicWorksScreen({ navigation }: any) {
             onPress={() =>
               setModalVisible(!modalVisible)
             }
-          ></AppButton>
+          />
 
         </View>
 
@@ -293,7 +298,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderColor: colors.trenaGreen,
     borderWidth: 1,
-    borderRadius: 25,
+    borderRadius: 15,
     backgroundColor: colors.dark,
     width: "95%",
     height: 600

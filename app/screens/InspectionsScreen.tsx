@@ -12,6 +12,8 @@ import InspectionCard from "../components/InspectionCard";
 
 import { SessionContext } from "../context/SessionContext";
 import AppTextInput from "../components/AppTextInput";
+import getDistanceFromLatLonInKm from "../utility/distance";
+import useLocation from "../hooks/useLocation";
 export interface Listing {
   id: string;
   title: string;
@@ -22,6 +24,7 @@ export interface Listing {
 export default function InspectionsScreen({ navigation }: any) {
   const [refreshing, setRefreshing] = useState(false);
   const { user } = useAuth();
+  const { latitude, longitude } = useLocation();
   const [searchName, setSearchName] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const {
@@ -82,6 +85,26 @@ export default function InspectionsScreen({ navigation }: any) {
             return 1;
           }
           return 0;
+        })
+
+        setModalVisible(!modalVisible);
+
+        break;
+
+      case "dist":
+        filteredInspections.sort(function (a, b) {
+
+          let distA = getDistanceFromLatLonInKm(latitude, longitude, a.address.latitude, a.address.longitude)
+          let distB = getDistanceFromLatLonInKm(latitude, longitude, b.address.latitude, b.address.longitude)
+
+          if (distA < distB) {
+            return -1;
+          }
+          if (distA > distB) {
+            return 1;
+          }
+          return 0;
+
         })
 
         setModalVisible(!modalVisible);
@@ -189,7 +212,13 @@ export default function InspectionsScreen({ navigation }: any) {
               handleFilter("ZA")
             }
           />
-
+          <AppButton
+            color={colors.trenaGreen}
+            title="Distância da vistoria"
+            onPress={() =>
+              handleFilter("dist")
+            }
+          />
           <AppButton
             style={styles.closeButtonModal}
             color={colors.trenaGreen}
@@ -197,8 +226,7 @@ export default function InspectionsScreen({ navigation }: any) {
             onPress={() =>
               setModalVisible(!modalVisible)
             }
-          ></AppButton>
-
+          />
         </View>
 
       </Modal>
@@ -237,7 +265,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderColor: colors.trenaGreen,
     borderWidth: 1,
-    borderRadius: 25,
+    borderRadius: 15,
     backgroundColor: colors.dark,
     width: "95%",
     height: 600

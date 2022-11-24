@@ -98,6 +98,7 @@ export default function AccountScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     marginTop: "20%",
+    backgroundColor: colors.white
   },
   screen: {
     backgroundColor: colors.dark,

@@ -9,6 +9,7 @@ const apiClient = create({
     'content-type': 'application/x-www-form-urlencoded'
     // 'Content-Type': 'multipart/form-data'
   }
+  
 });
 
 apiClient.addAsyncRequestTransform(async (request) => {
