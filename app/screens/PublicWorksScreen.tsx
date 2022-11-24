@@ -67,8 +67,6 @@ export default function PublicWorksScreen({ navigation }: any) {
     loadPublicWorks();
   }, []);
 
-  const netInfo = useNetInfo();
-
   const filteredPublicWorks =
     searchName.length > 2
       ? publicWorks.filter((publicWork) =>
@@ -100,6 +98,8 @@ export default function PublicWorksScreen({ navigation }: any) {
   };
 
   filteredPublicWorks.sort(sortByDistance);
+
+  console.log(publicWorks);
 
   function handleFilter(filtro: string) {
     switch (filtro) {

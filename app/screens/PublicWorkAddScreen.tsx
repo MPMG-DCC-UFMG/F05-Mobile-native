@@ -13,7 +13,7 @@ import StatusPickerItem from "../components/StatusPickerItem";
 import AppPicker from "../components/AppPicker";
 import publicWorksApi from "../api/publicWorks";
 import useLocation from "../hooks/useLocation";
-import { useToast } from "native-base";
+import { Button, useToast } from "native-base";
 import ActivityIndicatior from "../components/ActivityIndicatior";
 import { PublicWork } from "./PublicWorksScreen";
 import UploadScreen from "./UploadScreen";
@@ -38,7 +38,68 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
   const toast = useToast();
   const { navigate } = useNavigation();
 
+  const validateInput = () => {
+    if (!type) {
+      toast.show({
+        title: "Tipo de obra não pode ser vazio",
+        placement: "top",
+        bgColor: "red.500",
+      });
+      return false;
+    }
+    if (name.trim().length === 0) {
+      toast.show({
+        title: "Nome da obra não pode ser vazio",
+        placement: "top",
+        bgColor: "red.500",
+      });
+      return false;
+    }
+    if (address.trim().length === 0) {
+      toast.show({
+        title: "Rua não pode ser vazio",
+        placement: "top",
+        bgColor: "red.500",
+      });
+      return false;
+    }
+    if (cep.trim().length === 0) {
+      toast.show({
+        title: "CEP não pode ser vazio",
+        placement: "top",
+        bgColor: "red.500",
+      });
+      return false;
+    }
+    if (number.trim().length === 0) {
+      toast.show({
+        title: "Número não pode ser vazio",
+        placement: "top",
+        bgColor: "red.500",
+      });
+      return false;
+    }
+    if (district.trim().length === 0) {
+      toast.show({
+        title: "Bairro não pode ser vazio",
+        placement: "top",
+        bgColor: "red.500",
+      });
+      return false;
+    }
+    if (cityState.trim().length === 0) {
+      toast.show({
+        title: "Cidade não pode ser vazio",
+        placement: "top",
+        bgColor: "red.500",
+      });
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async () => {
+    if (!validateInput()) return;
     setProgress(0);
     const [city, state] = cityState.split("-");
 
