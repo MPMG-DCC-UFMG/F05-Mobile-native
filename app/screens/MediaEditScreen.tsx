@@ -9,12 +9,10 @@ import {
   AppFormPicker,
   SubmitButton,
 } from "../components/forms";
-import CategoryPickerItem from "../components/CategoryPickerItem";
 import AppFormImagePicker from "../components/forms/AppFormImagePicker";
 import useLocation from "../hooks/useLocation";
 import inspectionCollectsApi from "../api/inspectionCollects";
 import UploadScreen from "./UploadScreen";
-import GetPhotoScreen from "./GetPhotoScreen";
 import routes from "../navigation/routes";
 import StatusPickerItem from "../components/StatusPickerItem";
 import useAuth from "../auth/useAuth";

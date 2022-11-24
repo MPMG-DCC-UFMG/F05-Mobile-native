@@ -26,11 +26,28 @@ import useLocation from "../hooks/useLocation";
 import { SessionContext } from "../context/SessionContext";
 import { TextInput } from "react-native-gesture-handler";
 import AppTextInput from "../components/AppTextInput";
-export interface Listing {
+
+export interface Address {
   id: string;
-  title: string;
-  price: number;
-  image: ImageSourcePropType;
+  street: string;
+  neighborhood: string;
+  number: string;
+  latitude: number;
+  longitude: number;
+  city: string;
+  state: string;
+  cep: string;
+  public_work_id: string;
+}
+export interface PublicWork {
+  id: string;
+  name: string;
+  type_work_flag: number;
+  user_status: number;
+  queue_status: 0 | 1 | 2 | 3;
+  queue_status_date: number;
+  rnn_status: number;
+  address: Address;
 }
 
 export default function PublicWorksScreen({ navigation }: any) {

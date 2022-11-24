@@ -1,35 +1,22 @@
 import { environment } from "../../enviroment";
+import { PublicWork } from "../screens/PublicWorksScreen";
 import client from "./client";
 
 const apiParam = "?X-TRENA-KEY=" + environment.apiKey
 
 const endpoint = "/publicworks/" + apiParam;
+const endpointAdd = "/publicworks/add" + apiParam;
 
 const getPublicWorks = () => client.get(endpoint);
 
-// const addListings = (listing: any, onUploadProgress: any) => {
-//   const data = new FormData();
-//   data.append("title", listing.title);
-//   data.append("price", listing.price);
-//   data.append("categoryId", listing.category.value);
-//   data.append("description", listing.description);
-//   if (listing.location)
-//     data.append("location", JSON.stringify(listing.location));
-//   listing.images.forEach((image: string, index: number) => {
-//     data.append("images", {
-//       name: "image" + index,
-//       type: "image/jpeg",
-//       uri: image,
-//     });
-//   });
-
-//   return client.post(endpoint, data, {
-//     onUploadProgress: (progress) =>
-//       onUploadProgress(progress.loaded / progress.total),
-//   });
-// };
+const addPublicWork = (publicWork: PublicWork, onUploadProgress: any) => {
+  return client.post(endpointAdd, publicWork, {
+    onUploadProgress: (progress) =>
+      onUploadProgress(progress.loaded / progress.total),
+  });
+};
 
 export default {
   getPublicWorks,
-  // addListings,
+  addPublicWork,
 };

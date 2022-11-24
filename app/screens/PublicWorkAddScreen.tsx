@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Alert, StyleSheet, View, Dimensions, Text } from "react-native";
-import * as Yup from "yup";
+import uuid from "react-native-uuid";
+import { useNavigation } from "@react-navigation/native";
 
 import Screen from "../components/Screen";
 import colors from "../config/colors";
@@ -8,32 +9,18 @@ import AppButton from "../components/AppButton";
 import AppTextInput from "../components/AppTextInput";
 
 import { SessionContext } from "../context/SessionContext";
-import {
-  AppForm,
-  AppFormField,
-  AppFormPicker,
-  ErrorMessage,
-  SubmitButton,
-} from "../components/forms";
 import StatusPickerItem from "../components/StatusPickerItem";
 import AppPicker from "../components/AppPicker";
-import publicWorkCollects from "../api/publicWorkCollects";
+import publicWorksApi from "../api/publicWorks";
 import useLocation from "../hooks/useLocation";
-import AppText from "../components/AppText";
 import { useToast } from "native-base";
 import ActivityIndicatior from "../components/ActivityIndicatior";
+import { PublicWork } from "./PublicWorksScreen";
+import UploadScreen from "./UploadScreen";
+import routes from "../navigation/routes";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required("O campo nome da obra é obrigatório"),
-  street: Yup.string().required("O campo rua é obrigatório"),
-  cep: Yup.string().required("O campo cep é obrigatório"),
-  number: Yup.string().required("O campo número é obrigatório"),
-  district: Yup.string().required("O campo bairro é obrigatório"),
-  city: Yup.string().required("O campo cidade é obrigatório"),
-});
 
 export default function PublicWorkAddScreen({ navigation, route }: any) {
   const { typeWorks } = useContext(SessionContext);
@@ -42,37 +29,75 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
   const [cep, setCep] = useState("");
   const [district, setDistrict] = useState("");
   const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
+  const [cityState, setCityState] = useState("");
+  const [number, setNumber] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
   const { latitude, longitude } = useLocation();
   const toast = useToast();
+  const { navigate } = useNavigation();
 
-  const handleSubmit = async (
-    { name, street, cep, number, district, city },
-    formikBag: any
-  ) => {
+  const handleSubmit = async () => {
     setProgress(0);
+    const [city, state] = cityState.split("-");
 
-    let teste = city.split("-");
+    const publicWorkId = uuid.v4();
+    const addressId = uuid.v4();
 
-    const result = (await publicWorkCollects.addPublicWorkCollect({
-      name: name,
+    const publicWorkToSend = {
+      id: publicWorkId,
+      name: name.trim(),
       type_work_flag: type.flag,
+      user_status: 0,
+      queue_status: 0,
+      queue_status_date: Date.now(),
+      rnn_status: 0,
       address: {
-        street: street,
-        district: district,
-        number: number,
+        id: addressId,
+        street: address.trim(),
+        neighborhood: district.trim(),
+        number: number.trim(),
         latitude: latitude,
         longitude: longitude,
-        city: teste[0].replace(" ", ""),
-        state: teste[1].replace(" ", ""),
-        cep: cep,
+        city: city.trim(),
+        state: state.trim(),
+        cep: cep.trim(),
+        public_work_id: publicWorkId,
       },
-    })) as any;
+    } as PublicWork;
 
+    const result = await publicWorksApi.addPublicWork(
+      publicWorkToSend,
+      (progress: number) => setProgress(progress)
+    );
     console.log(result);
+    if (!result.ok) {
+      setUploadVisible(false);
+      return toast.show({
+        title: "Não foi possível enviar a Obra",
+        placement: "top",
+        bgColor: "red.500",
+      });
+    }
+    Alert.alert(
+      "Dados da obra enviados",
+      "Em breve um agente do MPMG irá analisar o seu envio!",
+      [
+        {
+          text: "Ok",
+          onPress: () => {
+            toast.show({
+              title: "Obra enviada com sucesso",
+              placement: "top",
+              bgColor: colors.trenaGreen,
+              color: colors.black,
+            });
+            navigate(routes.PUBLIC_WORKS);
+          },
+        },
+      ]
+    );
   };
 
   useEffect(() => {
@@ -81,10 +106,17 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
     fetch(`https://ws.apicep.com/cep/${cep}.json`)
       .then((res) => res.json())
       .then((data) => {
-        setCity(`${data.city} - ${data.state}`);
-        setAddress(`${data.address}`);
-        setDistrict(data.district);
-        setError(false);
+        if (data.ok) {
+          setCityState(`${data.city} - ${data.state}`);
+          setAddress(`${data.address}`);
+          setDistrict(data.district);
+        } else {
+          toast.show({
+            title: "CEP informado não foi encontrado",
+            placement: "top",
+            bgColor: "red.500",
+          });
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -101,6 +133,11 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
 
   return (
     <>
+      <UploadScreen
+        onDone={() => setUploadVisible(false)}
+        progress={progress}
+        visible={uploadVisible}
+      />
       <ActivityIndicatior visible={isLoading} />
       <Screen style={styles.screen}>
         <View style={styles.formView}>
@@ -151,6 +188,8 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
               width={windowWidth / 2 - 23}
               name="number"
               placeholder="Número"
+              onChangeText={setNumber}
+              value={number}
             />
           </View>
           <AppTextInput
@@ -166,17 +205,20 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
             autoCorrect={false}
             name="city"
             placeholder="Cidade"
-            onChangeText={setCity}
-            value={city}
+            onChangeText={setCityState}
+            value={cityState}
           />
-          <AppButton color={colors.trenaGreen} title="Adicionar obra" />
+          <AppButton
+            color={colors.danger}
+            title="Validar localização"
+            onPress={() => {}}
+          ></AppButton>
+          <AppButton
+            onPress={handleSubmit}
+            color={colors.trenaGreen}
+            title="Adicionar obra"
+          />
         </View>
-
-        <AppButton
-          color={colors.danger}
-          title="Validar localização"
-          onPress={() => {}}
-        ></AppButton>
       </Screen>
     </>
   );

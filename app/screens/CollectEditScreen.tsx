@@ -13,7 +13,6 @@ import AppFormImagePicker from "../components/forms/AppFormImagePicker";
 import useLocation from "../hooks/useLocation";
 import collectsApi from "../api/collects";
 import UploadScreen from "./UploadScreen";
-import GetPhotoScreen from "./GetPhotoScreen";
 import routes from "../navigation/routes";
 import StatusPickerItem from "../components/StatusPickerItem";
 import useAuth from "../auth/useAuth";
