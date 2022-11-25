@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import * as Yup from "yup";
 import { useToast } from "native-base";
 
@@ -15,37 +15,100 @@ import UploadScreen from "./UploadScreen";
 import routes from "../navigation/routes";
 import StatusPickerItem from "../components/StatusPickerItem";
 import useAuth from "../auth/useAuth";
-import FormMediaPicker from "../components/forms/FormMediaPicker";
+import MediaPicker from "../components/MediaPicker";
 import colors from "../config/colors";
 import { SessionContext } from "../context/SessionContext";
 import { useNavigation } from "@react-navigation/native";
-
-const validationSchema = Yup.object().shape({
-  comments: Yup.string()
-    .required("Comentários é um campo obrigatório")
-    .min(1)
-    .label("Comentários gerais"),
-  status: Yup.object()
-    .required("Status é um campo obrigatório")
-    .nullable()
-    .label("Status"),
-  images: Yup.array().min(1, "Favor enviar ao menos uma imagem/vídeo."),
-});
+import AppButton from "../components/AppButton";
+import AppTextInput from "../components/AppTextInput";
+import AppPicker from "../components/AppPicker";
 
 export default function InspectionCollectEditScreen({ route }: any) {
   const { user } = useAuth();
   const toast = useToast();
   const { navigate } = useNavigation();
   const { workStatus } = useContext(SessionContext);
+
+  const getPublicWorkStatusFromFlag = (id: number) => {
+    return workStatus.find((option: any) => option.flag === id)?.name;
+  };
+
+  const [comments, setComments] = useState(
+    route.params.collect ? route.params.collect.comments : ""
+  );
+  const [status, setStatus] = useState(
+    route.params.collect
+      ? getPublicWorkStatusFromFlag(route.params.collect.public_work_status)
+      : null
+  );
+  const [images, setImages] = useState([]);
+
   const inspection = route.params.inspection;
 
   const location = useLocation();
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const handleSubmit = async (collect: any, formikBag: any) => {
+  const validateInput = () => {
+    if (images.length === 0) {
+      toast.show({
+        title: "Envie ao menos uma mídia",
+        placement: "top",
+        bgColor: "red.500",
+      });
+      return false;
+    }
+    if (comments.trim().length === 0) {
+      toast.show({
+        title: "Comentários gerais não pode ser vazio",
+        placement: "top",
+        bgColor: "red.500",
+      });
+      return false;
+    }
+    if (!status) {
+      toast.show({
+        title: "Status da obra não pode ser vazio",
+        placement: "top",
+        bgColor: "red.500",
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = () => {
+    console.log(images);
+    if (!validateInput()) return;
+    Alert.alert(
+      "Confirmar envio?",
+      "Os dados da vistoria não poderão ser alterados após o envio!",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => {},
+        },
+        {
+          text: "Confirmar",
+          onPress: () => {
+            handleConfirm();
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  const handleConfirm = async () => {
     setProgress(0);
     setUploadVisible(true);
+
+    const collect = {
+      comments: comments,
+      status: status,
+      images: images,
+    };
+
     const result = await inspectionCollectsApi.addInspectionCollect(
       { ...collect, inspection, location, user },
       (progress: number) => setProgress(progress)
@@ -56,7 +119,7 @@ export default function InspectionCollectEditScreen({ route }: any) {
     if (!result.ok) {
       setUploadVisible(false);
       return toast.show({
-        title: "Não foi possível salvar a coleta.",
+        title: "Não foi possível enviar a vistoria.",
         placement: "top",
         bgColor: "red.500",
       });
@@ -69,11 +132,7 @@ export default function InspectionCollectEditScreen({ route }: any) {
     });
     navigate(routes.INSPECTIONS);
 
-    formikBag.resetForm();
-  };
-
-  const getPublicWorkStatusFromFlag = (id: number) => {
-    return workStatus.find((option: any) => option.flag === id)?.name;
+    // formikBag.resetForm();
   };
 
   return (
@@ -83,47 +142,34 @@ export default function InspectionCollectEditScreen({ route }: any) {
         progress={progress}
         visible={uploadVisible}
       />
-      <AppForm
-        initialValues={{
-          comments: route.params.collect ? route.params.collect.comments : "",
-          status: route.params.collect
-            ? getPublicWorkStatusFromFlag(
-                route.params.collect.public_work_status
-              )
-            : null,
-          images: [],
-        }}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-      >
-        {/* <AppButton
-          title="Tirar Foto"
-          onPress={() => navigation.navigate(routes.GET_PHOTO)}
-        ></AppButton> */}
-        <View style={styles.iconPhoto}>
-          <FormMediaPicker name="images"></FormMediaPicker>
-        </View>
-        <View>
-          <AppFormField
-            maxLength={255}
-            name="comments"
-            multiline
-            placeholder="Comentários gerais"
-          ></AppFormField>
-          <AppFormPicker
-            items={workStatus}
-            name="status"
-            numberOfColumns={1}
-            PickerItemComponent={StatusPickerItem}
-            placeholder="Status da obra"
-            width="100%"
-          ></AppFormPicker>
-          <SubmitButton
-            color={colors.trenaGreen}
-            title="Confirmar"
-          ></SubmitButton>
-        </View>
-      </AppForm>
+      <View style={styles.iconPhoto}>
+        <MediaPicker images={images} setImages={setImages} />
+      </View>
+      <View>
+        <AppTextInput
+          maxLength={255}
+          name="comments"
+          multiline
+          placeholder="Comentários gerais"
+          onChangeText={setComments}
+          value={comments}
+        />
+        <AppPicker
+          items={workStatus}
+          name="status"
+          numberOfColumns={1}
+          PickerItemComponent={StatusPickerItem}
+          placeholder="Status da obra"
+          width="100%"
+          onSelectItem={setStatus}
+          selectedItem={status}
+        ></AppPicker>
+        <AppButton
+          color={colors.trenaGreen}
+          title="Confirmar"
+          onPress={handleSubmit}
+        />
+      </View>
     </View>
   );
 }

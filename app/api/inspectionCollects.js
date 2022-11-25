@@ -3,15 +3,24 @@ import client from "./client";
 
 const apiParam = "?X-TRENA-KEY=" + environment.apiKey
 
-const endpoint = "/collects/" + apiParam;
-const endpointAdd = "/collects/add" + apiParam;
+const endpointCollects = "/collects/" + apiParam;
+const endpointInspectionsUpdate = "/inspections/update" + apiParam;
+const endpointCollectsAdd = "/collects/add" + apiParam;
 const endpointPhotoUpload = "/images/upload" + apiParam;
 const endpointPhotoAdd = "/photos/add" + apiParam;
 
-const getInspectionCollects = () => client.get(endpoint);
+const getInspectionCollects = () => client.get(endpointCollects);
 
 const addInspectionCollect = async (data, onUploadProgress) => {
   const timestamp = Date.now();
+
+  const inspectionData = {
+    ...data.inspection, status: 2
+  }
+
+  const responseInspection = await client.put(endpointInspectionsUpdate, inspectionData);
+  console.log("inspection: ", responseInspection)
+
   const inspectionCollectData = {
     public_work_id: data.inspection.public_work_id,
     inspection_flag: data.inspection.flag,
@@ -20,7 +29,7 @@ const addInspectionCollect = async (data, onUploadProgress) => {
     public_work_status: data.status.flag,
     comments: data.comments,
   };
-  const response = await client.post(endpointAdd, inspectionCollectData);
+  const response = await client.post(endpointCollectsAdd, inspectionCollectData);
   console.log("collect: ", response.ok)
 
  
