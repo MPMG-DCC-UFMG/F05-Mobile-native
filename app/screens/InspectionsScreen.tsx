@@ -43,9 +43,6 @@ export default function InspectionsScreen({ navigation }: any) {
   const [searchName, setSearchName] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const {
-    //typeWorks,
-    // typePhotos,
-    // workStatus,
     publicWorks,
     inspections,
     error,

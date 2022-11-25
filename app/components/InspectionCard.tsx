@@ -13,7 +13,7 @@ import dayjs from "dayjs";
 import ptBR from "dayjs/locale/pt-br";
 import { Inspection } from "../screens/InspectionsScreen";
 import { PublicWork } from "../screens/PublicWorksScreen";
-
+import { theme } from "native-base";
 interface CardProps {
   inspection: Inspection;
   publicWork: PublicWork;
@@ -88,13 +88,13 @@ export default function InspectionCard({
         {inspection.status === 0 ? (
           <View style={styles.detailsContainer}>
             <View style={styles.pendingStatusCard}>
-              <AppText style={styles.pendingStatusText}>{"Pendente"}</AppText>
+              <AppText style={styles.statusText}>{"Pendente"}</AppText>
             </View>
           </View>
         ) : (
           <View style={styles.detailsContainer}>
-            <View style={styles.sendStatusCard}>
-              <AppText style={styles.pendingStatusText}>{"Enviada"}</AppText>
+            <View style={styles.sentStatusCard}>
+              <AppText style={styles.statusText}>{"Enviada"}</AppText>
             </View>
           </View>
         )}
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     color: colors.trenaGreen,
   },
-  pendingStatusText: {
+  statusText: {
     color: colors.gray[100],
     fontSize: 14,
     fontWeight: "bold",
@@ -175,16 +175,16 @@ const styles = StyleSheet.create({
   pendingStatusCard: {
     width: 100,
     borderRadius: 8,
-    backgroundColor: colors.red[500],
+    backgroundColor: theme.colors.red[600],
     justifyContent: "center",
     alignItems: "flex-start",
     padding: 4,
     paddingLeft: 8,
   },
-  sendStatusCard: {
+  sentStatusCard: {
     width: 100,
     borderRadius: 8,
-    backgroundColor: colors.green[500],
+    backgroundColor: theme.colors.green[600],
     justifyContent: "center",
     alignItems: "flex-start",
     padding: 4,

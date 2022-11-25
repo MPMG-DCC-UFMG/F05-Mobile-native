@@ -19,7 +19,7 @@ const addInspectionCollect = async (data, onUploadProgress) => {
   }
 
   const responseInspection = await client.put(endpointInspectionsUpdate, inspectionData);
-  console.log("inspection: ", responseInspection)
+  console.log("inspection: ", responseInspection.ok)
 
   const inspectionCollectData = {
     public_work_id: data.inspection.public_work_id,

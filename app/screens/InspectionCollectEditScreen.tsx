@@ -54,7 +54,7 @@ export default function InspectionCollectEditScreen({ route }: any) {
       toast.show({
         title: "Envie ao menos uma mídia",
         placement: "top",
-        bgColor: "red.500",
+        bgColor: "red.600",
       });
       return false;
     }
@@ -62,7 +62,7 @@ export default function InspectionCollectEditScreen({ route }: any) {
       toast.show({
         title: "Comentários gerais não pode ser vazio",
         placement: "top",
-        bgColor: "red.500",
+        bgColor: "red.600",
       });
       return false;
     }
@@ -70,7 +70,7 @@ export default function InspectionCollectEditScreen({ route }: any) {
       toast.show({
         title: "Status da obra não pode ser vazio",
         placement: "top",
-        bgColor: "red.500",
+        bgColor: "red.600",
       });
       return false;
     }
@@ -121,13 +121,13 @@ export default function InspectionCollectEditScreen({ route }: any) {
       return toast.show({
         title: "Não foi possível enviar a vistoria.",
         placement: "top",
-        bgColor: "red.500",
+        bgColor: "red.600",
       });
     }
     toast.show({
       title: "Vistoria enviada com sucesso",
       placement: "top",
-      bgColor: colors.trenaGreen,
+      bgColor: "green.600",
       color: colors.black,
     });
     navigate(routes.INSPECTIONS);
