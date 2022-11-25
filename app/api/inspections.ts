@@ -11,7 +11,7 @@ console.log(endpoint)
 const getInspections = () => client.get(endpoint);
 
 const updateInspection = (inspection: Inspection, onUploadProgress: any) => {
-  return client.post(endpointUpdate, inspection, {
+  return client.put(endpointUpdate, inspection, {
     onUploadProgress: (progress) =>
       onUploadProgress(progress.loaded / progress.total),
   });

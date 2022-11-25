@@ -6,6 +6,7 @@ const apiParam = "?X-TRENA-KEY=" + environment.apiKey
 
 const endpoint = "/publicworks/" + apiParam;
 const endpointAdd = "/publicworks/add" + apiParam;
+const endpointUpdate = "/publicworks/update" + apiParam;
 
 const getPublicWorks = () => client.get(endpoint);
 
@@ -16,7 +17,15 @@ const addPublicWork = (publicWork: PublicWork, onUploadProgress: any) => {
   });
 };
 
+const updatePublicWork = (publicWork: PublicWork, onUploadProgress: any) => {
+  return client.post(endpointUpdate, publicWork, {
+    onUploadProgress: (progress) =>
+      onUploadProgress(progress.loaded / progress.total),
+  });
+};
+
 export default {
   getPublicWorks,
   addPublicWork,
+  updatePublicWork
 };

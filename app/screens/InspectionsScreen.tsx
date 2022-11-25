@@ -176,13 +176,11 @@ export default function InspectionsScreen({ navigation }: any) {
             <InspectionCard
               inspection={inspection}
               publicWork={getPublicWorkOfInspection(inspection.public_work_id)}
-              // imageUrl={publicWork.images[0].url}
               onPress={() =>
                 navigation.navigate(routes.INSPECTION_COLLECT_EDIT, {
                   inspection,
                 })
               }
-              // thumbnailUrl={publicWork.images[0].thumbnailUrl}
             />
           )}
           ListEmptyComponent={

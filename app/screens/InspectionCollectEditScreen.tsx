@@ -27,7 +27,7 @@ export default function InspectionCollectEditScreen({ route }: any) {
   const { user } = useAuth();
   const toast = useToast();
   const { navigate } = useNavigation();
-  const { workStatus } = useContext(SessionContext);
+  const { workStatus, publicWorks } = useContext(SessionContext);
 
   const getPublicWorkStatusFromFlag = (id: number) => {
     return workStatus.find((option: any) => option.flag === id)?.name;
@@ -44,6 +44,10 @@ export default function InspectionCollectEditScreen({ route }: any) {
   const [images, setImages] = useState([]);
 
   const inspection = route.params.inspection;
+
+  const publicWork = publicWorks.find(
+    (publicWork) => inspection.public_work_id === publicWork.id
+  );
 
   const location = useLocation();
   const [uploadVisible, setUploadVisible] = useState(false);
@@ -110,7 +114,7 @@ export default function InspectionCollectEditScreen({ route }: any) {
     };
 
     const result = await inspectionCollectsApi.addInspectionCollect(
-      { ...collect, inspection, location, user },
+      { ...collect, inspection, publicWork, location, user },
       (progress: number) => setProgress(progress)
     );
 

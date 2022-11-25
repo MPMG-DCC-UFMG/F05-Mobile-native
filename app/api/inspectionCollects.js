@@ -5,6 +5,7 @@ const apiParam = "?X-TRENA-KEY=" + environment.apiKey
 
 const endpointCollects = "/collects/" + apiParam;
 const endpointInspectionsUpdate = "/inspections/update" + apiParam;
+const endpointPublicWorksUpdate = "/publicworks/update" + apiParam;
 const endpointCollectsAdd = "/collects/add" + apiParam;
 const endpointPhotoUpload = "/images/upload" + apiParam;
 const endpointPhotoAdd = "/photos/add" + apiParam;
@@ -20,7 +21,14 @@ const addInspectionCollect = async (data, onUploadProgress) => {
 
   const responseInspection = await client.put(endpointInspectionsUpdate, inspectionData);
   console.log("inspection: ", responseInspection.ok)
-
+  
+  const publicWorkData = {
+    ...data.publicWork, user_status: data.status.flag
+  }
+  
+  const responsePublicWork = await client.put(endpointPublicWorksUpdate, publicWorkData);
+  console.log("publicwork: ", responsePublicWork.ok)
+  
   const inspectionCollectData = {
     public_work_id: data.inspection.public_work_id,
     inspection_flag: data.inspection.flag,
