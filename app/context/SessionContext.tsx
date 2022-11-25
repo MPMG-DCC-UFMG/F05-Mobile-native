@@ -6,20 +6,22 @@ import typePhotosApi from "../api/typePhotos";
 import workStatusApi from "../api/workStatus";
 import inspectionsApi from "../api/inspections";
 import publicWorksApi from "../api/publicWorks";
+import { Inspection } from "../screens/InspectionsScreen";
+import { PublicWork } from "../screens/PublicWorksScreen";
 
-// interface ISessionContext {
-//   authUser: User | null;
-//   user: IUser | null;
-//   file: IFile | null;
-//   files: IFile[];
-//   resources: IResource[];
-//   subjects: ISubject[];
-//   lessons: ILesson[];
-//   solutions: ISolution[];
-//   windowDimensions: { width: number; height: number };
-// }
+interface ISessionContext {
+  typeWorks: any;
+  typePhotos: any;
+  workStatus: any;
+  publicWorks: PublicWork[];
+  inspections: Inspection[];
+  error: any;
+  loading: boolean;
+  loadInspections: any;
+  loadDataFromServer: any;
+}
 
-const SessionContext = React.createContext({} as any);
+const SessionContext = React.createContext({} as ISessionContext);
 
 const SessionProvider = ({ children }: { children?: React.ReactNode }) => {
   const {

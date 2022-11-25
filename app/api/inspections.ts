@@ -6,8 +6,6 @@ const apiParam = "?X-TRENA-KEY=" + environment.apiKey
 const endpoint = "/inspections/" + apiParam;
 const endpointUpdate = "/inspections/update" + apiParam;
 
-console.log(endpoint)
-
 const getInspections = () => client.get(endpoint);
 
 const updateInspection = (inspection: Inspection, onUploadProgress: any) => {
@@ -17,7 +15,11 @@ const updateInspection = (inspection: Inspection, onUploadProgress: any) => {
   });
 };
 
+const downloadReport = (inspection: Inspection) => client.get(`/inspections/report/${inspection.flag}/${apiParam}`);
+
+
 export default {
   getInspections,
-  updateInspection
+  updateInspection,
+  downloadReport
 };
