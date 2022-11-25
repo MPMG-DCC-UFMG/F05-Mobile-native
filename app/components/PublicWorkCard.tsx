@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { ProgressSteps, ProgressStep } from "react-native-progress-steps";
 import dayjs from "dayjs";
 import ptBR from "dayjs/locale/pt-br";
 
@@ -71,27 +70,6 @@ export default function PublicWorkCard({ publicWork, onPress }: any) {
           ></MaterialCommunityIcons>
           <AppText style={styles.subTitle}>{when}</AppText>
         </View>
-        {/* <View style={styles.propContainer}>
-          <MaterialCommunityIcons
-            name={"list-status"}
-            size={12}
-            color={colors.primary}
-          ></MaterialCommunityIcons>
-          <AppText style={styles.subTitle}>{"Pendente"}</AppText>
-        </View> */}
-        {/* {publicWork.user_status !== 0 ? (
-          <View style={styles.detailsContainer}>
-            <View style={styles.pendingStatusCard}>
-              <AppText style={styles.pendingStatusText}>{"Pendente"}</AppText>
-            </View>
-          </View>
-        ) : (
-          <View style={styles.detailsContainer}>
-            <View style={styles.sendStatusCard}>
-              <AppText style={styles.pendingStatusText}>{"Enviada"}</AppText>
-            </View>
-          </View>
-        )} */}
         <Center w="100%" pb={4}>
           <AppText style={styles.subTitle}>
             {publicWorkStatus ? publicWorkStatus.name : "Não informado"}
@@ -107,40 +85,6 @@ export default function PublicWorkCard({ publicWork, onPress }: any) {
             />
           </Box>
         </Center>
-
-        {/* <View style={styles.detailsContainer}>
-          <View style={styles.typeCard}>
-            <AppText style={styles.typeText} color="#fff">
-              {"Pavimentacao"}
-            </AppText>
-          </View>
-          <View style={styles.addressContainer}>
-            <AppText
-              style={styles.subTitle}
-            >{`${publicWork.address.street} - ${publicWork.address.number}`}</AppText>
-            <AppText
-              style={styles.subTitle}
-            >{`${publicWork.address.city}/${publicWork.address.state}`}</AppText>
-          </View>
-        </View> */}
-        {/* <View style={{ flex: 1 }}>
-          <ProgressSteps
-            activeStepNumColor={colors.white}
-            completedStepNumColor={colors.white}
-          >
-            {workStatus.map((status, idx) => {
-              return (
-                <ProgressStep
-                  key={idx}
-                  removeBtnRow
-                  label={status.flag === 1 ? status.name : ""}
-                >
-                  <View style={{ alignItems: "center" }}></View>
-                </ProgressStep>
-              );
-            })}
-          </ProgressSteps>
-        </View> */}
       </View>
     </TouchableOpacity>
   );

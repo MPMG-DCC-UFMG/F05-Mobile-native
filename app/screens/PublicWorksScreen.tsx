@@ -1,16 +1,13 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Alert,
   Text,
   FlatList,
-  ImageSourcePropType,
   Modal,
   StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
-import { useNetInfo } from "@react-native-community/netinfo";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
@@ -24,7 +21,6 @@ import PublicWorkCard from "../components/PublicWorkCard";
 import getDistanceFromLatLonInKm from "../utility/distance";
 import useLocation from "../hooks/useLocation";
 import { SessionContext } from "../context/SessionContext";
-import { TextInput } from "react-native-gesture-handler";
 import AppTextInput from "../components/AppTextInput";
 
 export interface Address {
@@ -44,6 +40,7 @@ export interface PublicWork {
   name: string;
   type_work_flag: number;
   user_status: number;
+  // 0 = PENDENTE 1 = APROVADA 2 = REJEITADA 3 = EXCLUIDA
   queue_status: 0 | 1 | 2 | 3;
   queue_status_date: number;
   rnn_status: number;
@@ -98,8 +95,6 @@ export default function PublicWorksScreen({ navigation }: any) {
   };
 
   filteredPublicWorks.sort(sortByDistance);
-
-  console.log(publicWorks);
 
   function handleFilter(filtro: string) {
     switch (filtro) {

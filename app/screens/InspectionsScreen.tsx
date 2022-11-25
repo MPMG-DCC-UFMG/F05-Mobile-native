@@ -1,5 +1,14 @@
 import React, { useContext, useState } from "react";
-import { Alert, FlatList, ImageSourcePropType, Modal, StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import {
+  Alert,
+  FlatList,
+  ImageSourcePropType,
+  Modal,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
@@ -14,11 +23,17 @@ import { SessionContext } from "../context/SessionContext";
 import AppTextInput from "../components/AppTextInput";
 import getDistanceFromLatLonInKm from "../utility/distance";
 import useLocation from "../hooks/useLocation";
-export interface Listing {
-  id: string;
-  title: string;
-  price: number;
-  image: ImageSourcePropType;
+export interface Inspection {
+  flag: number;
+  name: string;
+  inquiry_number: number;
+  description: string;
+  public_work_id: string;
+  collect_id: string;
+  // 0 = PENDENTE 1 = ATUALIZADA 2 = ENVIADA
+  status: 0 | 1 | 2;
+  user_email: string;
+  request_date: number;
 }
 
 export default function InspectionsScreen({ navigation }: any) {
@@ -46,18 +61,43 @@ export default function InspectionsScreen({ navigation }: any) {
     return pw;
   };
 
-  const inspectionsUser = inspections.filter((inspection: any) => {
+  let filteredInspections = inspections.filter((inspection: any) => {
     return inspection.user_email === user.email;
   });
 
-  const filteredInspections =
+  filteredInspections =
     searchName.length > 2
-      ? inspectionsUser.filter((inspection) =>
-        inspection.name.toLowerCase().includes(searchName.toLowerCase())
-      )
-      : inspectionsUser;
+      ? filteredInspections.filter((inspection) =>
+          inspection.name.toLowerCase().includes(searchName.toLowerCase())
+        )
+      : filteredInspections;
 
+  const sortByDistance = (a, b) => {
+    a = getPublicWorkOfInspection(a.public_work_id);
+    b = getPublicWorkOfInspection(b.public_work_id);
+    let distA = getDistanceFromLatLonInKm(
+      latitude,
+      longitude,
+      a.address.latitude,
+      a.address.longitude
+    );
+    let distB = getDistanceFromLatLonInKm(
+      latitude,
+      longitude,
+      b.address.latitude,
+      b.address.longitude
+    );
 
+    if (distA < distB) {
+      return -1;
+    }
+    if (distA > distB) {
+      return 1;
+    }
+    return 0;
+  };
+
+  filteredInspections.sort(sortByDistance);
 
   function handleFilter(filtro: string) {
     switch (filtro) {
@@ -70,9 +110,7 @@ export default function InspectionsScreen({ navigation }: any) {
             return 1;
           }
           return 0;
-        })
-
-        setModalVisible(!modalVisible);
+        });
 
         break;
 
@@ -85,35 +123,19 @@ export default function InspectionsScreen({ navigation }: any) {
             return 1;
           }
           return 0;
-        })
-
-        setModalVisible(!modalVisible);
+        });
 
         break;
 
       case "dist":
-        filteredInspections.sort(function (a, b) {
-
-          let distA = getDistanceFromLatLonInKm(latitude, longitude, a.address.latitude, a.address.longitude)
-          let distB = getDistanceFromLatLonInKm(latitude, longitude, b.address.latitude, b.address.longitude)
-
-          if (distA < distB) {
-            return -1;
-          }
-          if (distA > distB) {
-            return 1;
-          }
-          return 0;
-
-        })
-
-        setModalVisible(!modalVisible);
+        filteredInspections.sort(sortByDistance);
 
         break;
 
       default:
-        return
+        return;
     }
+    setModalVisible(!modalVisible);
   }
 
   return (
@@ -140,11 +162,7 @@ export default function InspectionsScreen({ navigation }: any) {
             onChangeText={(text) => setSearchName(text)}
             value={searchName}
           />
-          <TouchableOpacity
-            onPress={() =>
-              setModalVisible(!modalVisible)
-            }
-          >
+          <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
             <MaterialCommunityIcons
               style={styles.filterIcon}
               name={"filter-variant"}
@@ -167,7 +185,7 @@ export default function InspectionsScreen({ navigation }: any) {
                   inspection,
                 })
               }
-            // thumbnailUrl={publicWork.images[0].thumbnailUrl}
+              // thumbnailUrl={publicWork.images[0].thumbnailUrl}
             />
           )}
           ListEmptyComponent={
@@ -181,8 +199,6 @@ export default function InspectionsScreen({ navigation }: any) {
           }}
         ></FlatList>
       </View>
-
-
 
       <Modal
         animationType="fade"
@@ -201,34 +217,25 @@ export default function InspectionsScreen({ navigation }: any) {
           <AppButton
             color={colors.trenaGreen}
             title="Ordem alfabética (A-Z)"
-            onPress={() =>
-              handleFilter("AZ")
-            }
+            onPress={() => handleFilter("AZ")}
           />
           <AppButton
             color={colors.trenaGreen}
             title="Ordem alfabética (Z-A)"
-            onPress={() =>
-              handleFilter("ZA")
-            }
+            onPress={() => handleFilter("ZA")}
           />
           <AppButton
             color={colors.trenaGreen}
             title="Distância da vistoria"
-            onPress={() =>
-              handleFilter("dist")
-            }
+            onPress={() => handleFilter("dist")}
           />
           <AppButton
             style={styles.closeButtonModal}
             color={colors.trenaGreen}
             title="Fechar"
-            onPress={() =>
-              setModalVisible(!modalVisible)
-            }
+            onPress={() => setModalVisible(!modalVisible)}
           />
         </View>
-
       </Modal>
     </>
   );
@@ -268,7 +275,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: colors.dark,
     width: "95%",
-    height: 600
+    height: 600,
   },
   titleModal: {
     textAlign: "center",
@@ -282,6 +289,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   closeButtonModal: {
-    alignSelf: "flex-end"
-  }
+    alignSelf: "flex-end",
+  },
 });

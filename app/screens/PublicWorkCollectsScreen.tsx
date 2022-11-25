@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, ImageSourcePropType, StyleSheet, View } from "react-native";
 import { useNetInfo } from "@react-native-community/netinfo";
 
@@ -13,6 +13,7 @@ import AppButton from "../components/AppButton";
 import ActivityIndicatior from "../components/ActivityIndicatior";
 import useApi from "../hooks/useApi";
 import NewCollectCard from "../components/CollectCard";
+import { SessionContext } from "../context/SessionContext";
 export interface Listing {
   id: string;
   title: string;
@@ -21,6 +22,9 @@ export interface Listing {
 }
 
 export default function PublicWorkCollectsScreen({ navigation, route }: any) {
+  const [refreshing, setRefreshing] = useState(false);
+  const { loadDataFromServer } = useContext(SessionContext);
+
   const publicWork = route.params;
   const {
     data: collects,
@@ -68,6 +72,10 @@ export default function PublicWorkCollectsScreen({ navigation, route }: any) {
               // thumbnailUrl={publicWork.images[0].thumbnailUrl}
             />
           )}
+          refreshing={refreshing}
+          onRefresh={() => {
+            loadDataFromServer();
+          }}
         ></FlatList>
         <AppButton
           color={colors.trenaGreen}

@@ -9,12 +9,15 @@ import useLocation from "../hooks/useLocation";
 import AppText from "./AppText";
 import getDistanceFromLatLonInKm from "../utility/distance";
 import { SessionContext } from "../context/SessionContext";
+import dayjs from "dayjs";
+import ptBR from "dayjs/locale/pt-br";
+import { Inspection } from "../screens/InspectionsScreen";
+import { PublicWork } from "../screens/PublicWorksScreen";
 
 interface CardProps {
-  inspection: any;
-  publicWork: any;
+  inspection: Inspection;
+  publicWork: PublicWork;
   onPress: any;
-  // thumbnailUrl: string;
 }
 
 export default function InspectionCard({
@@ -35,6 +38,12 @@ export default function InspectionCard({
     if (progress === -1) return 0;
     return (progress + 1) * step;
   }
+
+  console.log(inspection.request_date);
+
+  const when = dayjs(inspection.request_date)
+    .locale(ptBR)
+    .format("DD [de] MMMM [de] YYYY [às] HH:mm[h]");
 
   return (
     <TouchableOpacity onPress={onPress}>
@@ -68,14 +77,14 @@ export default function InspectionCard({
             style={styles.subTitle}
           >{`${publicWork.address.street} - ${publicWork.address.number} - ${publicWork.address.city}/${publicWork.address.state}`}</AppText>
         </View>
-        {/* <View style={styles.propContainer}>
+        <View style={styles.propContainer}>
           <MaterialCommunityIcons
-            name={"list-status"}
+            name={"update"}
             size={12}
             color={colors.primary}
           ></MaterialCommunityIcons>
-          <AppText style={styles.subTitle}>{"Pendente"}</AppText>
-        </View> */}
+          <AppText style={styles.subTitle}>{when}</AppText>
+        </View>
         {inspection.status === 0 ? (
           <View style={styles.detailsContainer}>
             <View style={styles.pendingStatusCard}>
@@ -89,22 +98,6 @@ export default function InspectionCard({
             </View>
           </View>
         )}
-
-        {/* <View style={styles.detailsContainer}>
-          <View style={styles.typeCard}>
-            <AppText style={styles.typeText} color="#fff">
-              {"Pavimentacao"}
-            </AppText>
-          </View>
-          <View style={styles.addressContainer}>
-            <AppText
-              style={styles.subTitle}
-            >{`${publicWork.address.street} - ${publicWork.address.number}`}</AppText>
-            <AppText
-              style={styles.subTitle}
-            >{`${publicWork.address.city}/${publicWork.address.state}`}</AppText>
-          </View>
-        </View> */}
         <Center w="100%" pb={4}>
           <AppText style={styles.subTitle}>
             {publicWorkStatus ? publicWorkStatus.name : "Não informado"}
@@ -120,26 +113,6 @@ export default function InspectionCard({
             />
           </Box>
         </Center>
-        {/* <View style={{ flex: 1 }}>
-          <ProgressSteps
-            // activeStepNumColor="transparent"
-            // completedStepNumColor="transparent"
-            activeStepNumColor={colors.white}
-            completedStepNumColor={colors.white}
-          >
-            {workStatus.map((status, idx) => {
-              return (
-                <ProgressStep
-                  key={idx}
-                  removeBtnRow
-                  label={status.flag === 1 ? status.name : ""}
-                >
-                  <View style={{ alignItems: "center" }}></View>
-                </ProgressStep>
-              );
-            })}
-          </ProgressSteps>
-        </View> */}
       </View>
     </TouchableOpacity>
   );
@@ -158,7 +131,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingLeft: 16,
-    paddingBottom: 16,
+    paddingBottom: 8,
   },
   headerContainer: {
     flexDirection: "row",
@@ -171,8 +144,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 16,
+    paddingHorizontal: 16,
     paddingTop: 0,
+    paddingBottom: 8,
   },
   addressContainer: {
     justifyContent: "center",

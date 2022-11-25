@@ -9,7 +9,7 @@ import {
   SubmitButton,
 } from "../components/forms";
 import useLocation from "../hooks/useLocation";
-import collectsApi from "../api/collects";
+import publicWorksCollectsApi from "../api/publicWorkCollects";
 import UploadScreen from "./UploadScreen";
 import StatusPickerItem from "../components/StatusPickerItem";
 import useAuth from "../auth/useAuth";
@@ -49,7 +49,7 @@ export default function PublicWorkCollectEditScreen({
   const handleSubmit = async (collect: any, formikBag: any) => {
     setProgress(0);
     setUploadVisible(true);
-    const result = await collectsApi.addCollect(
+    const result = await publicWorksCollectsApi.addCollect(
       { ...collect, publicWork, location, user },
       (progress: number) => setProgress(progress)
     );
