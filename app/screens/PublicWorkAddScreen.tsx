@@ -100,6 +100,26 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
 
   const handleSubmit = async () => {
     if (!validateInput()) return;
+    Alert.alert(
+      "Confirmar envio?",
+      "Após sua confirmação, um agente do MPMG irá analisar o seu envio e disponibilizar na plataforma!",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => {},
+        },
+        {
+          text: "Confirmar",
+          onPress: () => {
+            handleConfirm();
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  const handleConfirm = async () => {
     setProgress(0);
     const [city, state] = cityState.split("-");
 
@@ -141,24 +161,13 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
         bgColor: "red.500",
       });
     }
-    Alert.alert(
-      "Dados da obra enviados",
-      "Em breve um agente do MPMG irá analisar o seu envio!",
-      [
-        {
-          text: "Ok",
-          onPress: () => {
-            toast.show({
-              title: "Obra enviada com sucesso",
-              placement: "top",
-              bgColor: colors.trenaGreen,
-              color: colors.black,
-            });
-            navigate(routes.PUBLIC_WORKS);
-          },
-        },
-      ]
-    );
+    toast.show({
+      title: "Obra enviada com sucesso",
+      placement: "top",
+      bgColor: colors.trenaGreen,
+      color: colors.black,
+    });
+    navigate(routes.PUBLIC_WORKS);
   };
 
   useEffect(() => {

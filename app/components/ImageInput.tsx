@@ -74,6 +74,7 @@ export default function ImageInput({ media, onChangeMedia, navigation }: any) {
             onPress: () => {
               setMediaTypeIsPhoto(false);
               setModalVisible(true);
+              selectVideo();
             },
           },
           {
@@ -81,6 +82,7 @@ export default function ImageInput({ media, onChangeMedia, navigation }: any) {
             onPress: () => {
               setMediaTypeIsPhoto(true);
               setModalVisible(true);
+              selectImage();
             },
           },
         ],

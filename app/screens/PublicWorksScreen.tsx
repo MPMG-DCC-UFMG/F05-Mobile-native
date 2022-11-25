@@ -64,12 +64,16 @@ export default function PublicWorksScreen({ navigation }: any) {
     loadPublicWorks();
   }, []);
 
-  const filteredPublicWorks =
+  let filteredPublicWorks = publicWorks.filter(
+    (publicWork) => publicWork.queue_status === 1
+  );
+
+  filteredPublicWorks =
     searchName.length > 2
-      ? publicWorks.filter((publicWork) =>
+      ? filteredPublicWorks.filter((publicWork) =>
           publicWork.name.toLowerCase().includes(searchName.toLowerCase())
         )
-      : publicWorks;
+      : filteredPublicWorks;
 
   const sortByDistance = (a, b) => {
     let distA = getDistanceFromLatLonInKm(
