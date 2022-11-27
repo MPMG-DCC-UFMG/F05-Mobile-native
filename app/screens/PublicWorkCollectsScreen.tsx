@@ -39,7 +39,9 @@ export default function PublicWorkCollectsScreen({ navigation, route }: any) {
 
   const publicWorkCollects = collects
     .filter((collect: any) => {
-      return collect.public_work_id === publicWork.id;
+      return (
+        collect.public_work_id === publicWork.id && collect.queue_status === 1
+      );
     })
     .sort(function (a, b) {
       return b.date - a.date;

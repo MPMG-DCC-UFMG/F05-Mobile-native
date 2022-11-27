@@ -74,7 +74,7 @@ export default function PublicWorkCollectEditScreen({ route }: any) {
     if (!validateInput()) return;
     Alert.alert(
       "Confirmar envio?",
-      "Os dados da coleta não poderão ser alterados após o envio!",
+      "Após sua confirmação, um agente do MPMG irá analisar o seu envio e disponibilizar na plataforma!",
       [
         {
           text: "Cancelar",
@@ -132,35 +132,6 @@ export default function PublicWorkCollectEditScreen({ route }: any) {
     setStatus(null);
     setImages([]);
   };
-
-  // const handleSubmit = async (collect: any, formikBag: any) => {
-  //   setProgress(0);
-  //   setUploadVisible(true);
-  //   const result = await publicWorksCollectsApi.addCollect(
-  //     { ...collect, publicWork, location, user },
-  //     (progress: number) => setProgress(progress)
-  //   );
-
-  //   console.log(result);
-
-  //   if (!result.ok) {
-  //     setUploadVisible(false);
-  //     return toast.show({
-  //       title: "Não foi possível salvar a coleta.",
-  //       placement: "top",
-  //       bgColor: "red.500",
-  //     });
-  //   }
-  //   toast.show({
-  //     title: "Vistoria enviada com sucesso",
-  //     placement: "top",
-  //     bgColor: colors.trenaGreen,
-  //     color: colors.black,
-  //   });
-  //   navigate(routes.PUBLIC_WORK_COLLECTS);
-
-  //   formikBag.resetForm();
-  // };
 
   return (
     <View style={styles.container}>

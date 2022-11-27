@@ -16,12 +16,6 @@ import {
 } from "react-native";
 import useAuth from "../auth/useAuth";
 import AppButton from "../components/AppButton";
-import {
-  AppForm,
-  AppFormField,
-  ErrorMessage,
-  SubmitButton,
-} from "../components/forms";
 import colors from "../config/colors";
 import routes from "../navigation/routes";
 import * as Yup from "yup";
@@ -34,6 +28,7 @@ import useApi from "../hooks/useApi";
 import usersApi from "../api/users";
 import { environment } from "../../enviroment";
 import { useToast } from "native-base";
+import AppTextInput from "../components/AppTextInput";
 
 interface AuthResponse {
   params: {
@@ -42,14 +37,6 @@ interface AuthResponse {
   type: string;
 }
 
-const validationSchema = Yup.object().shape({
-  email: Yup.string().required("O campo email é obrigatório").label("Email"),
-  password: Yup.string()
-    .required("O campo senha é obrigatório")
-    .min(4)
-    .label("Senha"),
-});
-
 export default function WelcomeScreen() {
   const toast = useToast();
   const navigation = useNavigation();
@@ -57,6 +44,8 @@ export default function WelcomeScreen() {
   const loginApi = useApi(authApi.login);
   const registerApi = useApi(usersApi.register);
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loginFailed, setLoginFailed] = useState(false);
   const [showLogo, setShowLogo] = useState(true);
 
@@ -98,17 +87,36 @@ export default function WelcomeScreen() {
     }
   }
 
-  const handleSubmit = async ({ email, password }: any) => {
-    const result = (await authApi.login(email, password)) as any;
-    console.log({ username: email, password: password });
-    console.log(result);
-    if (!result.ok) {
+  const validateInput = () => {
+    if (email.trim().length === 0) {
       toast.show({
+        title: "Email não pode ser vazio",
+        placement: "top",
+        bgColor: "red.600",
+      });
+      return false;
+    }
+    if (password.trim().length === 0) {
+      toast.show({
+        title: "Senha não pode ser vazio",
+        placement: "top",
+        bgColor: "red.600",
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateInput()) return;
+    const result = (await authApi.login(email, password)) as any;
+    if (!result.ok) {
+      return toast.show({
         title: "Email ou senha inválidos",
         placement: "top",
         bgColor: "red.500",
       });
-    } //return setLoginFailed(true);
+    }
     setLoginFailed(false);
     console.log(result.data.access_token);
     auth.logIn(result.data.access_token);
@@ -139,39 +147,36 @@ export default function WelcomeScreen() {
           </View>
         )}
         <View style={styles.buttonsContainer}>
-          <AppForm
-            initialValues={{ email: "", password: "" }}
-            onSubmit={handleSubmit}
-            validationSchema={validationSchema}
-          >
-            <ErrorMessage
-              error="Email ou senha inválido."
-              visible={loginFailed}
-            ></ErrorMessage>
-            <AppFormField
-              autoCapitalize="none"
-              autoCorrect={false}
-              caretHidden={false}
-              icon="email"
-              keyboardType="email-address"
-              name="email"
-              placeholder="Email"
-              textContetType="emailAddress"
-            ></AppFormField>
-            <AppFormField
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              name="password"
-              placeholder="Senha"
-              secureTextEntry
-              textContetType="password"
-            ></AppFormField>
-            <SubmitButton
-              color={colors.trenaGreen}
-              title="Entrar"
-            ></SubmitButton>
-          </AppForm>
+          <AppTextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete={"email"}
+            icon="email"
+            keyboardType="email-address"
+            name="email"
+            placeholder="Email"
+            textContetType="emailAddress"
+            onChangeText={setEmail}
+            value={email}
+            // Issue on react-native: https://github.com/facebook/react-native/issues/32782
+            caretHidden={false}
+          />
+          <AppTextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="lock"
+            name="password"
+            placeholder="Senha"
+            secureTextEntry
+            textContetType="password"
+            onChangeText={setPassword}
+            value={password}
+          />
+          <AppButton
+            color={colors.trenaGreen}
+            title="Entrar"
+            onPress={handleSubmit}
+          />
           <View style={styles.registerContainer}>
             <AppText style={styles.newUserText}>Não tem conta?</AppText>
             <TouchableOpacity
