@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gray[800],
     borderRadius: 4,
     flexDirection: "row",
-    padding: 12,
+    padding: 16,
     marginVertical: 12,
     alignItems: "center",
     borderColor: colors.trenaGreen,

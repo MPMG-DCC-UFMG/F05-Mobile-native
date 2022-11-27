@@ -14,7 +14,6 @@ import { CameraType } from "expo-camera";
 
 import colors from "../config/colors";
 import AppButton from "./AppButton";
-import { ErrorMessage } from "./forms";
 import StatusPickerItem from "./StatusPickerItem";
 import AppTextInput from "./AppTextInput";
 import AppPicker from "./AppPicker";
@@ -229,10 +228,6 @@ export default function ImageInput({ media, onChangeMedia }: ImageInputProps) {
               </TouchableOpacity>
             )}
           </View>
-          <ErrorMessage
-            error={"Favor enviar uma foto ou vídeo"}
-            visible={currentImageUri === undefined && submited === true}
-          ></ErrorMessage>
           <AppTextInput
             maxLength={255}
             name="comments"
@@ -253,10 +248,6 @@ export default function ImageInput({ media, onChangeMedia }: ImageInputProps) {
             width="100%"
             selectedItem={type}
           ></AppPicker>
-          <ErrorMessage
-            error={"Tipo é um campo obrigatório"}
-            visible={type === "" && submited === true}
-          ></ErrorMessage>
           <AppButton
             color={colors.trenaGreen}
             title="Adicionar"

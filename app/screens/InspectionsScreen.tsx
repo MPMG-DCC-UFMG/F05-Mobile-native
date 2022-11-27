@@ -24,6 +24,7 @@ import { SessionContext } from "../context/SessionContext";
 import AppTextInput from "../components/AppTextInput";
 import getDistanceFromLatLonInKm from "../utility/distance";
 import useLocation from "../hooks/useLocation";
+import { Button } from "native-base";
 export interface Inspection {
   flag: number;
   name: string;
@@ -233,7 +234,6 @@ export default function InspectionsScreen({ navigation }: any) {
           </TouchableOpacity>
         </View>
         <FlatList
-          style={styles.list}
           data={filteredInspections}
           keyExtractor={(inspection) => inspection.flag.toString()}
           renderItem={({ item: inspection }) => (
@@ -243,10 +243,21 @@ export default function InspectionsScreen({ navigation }: any) {
               onPress={() => handleInspectionClick(inspection)}
             />
           )}
+          contentContainerStyle={{ flexGrow: 1 }}
           ListEmptyComponent={
-            <AppText style={{ color: colors.white }}>
-              Não há vistorias solicitadas a esse usuário
-            </AppText>
+            <View style={styles.emptyListContainer}>
+              <AppText style={{ color: colors.gray[100], padding: 12 }}>
+                Não há vistorias solicitadas a esse usuário.
+              </AppText>
+              <Button
+                style={{ borderColor: colors.trenaGreen }}
+                // color={colors.trenaGreen}
+                variant="outline"
+                onPress={() => {}}
+              >
+                Saiba Mais
+              </Button>
+            </View>
           }
           refreshing={refreshing}
           onRefresh={() => {
@@ -318,8 +329,11 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: colors.gray[800],
   },
-  list: {
-    //marginTop: "20%",
+  emptyListContainer: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modal: {
     marginTop: "15%",

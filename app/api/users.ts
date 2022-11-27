@@ -16,7 +16,6 @@ const register = (userInfo: any) => {
     "picture": userInfo.picture,
     "role": "NORMAL"
   }
-  console.log(user)
   return client.post(endpoint, user)
 };
 

@@ -20,13 +20,13 @@ export default function useAuth() {
     const {data: userData} = await apiClient.get(endpoint + "&token=" + authToken);    
     setUserData(userData)
 
-    authStorage.storeToken(authToken);
+    await authStorage.storeToken(authToken);
   }
 
-  const logOut = () => {
+  const logOut = async () => {
     setUser(null);
     setUserData(null);
-    authStorage.removeToken();
+    await authStorage.removeToken();
   }
 
   return {user, logIn, logOut, setUser, userData, setUserData};

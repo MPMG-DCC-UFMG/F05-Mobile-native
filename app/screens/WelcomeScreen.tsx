@@ -46,7 +46,6 @@ export default function WelcomeScreen() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginFailed, setLoginFailed] = useState(false);
   const [showLogo, setShowLogo] = useState(true);
 
   async function handleGoogleSignIn() {
@@ -117,7 +116,6 @@ export default function WelcomeScreen() {
         bgColor: "red.500",
       });
     }
-    setLoginFailed(false);
     console.log(result.data.access_token);
     auth.logIn(result.data.access_token);
   };

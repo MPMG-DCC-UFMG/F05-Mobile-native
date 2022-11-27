@@ -81,7 +81,7 @@ export default function PublicWorkCollectsScreen({ navigation, route }: any) {
         ></FlatList>
         <AppButton
           color={colors.trenaGreen}
-          title="Nova Coleta"
+          title="Nova coleta"
           onPress={() =>
             navigation.navigate(routes.COLLECT_EDIT, { publicWork })
           }
