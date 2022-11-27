@@ -1,20 +1,25 @@
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
+import storeUserData from "../auth/storeUserData";
 import useAuth from "../auth/useAuth";
+import ActivityIndicatior from "../components/ActivityIndicatior";
 import Icon, { IconProps } from "../components/Icon";
 
 import ListItem from "../components/ListItem";
 import ListItemSeparator from "../components/ListItemSeparator";
 import Screen from "../components/Screen";
 import colors from "../config/colors";
+import { SessionContext } from "../context/SessionContext";
 import routes from "../navigation/routes";
 
 interface MenuItem {
   title: string;
   icon: IconProps;
+  targetScreen?: string;
 }
-const menuItems: any = [
+
+const menuItems: MenuItem[] = [
   // {
   //   title: "My Listings",
   //   icon: { name: "format-list-bulleted", backgroundColor: colors.primary },
@@ -25,23 +30,35 @@ const menuItems: any = [
   //   targetScreen: routes.MESSAGES,
   // },
 ];
-export default function AccountScreen({ navigation }: any) {
-  const { user, logOut, userData } = useAuth();
 
-  console.log(userData);
+export default function AccountScreen({ navigation }: any) {
+  const { user, logOut } = useAuth();
+  const [picture, setPicture] = useState("");
+  const [name, setName] = useState("");
+
+  async function restoreUserData() {
+    const response = await storeUserData.getUser();
+    console.log(response);
+    setPicture(response.picture);
+    setName(response.full_name);
+  }
+
+  useEffect(() => {
+    restoreUserData();
+  }, []);
 
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
-        {userData?.picture ? (
+        {picture !== "" ? (
           <ListItem
-            title={userData?.full_name}
+            title={name}
             subTitle={user.email}
-            image={{ uri: userData?.picture }}
+            image={{ uri: picture }}
           ></ListItem>
         ) : (
           <ListItem
-            title={userData?.full_name}
+            title={name}
             subTitle={user.email}
             IconComponent={
               <Icon name={"account"} backgroundColor={colors.medium}></Icon>
@@ -98,7 +115,7 @@ export default function AccountScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     marginTop: "20%",
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
   },
   screen: {
     backgroundColor: colors.dark,

@@ -31,6 +31,7 @@ export default function MapScreen() {
           longitudeDelta: 0.0421,
         }}
         style={styles.map}
+        showsUserLocation
       >
         {publicWorks.map((publicWork: any, index: any) => (
           <Marker
@@ -44,15 +45,6 @@ export default function MapScreen() {
             // description={publicWork.description}
           />
         ))}
-        <Marker
-          coordinate={{
-            latitude: location.latitude,
-            longitude: location.longitude,
-          }}
-          title={"Sua localização"}
-          // pinColor={colors.trenaGreen}
-          // image={{ uri: "https://github.com/georgehgfonseca.png" }}
-        />
       </MapView>
     </View>
   );

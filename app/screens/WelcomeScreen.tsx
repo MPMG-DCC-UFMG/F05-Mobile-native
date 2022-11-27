@@ -44,8 +44,8 @@ export default function WelcomeScreen() {
   const loginApi = useApi(authApi.login);
   const registerApi = useApi(usersApi.register);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("george@trena.mpmg.mg.br");
+  const [password, setPassword] = useState("12345678aA");
   const [showLogo, setShowLogo] = useState(true);
 
   async function handleGoogleSignIn() {
@@ -150,14 +150,14 @@ export default function WelcomeScreen() {
             autoCorrect={false}
             autoComplete={"email"}
             icon="email"
-            keyboardType="email-address"
+            // keyboardType="email-address"
             name="email"
             placeholder="Email"
-            textContetType="emailAddress"
+            // textContetType="emailAddress"
             onChangeText={setEmail}
             value={email}
             // Issue on react-native: https://github.com/facebook/react-native/issues/32782
-            caretHidden={false}
+            // caretHidden={false}
           />
           <AppTextInput
             autoCapitalize="none"
