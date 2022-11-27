@@ -47,15 +47,6 @@ interface ImageInputProps {
   onChangeMedia: any;
 }
 
-const validationSchema = Yup.object().shape({
-  comments: Yup.string().label("Comentário"),
-  type: Yup.object()
-    .required("Tipo é um campo obrigatório")
-    .nullable()
-    .label("Tipo"),
-  images: Yup.array().min(1, "O envio de mídia é obrigatório"),
-});
-
 export default function ImageInput({ media, onChangeMedia }: ImageInputProps) {
   const { typePhotos } = useContext(SessionContext);
   const location = useLocation();
@@ -168,7 +159,7 @@ export default function ImageInput({ media, onChangeMedia }: ImageInputProps) {
         setCurrentImageUri(result.uri);
       }
     } catch (error) {
-      console.log("Erro ao carregar a imagem", error);
+      console.log("Erro ao carregar o vídeo", error);
     }
   };
 

@@ -1,14 +1,7 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
-import * as Yup from "yup";
 import { useToast } from "native-base";
 
-import {
-  AppForm,
-  AppFormField,
-  AppFormPicker,
-  SubmitButton,
-} from "../components/forms";
 import useLocation from "../hooks/useLocation";
 import inspectionCollectsApi from "../api/inspectionCollects";
 import UploadScreen from "./UploadScreen";
@@ -83,7 +76,6 @@ export default function InspectionCollectEditScreen({ route }: any) {
   };
 
   const handleSubmit = () => {
-    console.log(images);
     if (!validateInput()) return;
     Alert.alert(
       "Confirmar envio?",
@@ -137,7 +129,13 @@ export default function InspectionCollectEditScreen({ route }: any) {
     });
     navigate(routes.INSPECTIONS);
 
-    // formikBag.resetForm();
+    resetForm();
+  };
+
+  const resetForm = () => {
+    setComments("");
+    setStatus(null);
+    setImages([]);
   };
 
   return (
