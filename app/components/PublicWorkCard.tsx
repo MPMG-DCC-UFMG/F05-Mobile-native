@@ -15,7 +15,7 @@ export default function PublicWorkCard({ publicWork, onPress }: any) {
   const { latitude, longitude } = useLocation();
   const { workStatus } = useContext(SessionContext);
 
-  const when = dayjs(publicWork.date)
+  const when = dayjs(publicWork.queue_status_date)
     .locale(ptBR)
     .format("DD [de] MMMM [de] YYYY [às] HH:mm[h]");
 

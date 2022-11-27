@@ -25,6 +25,7 @@ import AppTextInput from "../components/AppTextInput";
 import getDistanceFromLatLonInKm from "../utility/distance";
 import useLocation from "../hooks/useLocation";
 import { Button } from "native-base";
+import ButtonSecondary from "../components/ButtonSecondary";
 export interface Inspection {
   flag: number;
   name: string;
@@ -249,14 +250,11 @@ export default function InspectionsScreen({ navigation }: any) {
               <AppText style={{ color: colors.gray[100], padding: 12 }}>
                 Não há vistorias solicitadas a esse usuário.
               </AppText>
-              <Button
-                style={{ borderColor: colors.trenaGreen }}
-                // color={colors.trenaGreen}
-                variant="outline"
+              <ButtonSecondary
+                color={colors.gray[800]}
+                title="Saiba mais"
                 onPress={() => {}}
-              >
-                Saiba Mais
-              </Button>
+              ></ButtonSecondary>
             </View>
           }
           refreshing={refreshing}
@@ -310,7 +308,7 @@ export default function InspectionsScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    padding: 20,
+    padding: 8,
     paddingBottom: 0,
     backgroundColor: colors.black,
     justifyContent: "center",

@@ -18,6 +18,8 @@ import ActivityIndicatior from "../components/ActivityIndicatior";
 import { PublicWork } from "./PublicWorksScreen";
 import UploadScreen from "./UploadScreen";
 import routes from "../navigation/routes";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import ButtonSecondary from "../components/ButtonSecondary";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -278,11 +280,11 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
             onChangeText={setCityState}
             value={cityState}
           />
-          <AppButton
-            color={colors.danger}
+          <ButtonSecondary
+            color={colors.gray[800]}
             title="Validar localização"
             onPress={() => {}}
-          ></AppButton>
+          ></ButtonSecondary>
           <AppButton
             onPress={handleSubmit}
             color={colors.trenaGreen}
@@ -296,15 +298,32 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
 
 const styles = StyleSheet.create({
   screen: {
-    padding: 20,
+    padding: 8,
     paddingBottom: 0,
     backgroundColor: colors.dark,
   },
   formView: {
-    marginTop: "20%",
+    marginTop: "16%",
   },
   smallFormView: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  locationButton: {
+    color: colors.white,
+    backgroundColor: colors.light,
+    borderRadius: 4,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 15,
+    width: "100%",
+    marginVertical: 10,
+    flexDirection: "row",
+  },
+  locationText: {
+    color: colors.medium,
+    fontSize: 16,
+    paddingLeft: 32,
+    fontWeight: "bold",
   },
 });

@@ -179,7 +179,7 @@ export default function InspectionCollectEditScreen({ route }: any) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 12,
+    padding: 8,
     flex: 1,
     backgroundColor: colors.dark,
     paddingTop: "25%",

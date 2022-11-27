@@ -173,7 +173,6 @@ export default function PublicWorksScreen({ navigation }: any) {
           </TouchableOpacity>
         </View>
         <FlatList
-          style={styles.list}
           data={filteredPublicWorks}
           keyExtractor={(publicWork) => publicWork.id.toString()}
           renderItem={({ item }) => (
@@ -246,7 +245,7 @@ export default function PublicWorksScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   screen: {
-    padding: 20,
+    padding: 8,
     paddingBottom: 0,
     backgroundColor: colors.dark,
     flex: 1,
@@ -264,9 +263,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 16,
     backgroundColor: colors.gray[800],
-  },
-  list: {
-    // marginTop: "20%",
   },
   buttonAdd: {
     borderRadius: 25,

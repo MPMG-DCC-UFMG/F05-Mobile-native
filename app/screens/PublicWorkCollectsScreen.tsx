@@ -93,7 +93,7 @@ export default function PublicWorkCollectsScreen({ navigation, route }: any) {
 
 const styles = StyleSheet.create({
   screen: {
-    padding: 20,
+    padding: 8,
     paddingBottom: 0,
     backgroundColor: colors.dark,
   },

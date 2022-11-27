@@ -16,8 +16,6 @@ const storeUser = async (userData) => {
 const getUser = async () => {
   try {
     const jsonValue = await AsyncStorage.getItem(key)
-    console.log("json: ", jsonValue)
-    // return jsonValue;
     return jsonValue != null ? JSON.parse(jsonValue) : null;
   } catch(e) {
     console.log(e)

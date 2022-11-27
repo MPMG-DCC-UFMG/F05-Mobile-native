@@ -174,7 +174,7 @@ export default function PublicWorkCollectEditScreen({ route }: any) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 12,
+    padding: 8,
     paddingBottom: 0,
     flex: 1,
     backgroundColor: colors.dark,

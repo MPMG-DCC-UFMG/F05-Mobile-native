@@ -39,8 +39,6 @@ export default function InspectionCard({
     return (progress + 1) * step;
   }
 
-  console.log(inspection.request_date);
-
   const when = dayjs(inspection.request_date)
     .locale(ptBR)
     .format("DD [de] MMMM [de] YYYY [às] HH:mm[h]");
@@ -175,7 +173,7 @@ const styles = StyleSheet.create({
   pendingStatusCard: {
     width: 100,
     borderRadius: 8,
-    backgroundColor: theme.colors.red[600],
+    backgroundColor: theme.colors.yellow[600],
     justifyContent: "center",
     alignItems: "flex-start",
     padding: 4,

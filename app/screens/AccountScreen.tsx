@@ -1,17 +1,13 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import storeUserData from "../auth/storeUserData";
 import useAuth from "../auth/useAuth";
-import ActivityIndicatior from "../components/ActivityIndicatior";
 import Icon, { IconProps } from "../components/Icon";
 
 import ListItem from "../components/ListItem";
 import ListItemSeparator from "../components/ListItemSeparator";
 import Screen from "../components/Screen";
 import colors from "../config/colors";
-import { SessionContext } from "../context/SessionContext";
-import routes from "../navigation/routes";
 
 interface MenuItem {
   title: string;
@@ -38,7 +34,6 @@ export default function AccountScreen({ navigation }: any) {
 
   async function restoreUserData() {
     const response = await storeUserData.getUser();
-    console.log(response);
     setPicture(response.picture);
     setName(response.full_name);
   }

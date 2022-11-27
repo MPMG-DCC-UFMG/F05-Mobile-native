@@ -261,7 +261,7 @@ export default function ImageInput({ media, onChangeMedia }: ImageInputProps) {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    padding: 12,
+    padding: 8,
     flex: 1,
     justifyContent: "flex-start",
     backgroundColor: colors.black,

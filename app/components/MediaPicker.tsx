@@ -3,7 +3,7 @@ import React from "react";
 import { Media } from "./ImageInput";
 import ImageInputList from "./ImageInputList";
 
-export default function FormMediaPicker({ images, setImages }) {
+export default function MediaPicker({ images, setImages }) {
   const medias = images;
 
   const handleAdd = (mediaData: Media) => {
