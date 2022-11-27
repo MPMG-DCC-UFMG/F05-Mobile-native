@@ -20,6 +20,7 @@ import AppTextInput from "./AppTextInput";
 import AppPicker from "./AppPicker";
 import { SessionContext } from "../context/SessionContext";
 import AppText from "./AppText";
+import useLocation from "../hooks/useLocation";
 
 interface ImagePickerResult {
   assetId: any;
@@ -31,6 +32,21 @@ interface ImagePickerResult {
   uri: string;
   width: number;
 }
+
+export interface Media {
+  type: string;
+  uri: string;
+  latitude: number;
+  longitude: number;
+  comment: string;
+  timestamp: number;
+}
+
+interface ImageInputProps {
+  media?: Media;
+  onChangeMedia: any;
+}
+
 const validationSchema = Yup.object().shape({
   comments: Yup.string().label("Comentário"),
   type: Yup.object()
@@ -40,12 +56,13 @@ const validationSchema = Yup.object().shape({
   images: Yup.array().min(1, "O envio de mídia é obrigatório"),
 });
 
-export default function ImageInput({ media, onChangeMedia, navigation }: any) {
+export default function ImageInput({ media, onChangeMedia }: ImageInputProps) {
   const { typePhotos } = useContext(SessionContext);
+  const location = useLocation();
   const [currentImageUri, setCurrentImageUri] = useState(
     media ? media.uri : undefined
   );
-  const [comments, setComments] = useState<string>(media ? media.comments : "");
+  const [comments, setComments] = useState<string>(media ? media.comment : "");
   const [type, setType] = useState<string>(media ? media.type : "");
   const [typeVideo, setTypeVideo] = useState(CameraType.back);
   const [submited, setSubmited] = useState(false);
@@ -108,7 +125,14 @@ export default function ImageInput({ media, onChangeMedia, navigation }: any) {
   const handleSubmit = () => {
     setSubmited(true);
     if (currentImageUri && type !== "") {
-      onChangeMedia({ uri: currentImageUri, comments: comments, type: type });
+      onChangeMedia({
+        uri: currentImageUri,
+        comments: comments,
+        type: type,
+        latitude: location.latitude,
+        longitude: location.longitude,
+        timestamp: Date.now(),
+      });
       setModalVisible(false);
       setCurrentImageUri("");
       setComments("");

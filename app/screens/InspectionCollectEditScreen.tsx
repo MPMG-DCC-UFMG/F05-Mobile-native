@@ -22,6 +22,7 @@ import { useNavigation } from "@react-navigation/native";
 import AppButton from "../components/AppButton";
 import AppTextInput from "../components/AppTextInput";
 import AppPicker from "../components/AppPicker";
+import { Media } from "../components/ImageInput";
 
 export default function InspectionCollectEditScreen({ route }: any) {
   const { user } = useAuth();
@@ -41,7 +42,7 @@ export default function InspectionCollectEditScreen({ route }: any) {
       ? getPublicWorkStatusFromFlag(route.params.collect.public_work_status)
       : null
   );
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<Media[]>([]);
 
   const inspection = route.params.inspection;
 

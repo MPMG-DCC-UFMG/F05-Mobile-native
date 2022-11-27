@@ -1,16 +1,17 @@
 import { useFormikContext } from "formik";
 import React from "react";
+import { Media } from "./ImageInput";
 import ImageInputList from "./ImageInputList";
 
 export default function FormMediaPicker({ images, setImages }) {
   const medias = images;
 
-  const handleAdd = (mediaData) => {
+  const handleAdd = (mediaData: Media) => {
     setImages([...medias, mediaData]);
   };
 
-  const handleRemove = (mediaData) => {
-    setImages(medias.filter((media) => media.uri !== mediaData.uri));
+  const handleRemove = (mediaData: Media) => {
+    setImages(medias.filter((media: Media) => media.uri !== mediaData.uri));
   };
 
   return (

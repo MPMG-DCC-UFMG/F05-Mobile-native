@@ -55,18 +55,18 @@ const addInspectionCollect = async (data, onUploadProgress) => {
       collect_id: response.data.id,
       type: media.type.flag,
       filepath: "images/" + data.inspection.public_work_id + "_" + timestamp + "_" + index + "." + extension,
-      latitude: data.location.latitude,
-      longitude: data.location.longitude,
+      latitude: media.latitude,
+      longitude: media.longitude,
       comment: media.comments,
-      timestamp: timestamp
+      timestamp: media.timestamp
     }
     const responsePhoto = await client.post(endpointPhotoAdd, photoData);
     console.log("photo: ", responsePhoto.ok)
    
     photoFilesData.append("file",  
          {
-            name: data.inspection.public_work_id + "_" + timestamp + "_" + index + "." + extension,
-            type: extension !== "mp4" ? "image/jpeg" : "video/mp4", //TODO allow videos
+            name: data.inspection.public_work_id + "_" + media.timestamp + "_" + index + "." + extension,
+            type: extension !== "mp4" ? "image/jpeg" : "video/mp4",
             uri: media.uri,
           },
     );

@@ -10,7 +10,6 @@ import {
   Text,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import RNFetchBlob from "rn-fetch-blob";
 
 import colors from "../config/colors";
 import routes from "../navigation/routes";

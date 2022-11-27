@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import ImageInput from "./ImageInput";
+import ImageInput, { Media } from "./ImageInput";
 
 export default function ImageInputList({
   medias = [],
@@ -17,7 +17,7 @@ export default function ImageInputList({
         onContentSizeChange={() => scrollView.current.scrollToEnd()}
       >
         <View style={styles.container}>
-          {medias.map((media: any) => {
+          {medias.map((media: Media) => {
             return (
               <View style={styles.image} key={media.uri}>
                 <ImageInput
@@ -28,7 +28,7 @@ export default function ImageInputList({
             );
           })}
           <ImageInput
-            onChangeMedia={(media: any) => onAddMedia(media)}
+            onChangeMedia={(media: Media) => onAddMedia(media)}
           ></ImageInput>
         </View>
       </ScrollView>

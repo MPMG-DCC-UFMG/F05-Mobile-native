@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Alert, Button, StyleSheet, View } from "react-native";
 import * as Yup from "yup";
 
-import Screen from "../components/Screen";
 import {
   AppForm,
   AppFormField,
