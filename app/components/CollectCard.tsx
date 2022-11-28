@@ -8,12 +8,22 @@ import colors from "../config/colors";
 import useLocation from "../hooks/useLocation";
 import AppText from "./AppText";
 import getDistanceFromLatLonInKm from "../utility/distance";
-import { SessionContext } from "../context/SessionContext";
+import { Collect, SessionContext } from "../context/SessionContext";
 import { Box, Center, Progress, Text } from "native-base";
 
-export default function NewCollectCard({ collect, onPress }: any) {
-  const { latitude, longitude } = useLocation();
-  const { workStatus } = useContext(SessionContext);
+interface CollectCardProps {
+  collect: Collect;
+  onPress: any;
+}
+
+export default function CollectCard({ collect, onPress }: CollectCardProps) {
+  const { workStatus, photos } = useContext(SessionContext);
+
+  const photoCount = () => {
+    return photos.filter((photo) => {
+      return photo.collect_id === collect.id;
+    }).length;
+  };
 
   const when = dayjs(collect.date)
     .locale(ptBR)
@@ -52,6 +62,22 @@ export default function NewCollectCard({ collect, onPress }: any) {
           ></MaterialCommunityIcons>
           <AppText style={styles.subTitle}>{collect.user_email}</AppText>
         </View>
+        <View style={styles.propContainer}>
+          <MaterialCommunityIcons
+            name={"counter"}
+            size={12}
+            color={colors.primary}
+          ></MaterialCommunityIcons>
+          <AppText style={styles.subTitle}>{`${photoCount()} mídias`}</AppText>
+        </View>
+        {/* <View style={styles.propContainer}>
+          <MaterialCommunityIcons
+            name={"counter"}
+            size={12}
+            color={colors.primary}
+          ></MaterialCommunityIcons>
+          <AppText style={styles.subTitle}>{when}</AppText>
+        </View> */}
         {/* <View style={styles.propContainer}>
           <MaterialCommunityIcons
             name={"list-status"}

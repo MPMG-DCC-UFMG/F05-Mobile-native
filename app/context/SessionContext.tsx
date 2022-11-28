@@ -6,17 +6,74 @@ import typePhotosApi from "../api/typePhotos";
 import workStatusApi from "../api/workStatus";
 import inspectionsApi from "../api/inspections";
 import publicWorksApi from "../api/publicWorks";
-import usersApi from "../api/users";
-import { Inspection } from "../screens/InspectionsScreen";
-import { PublicWork } from "../screens/PublicWorksScreen";
-import authStorage from "../auth/storage";
+import photosApi from "../api/photos";
+import collectsApi from "../api/collects";
+export interface Address {
+  id: string;
+  street: string;
+  neighborhood: string;
+  number: string;
+  latitude: number;
+  longitude: number;
+  city: string;
+  state: string;
+  cep: string;
+  public_work_id: string;
+}
+export interface PublicWork {
+  id: string;
+  name: string;
+  type_work_flag: number;
+  user_status: number;
+  // 0 = PENDENTE 1 = APROVADA 2 = REJEITADA 3 = EXCLUIDA
+  queue_status: 0 | 1 | 2 | 3;
+  queue_status_date: number;
+  rnn_status: number;
+  address: Address;
+}
 
+export interface Inspection {
+  flag: number;
+  name: string;
+  inquiry_number: number;
+  description: string;
+  public_work_id: string;
+  collect_id: string;
+  // 0 = PENDENTE 1 = ATUALIZADA 2 = ENVIADA
+  status: 0 | 1 | 2;
+  user_email: string;
+  request_date: number;
+}
+export interface Photos {
+  id: string;
+  collect_id: string;
+  type: string;
+  filepath: string;
+  latitude: number;
+  longitude: number;
+  comment: string;
+  timestamp: number;
+}
+export interface Collect {
+  id: string;
+  public_work_id: string;
+  inspection_flag?: string;
+  queue_status: number;
+  queue_status_date: number;
+  date: number;
+  user_email: string;
+  comments: string;
+  public_work_status: number;
+  photos?: string[];
+}
 interface ISessionContext {
   typeWorks: any;
   typePhotos: any;
   workStatus: any;
   publicWorks: PublicWork[];
   inspections: Inspection[];
+  collects: Collect[];
+  photos: Photos[];
   error: any;
   loading: boolean;
   loadInspections: any;
@@ -49,12 +106,20 @@ const SessionProvider = ({ children }: { children?: React.ReactNode }) => {
     workStatusApi.getWorkStatus
   );
 
+  const { data: collects, request: loadCollects } = useApi(
+    collectsApi.getCollects
+  );
+
+  const { data: photos, request: loadPhotos } = useApi(photosApi.getPhotos);
+
   const loadDataFromServer = async () => {
     await loadTypeWorks();
     await loadWorkStatus();
     await loadTypePhotos();
     await loadPublicWorks();
     await loadInspections();
+    await loadCollects();
+    await loadPhotos();
     // console.log(typeWorks);
     // console.log(workStatus);
     // console.log(typePhotos);
@@ -73,6 +138,8 @@ const SessionProvider = ({ children }: { children?: React.ReactNode }) => {
         workStatus,
         publicWorks,
         inspections,
+        collects,
+        photos,
         error,
         loading,
         loadInspections,

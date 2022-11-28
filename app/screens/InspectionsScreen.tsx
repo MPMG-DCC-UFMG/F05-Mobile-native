@@ -10,6 +10,7 @@ import {
   Text,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import RNFetchBlob from "rn-fetch-blob";
 
 import colors from "../config/colors";
 import routes from "../navigation/routes";
@@ -20,24 +21,13 @@ import useAuth from "../auth/useAuth";
 import InspectionCard from "../components/InspectionCard";
 import inspectionsApi from "../api/inspections";
 
-import { SessionContext } from "../context/SessionContext";
+import { Inspection, SessionContext } from "../context/SessionContext";
 import AppTextInput from "../components/AppTextInput";
 import getDistanceFromLatLonInKm from "../utility/distance";
 import useLocation from "../hooks/useLocation";
 import { Button } from "native-base";
 import ButtonSecondary from "../components/ButtonSecondary";
-export interface Inspection {
-  flag: number;
-  name: string;
-  inquiry_number: number;
-  description: string;
-  public_work_id: string;
-  collect_id: string;
-  // 0 = PENDENTE 1 = ATUALIZADA 2 = ENVIADA
-  status: 0 | 1 | 2;
-  user_email: string;
-  request_date: number;
-}
+import { environment } from "../../enviroment";
 
 export default function InspectionsScreen({ navigation }: any) {
   const [refreshing, setRefreshing] = useState(false);
@@ -138,6 +128,31 @@ export default function InspectionsScreen({ navigation }: any) {
     setModalVisible(!modalVisible);
   }
 
+  const downloadReport = (inspection: Inspection) => {
+    // Does not work in expo (requires run:android / run:ios)
+    const { config, fs } = RNFetchBlob;
+    const date = new Date();
+    const { DownloadDir } = fs.dirs; // You can check the available directories in the wiki.
+    const options = {
+      fileCache: true,
+      addAndroidDownloads: {
+        useDownloadManager: true, // true will use native manager and be shown on notification bar.
+        notification: true,
+        path: `${DownloadDir}/relatorio-vistoria-${inspection.inquiry_number}.pdf`,
+        description: "Downloading.",
+      },
+    };
+    config(options)
+      .fetch(
+        "GET",
+        // "http://www.africau.edu/images/default/sample.pdf"
+        `${environment.apiUrl}inspections/report/${inspection.flag}/?X-TRENA-KEY=${environment.apiKey}`
+      )
+      .then((res) => {
+        console.log(res);
+      });
+  };
+
   const handleInspectionClick = (inspection: Inspection) => {
     if (inspection.status === 0)
       navigation.navigate(routes.INSPECTION_COLLECT_EDIT, {
@@ -155,44 +170,7 @@ export default function InspectionsScreen({ navigation }: any) {
           {
             text: "Fazer download",
             onPress: async () => {
-              Alert.alert(
-                "Disponível em breve...",
-                "Por favor aguarde essa funcionalidade nas novas versões.",
-                [
-                  {
-                    text: "Ok",
-                    onPress: () => {},
-                  },
-                ],
-                { cancelable: true }
-              );
-              // console.log(RNFetchBlob);
-              // const { config, fs } = RNFetchBlob;
-              // const date = new Date();
-              // const { DownloadDir } = fs.dirs; // You can check the available directories in the wiki.
-              // const options = {
-              //   fileCache: true,
-              //   addAndroidDownloads: {
-              //     useDownloadManager: true, // true will use native manager and be shown on notification bar.
-              //     notification: true,
-              //     path: `${DownloadDir}/me_${Math.floor(
-              //       date.getTime() + date.getSeconds() / 2
-              //     )}.pdf`,
-              //     description: "Downloading.",
-              //   },
-              // };
-              // config(options)
-              //   .fetch(
-              //     "GET",
-              //     "http://www.africau.edu/images/default/sample.pdf"
-              //   )
-              //   .then((res) => {
-              //     console.log("do some magic in here");
-              //   });
-
-              // console.log(inspection);
-              // const result = await inspectionsApi.downloadReport(inspection);
-              // console.log(result);
+              downloadReport(inspection);
             },
           },
         ],

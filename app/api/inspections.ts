@@ -1,5 +1,5 @@
 import { environment } from "../../enviroment";
-import { Inspection } from "../screens/InspectionsScreen";
+import { Inspection } from "../context/SessionContext";
 import client from "./client";
 
 const apiParam = "?X-TRENA-KEY=" + environment.apiKey

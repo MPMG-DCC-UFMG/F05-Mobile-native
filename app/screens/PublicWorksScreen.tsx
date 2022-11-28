@@ -23,30 +23,6 @@ import useLocation from "../hooks/useLocation";
 import { SessionContext } from "../context/SessionContext";
 import AppTextInput from "../components/AppTextInput";
 
-export interface Address {
-  id: string;
-  street: string;
-  neighborhood: string;
-  number: string;
-  latitude: number;
-  longitude: number;
-  city: string;
-  state: string;
-  cep: string;
-  public_work_id: string;
-}
-export interface PublicWork {
-  id: string;
-  name: string;
-  type_work_flag: number;
-  user_status: number;
-  // 0 = PENDENTE 1 = APROVADA 2 = REJEITADA 3 = EXCLUIDA
-  queue_status: 0 | 1 | 2 | 3;
-  queue_status_date: number;
-  rnn_status: number;
-  address: Address;
-}
-
 export default function PublicWorksScreen({ navigation }: any) {
   const {
     data: publicWorks,

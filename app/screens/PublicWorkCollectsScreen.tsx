@@ -12,14 +12,8 @@ import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 import ActivityIndicatior from "../components/ActivityIndicatior";
 import useApi from "../hooks/useApi";
-import NewCollectCard from "../components/CollectCard";
-import { SessionContext } from "../context/SessionContext";
-export interface Listing {
-  id: string;
-  title: string;
-  price: number;
-  image: ImageSourcePropType;
-}
+import CollectCard from "../components/CollectCard";
+import { Collect, SessionContext } from "../context/SessionContext";
 
 export default function PublicWorkCollectsScreen({ navigation, route }: any) {
   const [refreshing, setRefreshing] = useState(false);
@@ -37,8 +31,8 @@ export default function PublicWorkCollectsScreen({ navigation, route }: any) {
     loadCollects();
   }, []);
 
-  const publicWorkCollects = collects
-    .filter((collect: any) => {
+  const publicWorkCollects: Collect[] = collects
+    .filter((collect: Collect) => {
       return (
         collect.public_work_id === publicWork.id && collect.queue_status === 1
       );
@@ -62,7 +56,7 @@ export default function PublicWorkCollectsScreen({ navigation, route }: any) {
           data={publicWorkCollects}
           keyExtractor={(collect) => collect.id.toString()}
           renderItem={({ item: collect }) => (
-            <NewCollectCard
+            <CollectCard
               collect={collect}
               // imageUrl={publicWork.images[0].url}
               onPress={() =>
