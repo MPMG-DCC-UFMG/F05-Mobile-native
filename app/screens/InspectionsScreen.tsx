@@ -131,7 +131,6 @@ export default function InspectionsScreen({ navigation }: any) {
   const downloadReport = (inspection: Inspection) => {
     // Does not work in expo (requires run:android / run:ios)
     const { config, fs } = RNFetchBlob;
-    const date = new Date();
     const { DownloadDir } = fs.dirs; // You can check the available directories in the wiki.
     const options = {
       fileCache: true,
@@ -145,7 +144,6 @@ export default function InspectionsScreen({ navigation }: any) {
     config(options)
       .fetch(
         "GET",
-        // "http://www.africau.edu/images/default/sample.pdf"
         `${environment.apiUrl}inspections/report/${inspection.flag}/?X-TRENA-KEY=${environment.apiKey}`
       )
       .then((res) => {

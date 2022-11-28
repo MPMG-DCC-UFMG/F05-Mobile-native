@@ -8,6 +8,22 @@ import inspectionsApi from "../api/inspections";
 import publicWorksApi from "../api/publicWorks";
 import photosApi from "../api/photos";
 import collectsApi from "../api/collects";
+
+export interface TypeWorks {
+  flag: number;
+  name: string;
+  status_list?: number[];
+}
+export interface TypePhotos {
+  flag: number;
+  name: string;
+  description: string;
+}
+export interface WorkStatus {
+  flag: number;
+  name: string;
+  description: string;
+}
 export interface Address {
   id: string;
   street: string;
@@ -67,9 +83,9 @@ export interface Collect {
   photos?: string[];
 }
 interface ISessionContext {
-  typeWorks: any;
-  typePhotos: any;
-  workStatus: any;
+  typeWorks: TypeWorks[];
+  typePhotos: TypePhotos[];
+  workStatus: WorkStatus[];
   publicWorks: PublicWork[];
   inspections: Inspection[];
   collects: Collect[];
