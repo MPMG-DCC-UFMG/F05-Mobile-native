@@ -7,7 +7,6 @@ const apiClient = create({
   baseURL: settings.apiUrl,
   headers: {
     'content-type': 'application/x-www-form-urlencoded'
-    // 'Content-Type': 'multipart/form-data'
   }
   
 });

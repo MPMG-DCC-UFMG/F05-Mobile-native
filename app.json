@@ -10,7 +10,7 @@
     "splash": {
       "image": "./app/assets/splash-trena.png",
       "resizeMode": "cover",
-      "backgroundColor": "#73FF00"
+      "backgroundColor": "#000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

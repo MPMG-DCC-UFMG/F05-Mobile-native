@@ -5,14 +5,8 @@ import {
   Text,
   View,
   Image,
-  ImageBackground,
-  ImageComponent,
-  KeyboardAvoidingView,
-  Platform,
   TouchableWithoutFeedback,
   Keyboard,
-  KeyboardEventListener,
-  Animated,
 } from "react-native";
 import useAuth from "../auth/useAuth";
 import AppButton from "../components/AppButton";
@@ -38,6 +32,10 @@ interface AuthResponse {
 }
 
 export default function WelcomeScreen() {
+  // fetch("https://viacep.com.br/ws/35931333/json")
+  //   .then((response) => response.json())
+  //   .then((data) => console.log(data));
+
   const toast = useToast();
   const navigation = useNavigation();
   const auth = useAuth();
