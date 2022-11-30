@@ -10,7 +10,7 @@ import {
   Text,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import RNFetchBlob from "rn-fetch-blob";
+import RNFetchBlob from "rn-fetch-blob"; //  add to "rn-fetch-blob": "^0.12.0",
 
 import colors from "../config/colors";
 import routes from "../navigation/routes";
@@ -25,7 +25,6 @@ import { Inspection, SessionContext } from "../context/SessionContext";
 import AppTextInput from "../components/AppTextInput";
 import getDistanceFromLatLonInKm from "../utility/distance";
 import useLocation from "../hooks/useLocation";
-import { Button } from "native-base";
 import ButtonSecondary from "../components/ButtonSecondary";
 import { environment } from "../../enviroment";
 
@@ -128,8 +127,8 @@ export default function InspectionsScreen({ navigation }: any) {
     setModalVisible(!modalVisible);
   }
 
+  // Does not work in expo (requires run:android / run:ios)
   const downloadReport = (inspection: Inspection) => {
-    // Does not work in expo (requires run:android / run:ios)
     const { config, fs } = RNFetchBlob;
     const { DownloadDir } = fs.dirs; // You can check the available directories in the wiki.
     const options = {

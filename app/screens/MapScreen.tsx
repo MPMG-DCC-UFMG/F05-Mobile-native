@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import useLocation from "../hooks/useLocation";
 import useApi from "../hooks/useApi";
@@ -24,6 +24,7 @@ export default function MapScreen() {
   return (
     <View style={styles.container}>
       <MapView
+        provider={PROVIDER_GOOGLE}
         region={{
           latitude: location.latitude,
           longitude: location.longitude,

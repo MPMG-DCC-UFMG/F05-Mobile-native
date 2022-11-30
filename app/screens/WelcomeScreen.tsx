@@ -8,11 +8,12 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import { LogBox } from "react-native";
+
 import useAuth from "../auth/useAuth";
 import AppButton from "../components/AppButton";
 import colors from "../config/colors";
 import routes from "../navigation/routes";
-import * as Yup from "yup";
 import authApi from "../api/auth";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import AppText from "../components/AppText";
@@ -32,9 +33,15 @@ interface AuthResponse {
 }
 
 export default function WelcomeScreen() {
-  // fetch("https://viacep.com.br/ws/35931333/json")
-  //   .then((response) => response.json())
-  //   .then((data) => console.log(data));
+  LogBox.ignoreLogs(["EventEmitter.removeListener"]);
+  fetch(
+    "https://viacep.com.br/ws/35931333/json"
+    // "https://trena.gsi.mpmg.mp.br/f05_backend/typeworks/?X-TRENA-KEY=0a944fb8-2bbc-4f03-a81a-bf84899cd4f2"
+  )
+    .then((response) => {
+      response.json();
+    })
+    .then((data) => console.log(data));
 
   const toast = useToast();
   const navigation = useNavigation();
