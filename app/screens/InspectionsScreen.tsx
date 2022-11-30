@@ -86,7 +86,7 @@ export default function InspectionsScreen({ navigation }: any) {
     return 0;
   };
 
-  filteredInspections.sort(sortByDistance);
+  // filteredInspections.sort(sortByDistance);
 
   function handleFilter(filtro: string) {
     switch (filtro) {
