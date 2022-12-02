@@ -161,7 +161,7 @@ export default function PublicWorksScreen({ navigation }: any) {
           )}
           refreshing={refreshing}
           onRefresh={() => {
-            loadDataFromServer();
+            loadPublicWorks();
           }}
         ></FlatList>
       </View>

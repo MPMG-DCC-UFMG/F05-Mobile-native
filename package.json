@@ -64,7 +64,6 @@
     "react-native-svg": "12.3.0",
     "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^9.2.0",
-    "rn-fetch-blob": "^0.12.0",
     "react-native-web": "~0.18.7",
     "rneui": "^1.0.0-stable.0",
     "yup": "^0.32.11"

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Alert,
   FlatList,
@@ -10,7 +10,7 @@ import {
   Text,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import RNFetchBlob from "rn-fetch-blob"; //  add to "rn-fetch-blob": "^0.12.0",
+// import RNFetchBlob from "rn-fetch-blob"; //  add to "rn-fetch-blob": "^0.12.0",
 
 import colors from "../config/colors";
 import routes from "../navigation/routes";
@@ -27,6 +27,7 @@ import getDistanceFromLatLonInKm from "../utility/distance";
 import useLocation from "../hooks/useLocation";
 import ButtonSecondary from "../components/ButtonSecondary";
 import { environment } from "../../enviroment";
+import useApi from "../hooks/useApi";
 
 export default function InspectionsScreen({ navigation }: any) {
   const [refreshing, setRefreshing] = useState(false);
@@ -42,6 +43,10 @@ export default function InspectionsScreen({ navigation }: any) {
     loadInspections,
     loadDataFromServer,
   } = useContext(SessionContext);
+
+  useEffect(() => {
+    loadInspections();
+  }, []);
 
   const getPublicWorkOfInspection = (publicWorkId: string) => {
     const pw = publicWorks.find((publicWork: any) => {
@@ -61,7 +66,8 @@ export default function InspectionsScreen({ navigation }: any) {
         )
       : filteredInspections;
 
-  const sortByDistance = (a, b) => {
+  const sortByDistanceAndStatus = (a, b) => {
+    if (a.status !== b.status) return a.status - b.status;
     a = getPublicWorkOfInspection(a.public_work_id);
     b = getPublicWorkOfInspection(b.public_work_id);
     let distA = getDistanceFromLatLonInKm(
@@ -86,7 +92,7 @@ export default function InspectionsScreen({ navigation }: any) {
     return 0;
   };
 
-  // filteredInspections.sort(sortByDistance);
+  filteredInspections.sort(sortByDistanceAndStatus);
 
   function handleFilter(filtro: string) {
     switch (filtro) {
@@ -117,7 +123,7 @@ export default function InspectionsScreen({ navigation }: any) {
         break;
 
       case "dist":
-        filteredInspections.sort(sortByDistance);
+        filteredInspections.sort(sortByDistanceAndStatus);
 
         break;
 
@@ -128,27 +134,27 @@ export default function InspectionsScreen({ navigation }: any) {
   }
 
   // Does not work in expo (requires run:android / run:ios)
-  const downloadReport = (inspection: Inspection) => {
-    const { config, fs } = RNFetchBlob;
-    const { DownloadDir } = fs.dirs; // You can check the available directories in the wiki.
-    const options = {
-      fileCache: true,
-      addAndroidDownloads: {
-        useDownloadManager: true, // true will use native manager and be shown on notification bar.
-        notification: true,
-        path: `${DownloadDir}/relatorio-vistoria-${inspection.inquiry_number}.pdf`,
-        description: "Downloading.",
-      },
-    };
-    config(options)
-      .fetch(
-        "GET",
-        `${environment.apiUrl}inspections/report/${inspection.flag}/?X-TRENA-KEY=${environment.apiKey}`
-      )
-      .then((res) => {
-        console.log(res);
-      });
-  };
+  // const downloadReport = (inspection: Inspection) => {
+  //   const { config, fs } = RNFetchBlob;
+  //   const { DownloadDir } = fs.dirs; // You can check the available directories in the wiki.
+  //   const options = {
+  //     fileCache: true,
+  //     addAndroidDownloads: {
+  //       useDownloadManager: true, // true will use native manager and be shown on notification bar.
+  //       notification: true,
+  //       path: `${DownloadDir}/relatorio-vistoria-${inspection.inquiry_number}.pdf`,
+  //       description: "Downloading.",
+  //     },
+  //   };
+  //   config(options)
+  //     .fetch(
+  //       "GET",
+  //       `${environment.apiUrl}inspections/report/${inspection.flag}/?X-TRENA-KEY=${environment.apiKey}`
+  //     )
+  //     .then((res) => {
+  //       console.log(res);
+  //     });
+  // };
 
   const handleInspectionClick = (inspection: Inspection) => {
     if (inspection.status === 0)
@@ -167,7 +173,18 @@ export default function InspectionsScreen({ navigation }: any) {
           {
             text: "Fazer download",
             onPress: async () => {
-              downloadReport(inspection);
+              // downloadReport(inspection);
+              Alert.alert(
+                "Disponível em breve",
+                "Relatório enviado atualmente só pode ser acessado pelos gestores do MPMG",
+                [
+                  {
+                    text: "Ok",
+                    onPress: () => {},
+                  },
+                ],
+                { cancelable: true }
+              );
             },
           },
         ],
@@ -234,7 +251,7 @@ export default function InspectionsScreen({ navigation }: any) {
           }
           refreshing={refreshing}
           onRefresh={() => {
-            loadDataFromServer();
+            loadInspections();
           }}
         ></FlatList>
       </View>

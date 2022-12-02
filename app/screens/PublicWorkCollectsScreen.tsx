@@ -70,7 +70,7 @@ export default function PublicWorkCollectsScreen({ navigation, route }: any) {
           )}
           refreshing={refreshing}
           onRefresh={() => {
-            loadDataFromServer();
+            loadCollects();
           }}
         ></FlatList>
         <AppButton

@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -24,6 +24,7 @@ import usersApi from "../api/users";
 import { environment } from "../../enviroment";
 import { useToast } from "native-base";
 import AppTextInput from "../components/AppTextInput";
+import { SessionContext } from "../context/SessionContext";
 
 interface AuthResponse {
   params: {
@@ -33,6 +34,13 @@ interface AuthResponse {
 }
 
 export default function WelcomeScreen() {
+  // Load all data from api
+  const { loadDataFromServer } = useContext(SessionContext);
+
+  useEffect(() => {
+    loadDataFromServer();
+  }, []);
+
   LogBox.ignoreLogs(["EventEmitter.removeListener"]);
   fetch(
     "https://viacep.com.br/ws/35931333/json"

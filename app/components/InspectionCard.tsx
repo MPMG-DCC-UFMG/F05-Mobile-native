@@ -8,11 +8,13 @@ import colors from "../config/colors";
 import useLocation from "../hooks/useLocation";
 import AppText from "./AppText";
 import getDistanceFromLatLonInKm from "../utility/distance";
-import { SessionContext } from "../context/SessionContext";
+import {
+  Inspection,
+  PublicWork,
+  SessionContext,
+} from "../context/SessionContext";
 import dayjs from "dayjs";
 import ptBR from "dayjs/locale/pt-br";
-import { Inspection } from "../screens/InspectionsScreen";
-import { PublicWork } from "../screens/PublicWorksScreen";
 import { theme } from "native-base";
 interface CardProps {
   inspection: Inspection;
@@ -48,6 +50,14 @@ export default function InspectionCard({
       <View style={[styles.card]}>
         <View style={styles.headerContainer}>
           <AppText style={styles.title}>{inspection.name}</AppText>
+        </View>
+        <View style={styles.propContainer}>
+          <MaterialCommunityIcons
+            name={"account-hard-hat"}
+            size={12}
+            color={colors.primary}
+          ></MaterialCommunityIcons>
+          <AppText style={styles.subTitle}>{publicWork.name}</AppText>
         </View>
         <View style={styles.propContainer}>
           <MaterialIcons
