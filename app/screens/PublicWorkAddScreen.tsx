@@ -122,6 +122,7 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
 
   const handleConfirm = async () => {
     setProgress(0);
+    setUploadVisible(true);
     const [city, state] = cityState.split("-");
 
     const publicWorkId = uuid.v4();
@@ -153,7 +154,6 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
       publicWorkToSend,
       (progress: number) => setProgress(progress)
     );
-    console.log(result);
     if (!result.ok) {
       setUploadVisible(false);
       return toast.show({
@@ -162,6 +162,9 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
         bgColor: "red.500",
       });
     }
+  };
+
+  function onSuccess() {
     toast.show({
       title: "Obra enviada com sucesso",
       placement: "top",
@@ -169,7 +172,7 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
       color: colors.black,
     });
     navigate(routes.PUBLIC_WORKS);
-  };
+  }
 
   useEffect(() => {
     if (cep.length < 8) return;
@@ -205,7 +208,10 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
   return (
     <>
       <UploadScreen
-        onDone={() => setUploadVisible(false)}
+        onDone={() => {
+          setUploadVisible(false);
+          onSuccess();
+        }}
         progress={progress}
         visible={uploadVisible}
       />

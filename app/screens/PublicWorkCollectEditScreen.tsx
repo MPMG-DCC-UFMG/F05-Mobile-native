@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Alert, Button, StyleSheet, View } from "react-native";
 
 import useLocation from "../hooks/useLocation";
@@ -106,8 +106,6 @@ export default function PublicWorkCollectEditScreen({ route }: any) {
       (progress: number) => setProgress(progress)
     );
 
-    console.log(result);
-
     if (!result.ok) {
       setUploadVisible(false);
       return toast.show({
@@ -116,14 +114,6 @@ export default function PublicWorkCollectEditScreen({ route }: any) {
         bgColor: "red.600",
       });
     }
-    toast.show({
-      title: "Coleta enviada com sucesso",
-      placement: "top",
-      bgColor: "green.600",
-      color: colors.black,
-    });
-    navigate(routes.PUBLIC_WORK_COLLECTS);
-
     resetForm();
   };
 
@@ -133,10 +123,23 @@ export default function PublicWorkCollectEditScreen({ route }: any) {
     setImages([]);
   };
 
+  const onSendSuccess = () => {
+    toast.show({
+      title: "Coleta enviada com sucesso",
+      placement: "top",
+      bgColor: "green.600",
+      color: colors.black,
+    });
+    navigate(routes.PUBLIC_WORK_COLLECTS);
+  };
+
   return (
     <View style={styles.container}>
       <UploadScreen
-        onDone={() => setUploadVisible(false)}
+        onDone={() => {
+          setUploadVisible(false);
+          onSendSuccess();
+        }}
         progress={progress}
         visible={uploadVisible}
       />

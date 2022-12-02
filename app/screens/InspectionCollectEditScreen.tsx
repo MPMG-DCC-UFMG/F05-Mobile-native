@@ -111,8 +111,6 @@ export default function InspectionCollectEditScreen({ route }: any) {
       (progress: number) => setProgress(progress)
     );
 
-    console.log(result);
-
     if (!result.ok) {
       setUploadVisible(false);
       return toast.show({
@@ -121,15 +119,6 @@ export default function InspectionCollectEditScreen({ route }: any) {
         bgColor: "red.600",
       });
     }
-    toast.show({
-      title: "Vistoria enviada com sucesso",
-      placement: "top",
-      bgColor: "green.600",
-      color: colors.black,
-    });
-    navigate(routes.INSPECTIONS);
-
-    resetForm();
   };
 
   const resetForm = () => {
@@ -138,10 +127,24 @@ export default function InspectionCollectEditScreen({ route }: any) {
     setImages([]);
   };
 
+  function onSuccess() {
+    toast.show({
+      title: "Vistoria enviada com sucesso",
+      placement: "top",
+      bgColor: "green.600",
+      color: colors.black,
+    });
+    navigate(routes.INSPECTIONS);
+    resetForm();
+  }
+
   return (
     <View style={styles.container}>
       <UploadScreen
-        onDone={() => setUploadVisible(false)}
+        onDone={() => {
+          setUploadVisible(false);
+          onSuccess();
+        }}
         progress={progress}
         visible={uploadVisible}
       />

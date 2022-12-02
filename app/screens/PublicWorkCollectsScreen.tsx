@@ -1,15 +1,7 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useContext, useEffect, useState } from "react";
-import {
-  Alert,
-  FlatList,
-  ImageSourcePropType,
-  StyleSheet,
-  View,
-} from "react-native";
-import { useNetInfo } from "@react-native-community/netinfo";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { Alert, FlatList, StyleSheet } from "react-native";
 
-import Card from "../components/Card";
 import Screen from "../components/Screen";
 import colors from "../config/colors";
 import routes from "../navigation/routes";
@@ -33,9 +25,11 @@ export default function PublicWorkCollectsScreen({ navigation, route }: any) {
     request: loadCollects,
   } = useApi(collectsApi.getCollects);
 
-  useEffect(() => {
-    loadCollects();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadCollects();
+    }, [])
+  );
 
   const publicWorkCollects: Collect[] = collects
     .filter((collect: Collect) => {

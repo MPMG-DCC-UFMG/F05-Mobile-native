@@ -8,7 +8,7 @@
     "icon": "./app/assets/logo-trena.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./app/assets/splash-trena.png",
+      "image": "./app/assets/splash-trena.jpg",
       "resizeMode": "cover",
       "backgroundColor": "#000"
     },

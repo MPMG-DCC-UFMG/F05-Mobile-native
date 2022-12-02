@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
   Alert,
   Text,
@@ -22,6 +22,7 @@ import getDistanceFromLatLonInKm from "../utility/distance";
 import useLocation from "../hooks/useLocation";
 import { SessionContext } from "../context/SessionContext";
 import AppTextInput from "../components/AppTextInput";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function PublicWorksScreen({ navigation }: any) {
   const {
@@ -36,9 +37,11 @@ export default function PublicWorksScreen({ navigation }: any) {
   const { loadDataFromServer } = useContext(SessionContext);
   const [modalVisible, setModalVisible] = useState(false);
 
-  useEffect(() => {
-    loadPublicWorks();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadPublicWorks();
+    }, [])
+  );
 
   let filteredPublicWorks = publicWorks.filter(
     (publicWork) => publicWork.queue_status === 1

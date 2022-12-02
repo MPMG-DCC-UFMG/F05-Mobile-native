@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   Alert,
   FlatList,
@@ -28,6 +28,7 @@ import useLocation from "../hooks/useLocation";
 import ButtonSecondary from "../components/ButtonSecondary";
 import { environment } from "../../enviroment";
 import useApi from "../hooks/useApi";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function InspectionsScreen({ navigation }: any) {
   const [refreshing, setRefreshing] = useState(false);
@@ -45,10 +46,12 @@ export default function InspectionsScreen({ navigation }: any) {
     loadDataFromServer,
   } = useContext(SessionContext);
 
-  useEffect(() => {
-    loadInspections();
-    loadPublicWorks();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadInspections();
+      loadPublicWorks();
+    }, [])
+  );
 
   const getPublicWorkOfInspection = (publicWorkId: string) => {
     const pw = publicWorks.find((publicWork: any) => {
