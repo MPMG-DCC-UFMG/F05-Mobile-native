@@ -93,6 +93,7 @@ interface ISessionContext {
   error: any;
   loading: boolean;
   loadInspections: any;
+  loadPublicWorks: any;
   loadDataFromServer: any;
 }
 
@@ -159,6 +160,7 @@ const SessionProvider = ({ children }: { children?: React.ReactNode }) => {
         error,
         loading,
         loadInspections,
+        loadPublicWorks,
         loadDataFromServer,
       }}
     >

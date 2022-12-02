@@ -41,11 +41,13 @@ export default function InspectionsScreen({ navigation }: any) {
     error,
     loading,
     loadInspections,
+    loadPublicWorks,
     loadDataFromServer,
   } = useContext(SessionContext);
 
   useEffect(() => {
     loadInspections();
+    loadPublicWorks();
   }, []);
 
   const getPublicWorkOfInspection = (publicWorkId: string) => {
@@ -66,8 +68,10 @@ export default function InspectionsScreen({ navigation }: any) {
         )
       : filteredInspections;
 
-  const sortByDistanceAndStatus = (a, b) => {
+  const sortByStatusDateAndDistance = (a, b) => {
     if (a.status !== b.status) return a.status - b.status;
+    if (a.request_date !== b.request_date)
+      return b.request_date - a.request_date;
     a = getPublicWorkOfInspection(a.public_work_id);
     b = getPublicWorkOfInspection(b.public_work_id);
     let distA = getDistanceFromLatLonInKm(
@@ -92,7 +96,7 @@ export default function InspectionsScreen({ navigation }: any) {
     return 0;
   };
 
-  filteredInspections.sort(sortByDistanceAndStatus);
+  filteredInspections.sort(sortByStatusDateAndDistance);
 
   function handleFilter(filtro: string) {
     switch (filtro) {
@@ -123,7 +127,7 @@ export default function InspectionsScreen({ navigation }: any) {
         break;
 
       case "dist":
-        filteredInspections.sort(sortByDistanceAndStatus);
+        filteredInspections.sort(sortByStatusDateAndDistance);
 
         break;
 

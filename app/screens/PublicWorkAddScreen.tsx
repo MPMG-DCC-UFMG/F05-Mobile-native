@@ -8,14 +8,13 @@ import colors from "../config/colors";
 import AppButton from "../components/AppButton";
 import AppTextInput from "../components/AppTextInput";
 
-import { SessionContext } from "../context/SessionContext";
+import { PublicWork, SessionContext } from "../context/SessionContext";
 import StatusPickerItem from "../components/StatusPickerItem";
 import AppPicker from "../components/AppPicker";
 import publicWorksApi from "../api/publicWorks";
 import useLocation from "../hooks/useLocation";
 import { Button, useToast } from "native-base";
 import ActivityIndicatior from "../components/ActivityIndicatior";
-import { PublicWork } from "./PublicWorksScreen";
 import UploadScreen from "./UploadScreen";
 import routes from "../navigation/routes";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -226,7 +225,7 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
             selectedItem={type}
           />
           <AppTextInput
-            autoCapitalize="none"
+            autoCapitalize="words"
             autoCorrect={false}
             caretHidden={false}
             name="name"
@@ -234,17 +233,9 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
             onChangeText={setName}
             value={name}
           />
-          <AppTextInput
-            autoCapitalize="none"
-            autoCorrect={false}
-            name="address"
-            placeholder="Rua"
-            onChangeText={setCep}
-            value={address}
-          />
           <View style={styles.smallFormView}>
             <AppTextInput
-              autoCapitalize="none"
+              autoCapitalize="words"
               autoCorrect={false}
               name="cep"
               maxLength={8}
@@ -255,17 +246,26 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
               value={cep}
             />
             <AppTextInput
-              autoCapitalize="none"
+              autoCapitalize="words"
               autoCorrect={false}
               width={windowWidth / 2 - 23}
               name="number"
               placeholder="Número"
+              keyboardType="numeric"
               onChangeText={setNumber}
               value={number}
             />
           </View>
           <AppTextInput
-            autoCapitalize="none"
+            autoCapitalize="words"
+            autoCorrect={false}
+            name="address"
+            placeholder="Rua"
+            onChangeText={setCep}
+            value={address}
+          />
+          <AppTextInput
+            autoCapitalize="words"
             autoCorrect={false}
             name="district"
             placeholder="Bairro"
@@ -273,7 +273,7 @@ export default function PublicWorkAddScreen({ navigation, route }: any) {
             value={district}
           />
           <AppTextInput
-            autoCapitalize="none"
+            autoCapitalize="words"
             autoCorrect={false}
             name="city"
             placeholder="Cidade"
