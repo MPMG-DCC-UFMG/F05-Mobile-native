@@ -36,7 +36,7 @@ const addCollect = async (data, onUploadProgress) => {
       id: timestamp.toString(),
       collect_id: response.data.id,
       type: media.type.flag,
-      filepath: "images/" + data.inspection.public_work_id + "_" + media.timestamp + "_" + index + "." + extension,
+      filepath: "images/" + data.publicWork.id + "_" + media.timestamp + "_" + index + "." + extension,
       latitude: media.latitude,
       longitude: media.longitude,
       comment: media.comments,

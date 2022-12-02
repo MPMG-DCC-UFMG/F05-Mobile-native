@@ -8,10 +8,19 @@ import PublicWorksNavigator from "./PublicWorksNavigator";
 import InspectionsNavigator from "./InspectionsNavigator";
 import colors from "../config/colors";
 import MapScreen from "../screens/MapScreen";
+import { useContext, useEffect } from "react";
+import { SessionContext } from "../context/SessionContext";
 
 const Tab = createBottomTabNavigator();
 
 export default function AppNavigator() {
+  // Load all data from api
+  const { loadDataFromServer } = useContext(SessionContext);
+
+  useEffect(() => {
+    loadDataFromServer();
+  }, []);
+
   useNotifications();
 
   return (

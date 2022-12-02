@@ -1,6 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useEffect, useState } from "react";
-import { FlatList, ImageSourcePropType, StyleSheet, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  ImageSourcePropType,
+  StyleSheet,
+  View,
+} from "react-native";
 import { useNetInfo } from "@react-native-community/netinfo";
 
 import Card from "../components/Card";
@@ -41,6 +47,20 @@ export default function PublicWorkCollectsScreen({ navigation, route }: any) {
       return b.date - a.date;
     });
 
+  const handleOnCollectPressed = () => {
+    Alert.alert(
+      "Dados já enviados!",
+      "Os dados dessa coleta estão disponíveis apenas aos gestores do MPMG",
+      [
+        {
+          text: "Ok",
+          onPress: () => {},
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   return (
     <>
       <ActivityIndicatior visible={loading} />
@@ -56,17 +76,7 @@ export default function PublicWorkCollectsScreen({ navigation, route }: any) {
           data={publicWorkCollects}
           keyExtractor={(collect) => collect.id.toString()}
           renderItem={({ item: collect }) => (
-            <CollectCard
-              collect={collect}
-              // imageUrl={publicWork.images[0].url}
-              onPress={() =>
-                navigation.navigate(routes.COLLECT_EDIT, {
-                  publicWork,
-                  collect,
-                })
-              }
-              // thumbnailUrl={publicWork.images[0].thumbnailUrl}
-            />
+            <CollectCard collect={collect} onPress={handleOnCollectPressed} />
           )}
           refreshing={refreshing}
           onRefresh={() => {
