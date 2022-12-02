@@ -34,12 +34,12 @@ export default function AppNavigator() {
       }}
     >
       <Tab.Screen
-        name={routes.INSPECTIONS}
-        component={InspectionsNavigator}
+        name={routes.PUBLIC_WORKS}
+        component={PublicWorksNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
-              name="briefcase-search"
+              name="account-hard-hat"
               color={color}
               size={size}
             />
@@ -47,12 +47,12 @@ export default function AppNavigator() {
         }}
       />
       <Tab.Screen
-        name={routes.PUBLIC_WORKS}
-        component={PublicWorksNavigator}
+        name={routes.INSPECTIONS}
+        component={InspectionsNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
-              name="account-hard-hat"
+              name="briefcase-search"
               color={color}
               size={size}
             />

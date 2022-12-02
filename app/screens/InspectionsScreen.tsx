@@ -200,6 +200,20 @@ export default function InspectionsScreen({ navigation }: any) {
     }
   };
 
+  function onKnowMoreButtonPressed() {
+    Alert.alert(
+      "Vistorias técnicas",
+      "Apenas parceiros da equipe do MPMG podem fazer vistorias técnicas das obras.",
+      [
+        {
+          text: "Ok",
+          onPress: () => {},
+        },
+      ],
+      { cancelable: true }
+    );
+  }
+
   return (
     <>
       <ActivityIndicatior visible={loading} />
@@ -252,7 +266,9 @@ export default function InspectionsScreen({ navigation }: any) {
               <ButtonSecondary
                 color={colors.gray[800]}
                 title="Saiba mais"
-                onPress={() => {}}
+                onPress={() => {
+                  onKnowMoreButtonPressed();
+                }}
               ></ButtonSecondary>
             </View>
           }
