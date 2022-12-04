@@ -92,7 +92,7 @@ export default function PublicWorkCard({ publicWork, onPress }: any) {
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 4,
+    borderRadius: 10,
     backgroundColor: colors.gray[800],
     marginBottom: 20,
     overflow: "hidden",

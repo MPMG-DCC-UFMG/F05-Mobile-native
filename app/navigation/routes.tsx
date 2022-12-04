@@ -3,7 +3,7 @@ export default Object.freeze({
   LOGIN: "LoginScreen",
   REGISTER: "Cadastro",
   WELCOME: "WelcomeScreen",
-  MESSAGES: "Messages",
+  MESSAGES: "Notificações",
   ACCOUNT: "Conta",
   LISTING_EDIT: "ListingEdit",
   FEED: "Feed",

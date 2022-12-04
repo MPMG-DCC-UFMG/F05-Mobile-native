@@ -71,6 +71,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gray[800],
     borderColor: colors.trenaGreen,
     borderWidth: 1,
+    borderRadius: 10,
+    marginBottom: 10,
   },
   detailsContainer: {
     marginLeft: 10,

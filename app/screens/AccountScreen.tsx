@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import storeUserData from "../auth/storeUserData";
 import useAuth from "../auth/useAuth";
 import Icon, { IconProps } from "../components/Icon";
@@ -8,6 +8,7 @@ import ListItem from "../components/ListItem";
 import ListItemSeparator from "../components/ListItemSeparator";
 import Screen from "../components/Screen";
 import colors from "../config/colors";
+import routes from "../navigation/routes";
 
 interface MenuItem {
   title: string;
@@ -16,15 +17,15 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  // {
-  //   title: "My Listings",
-  //   icon: { name: "format-list-bulleted", backgroundColor: colors.primary },
-  // },
-  // {
-  //   title: "My Messages",
-  //   icon: { name: "email", backgroundColor: colors.secondary },
-  //   targetScreen: routes.MESSAGES,
-  // },
+  {
+    title: "Notificações",
+    icon: { name: "message-text", backgroundColor: colors.secondary },
+    targetScreen: routes.MESSAGES
+  },
+  {
+    title: "Tema",
+    icon: { name: "theme-light-dark", backgroundColor: colors.medium },
+  },
 ];
 
 export default function AccountScreen({ navigation }: any) {
@@ -40,34 +41,31 @@ export default function AccountScreen({ navigation }: any) {
 
   useEffect(() => {
     restoreUserData();
+    setPicture("");
+    setName("");
+
   }, []);
 
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
-        {picture !== "" ? (
-          <ListItem
-            title={name}
-            subTitle={user.email}
-            image={{ uri: picture }}
-          ></ListItem>
-        ) : (
-          <ListItem
-            title={name}
-            subTitle={user.email}
-            IconComponent={
-              <Icon name={"account"} backgroundColor={colors.medium}></Icon>
-            }
-          ></ListItem>
-        )}
+        <View style={styles.photoContainer}>
+          {picture !== "" ?
+            <Image style={styles.image} source={{ uri: picture }} />
+            :
+            <Icon name={"account"} size={120} backgroundColor={colors.medium} />
+          }
+          <Text style={styles.title}>{name}</Text>
+          <Text style={styles.subTitle}>{user.email}</Text>
+        </View>
       </View>
-      <View style={styles.container}>
+      <View style={styles.list}>
         <FlatList
           data={menuItems}
           keyExtractor={(menuItem) => menuItem.title}
           ItemSeparatorComponent={ListItemSeparator}
           renderItem={({ item }) => {
-            return item.title === "My Messages" ? (
+            return item.title === "Notificações" ? (
               <ListItem
                 title={item.title}
                 IconComponent={
@@ -92,17 +90,17 @@ export default function AccountScreen({ navigation }: any) {
           }}
         ></FlatList>
       </View>
-      <ListItem
-        title="Log Out"
-        IconComponent={
-          <Icon
-            name="logout"
-            color={colors.dark}
-            backgroundColor={colors.trenaGreen}
-          ></Icon>
-        }
-        onPress={() => logOut()}
-      ></ListItem>
+
+      <TouchableOpacity style={styles.btnLogout} onPress={logOut}>
+        <Icon
+          name="logout"
+          color={colors.dark}
+          backgroundColor={colors.red[500]}
+          size={35}
+        />
+        <Text style={[styles.subTitle, { marginLeft: 10 }]}>Logout</Text>
+      </TouchableOpacity>
+
     </Screen>
   );
 }
@@ -110,9 +108,46 @@ export default function AccountScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     marginTop: "20%",
-    backgroundColor: colors.white,
   },
   screen: {
     backgroundColor: colors.dark,
   },
+  photoContainer: {
+    alignItems: "center"
+  },
+  image: {
+    width: 120,
+    height: 120,
+    borderWidth: 2,
+    borderColor: colors.trenaGreen,
+    borderRadius: 64
+  },
+  title: {
+    marginTop: 10,
+    fontWeight: "500",
+    color: colors.gray[100],
+    fontSize: 22
+  },
+  subTitle: {
+    marginTop: 3,
+    fontWeight: "400",
+    color: colors.gray[100],
+    fontSize: 18
+  },
+  list: {
+    marginTop: 25,
+  },
+  btnLogout: {
+    width: "60%",
+    alignSelf: "center",
+    position: "absolute",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: colors.trenaGreen,
+    bottom: 20
+  }
 });

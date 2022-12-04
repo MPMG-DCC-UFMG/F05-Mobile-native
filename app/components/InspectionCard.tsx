@@ -128,7 +128,7 @@ export default function InspectionCard({
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 4,
+    borderRadius: 10,
     backgroundColor: colors.gray[800],
     marginBottom: 20,
     overflow: "hidden",
@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
     color: colors.gray[100],
     fontSize: 14,
     fontWeight: "bold",
+    alignSelf: "center"
   },
   pendingStatusCard: {
     width: 100,
