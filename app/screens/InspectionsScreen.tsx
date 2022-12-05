@@ -36,6 +36,7 @@ export default function InspectionsScreen({ navigation }: any) {
   const { latitude, longitude } = useLocation();
   const [searchName, setSearchName] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [checkFilter, setCheckFilter] = useState(0);
   const {
     publicWorks,
     inspections,
@@ -52,6 +53,10 @@ export default function InspectionsScreen({ navigation }: any) {
       loadPublicWorks();
     }, [])
   );
+
+  useEffect(() => {
+    setCheckFilter(0)
+  }, [loading])
 
   const getPublicWorkOfInspection = (publicWorkId: string) => {
     const pw = publicWorks.find((publicWork: any) => {
@@ -72,8 +77,8 @@ export default function InspectionsScreen({ navigation }: any) {
       : filteredInspections;
 
   const sortByStatusDateAndDistance = (a, b) => {
-    if (a.status !== b.status) return a.status - b.status;
-    if (a.request_date !== b.request_date)
+    if (a.status !== b.status && checkFilter === 0) return a.status - b.status;
+    if (a.request_date !== b.request_date && checkFilter === 0)
       return b.request_date - a.request_date;
     a = getPublicWorkOfInspection(a.public_work_id);
     b = getPublicWorkOfInspection(b.public_work_id);
@@ -131,6 +136,7 @@ export default function InspectionsScreen({ navigation }: any) {
 
       case "dist":
         filteredInspections.sort(sortByStatusDateAndDistance);
+        setCheckFilter(1)
 
         break;
 
