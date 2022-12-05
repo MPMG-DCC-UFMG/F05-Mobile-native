@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   ImageSourcePropType,
   TouchableHighlight,
   GestureResponderEvent,
+  Switch,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Swipeable from "react-native-gesture-handler/Swipeable";
@@ -22,6 +23,7 @@ interface ListItemProps {
   makeChevronRight?: boolean;
   onPress?: (event: GestureResponderEvent) => void;
   renderRightActions?: any;
+  switchTheme?: boolean;
 }
 export default function ListItem({
   title,
@@ -31,7 +33,11 @@ export default function ListItem({
   makeChevronRight = false,
   onPress,
   renderRightActions,
-}: ListItemProps) {
+  switchTheme = false
+} : ListItemProps) {
+  const [isEnabled, setIsEnabled] = useState(switchTheme);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
   return (
     <GestureHandlerRootView>
       <Swipeable renderRightActions={renderRightActions}>
@@ -55,6 +61,15 @@ export default function ListItem({
                 size={24}
                 color={colors.medium}
               ></MaterialCommunityIcons>
+            )}
+            { switchTheme && (
+            <Switch
+              trackColor={{ false: "#767577", true: colors.trenaGreen }}
+              thumbColor={isEnabled ? colors.white : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
             )}
           </View>
         </TouchableHighlight>

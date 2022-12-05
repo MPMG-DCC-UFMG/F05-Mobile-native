@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import { FlatList, StyleSheet, View, Text, Image, TouchableOpacity, Switch } from "react-native";
 import storeUserData from "../auth/storeUserData";
 import useAuth from "../auth/useAuth";
 import Icon, { IconProps } from "../components/Icon";
@@ -79,6 +79,7 @@ export default function AccountScreen({ navigation }: any) {
             ) : (
               <ListItem
                 title={item.title}
+                switchTheme={item.title === "Tema" ? true : false}
                 IconComponent={
                   <Icon
                     name={item.icon.name}
