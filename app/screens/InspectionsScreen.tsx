@@ -49,8 +49,8 @@ export default function InspectionsScreen({ navigation }: any) {
 
   useFocusEffect(
     useCallback(() => {
-      loadInspections();
-      loadPublicWorks();
+      //loadInspections();
+      //loadPublicWorks();
     }, [])
   );
 
@@ -78,8 +78,7 @@ export default function InspectionsScreen({ navigation }: any) {
 
   const sortByStatusDateAndDistance = (a, b) => {
     if (a.status !== b.status && checkFilter === 0) return a.status - b.status;
-    if (a.request_date !== b.request_date && checkFilter === 0)
-      return b.request_date - a.request_date;
+    if (a.request_date !== b.request_date && checkFilter === 0) return b.request_date - a.request_date;
     a = getPublicWorkOfInspection(a.public_work_id);
     b = getPublicWorkOfInspection(b.public_work_id);
     let distA = getDistanceFromLatLonInKm(
@@ -104,7 +103,7 @@ export default function InspectionsScreen({ navigation }: any) {
     return 0;
   };
 
-  filteredInspections.sort(sortByStatusDateAndDistance);
+  filteredInspections.sort(sortByStatusDateAndDistance)
 
   function handleFilter(filtro: string) {
     switch (filtro) {
@@ -118,7 +117,6 @@ export default function InspectionsScreen({ navigation }: any) {
           }
           return 0;
         });
-
         break;
 
       case "ZA":
@@ -131,7 +129,7 @@ export default function InspectionsScreen({ navigation }: any) {
           }
           return 0;
         });
-
+        
         break;
 
       case "dist":
@@ -357,13 +355,13 @@ const styles = StyleSheet.create({
   modal: {
     marginTop: "15%",
     alignSelf: "center",
-    padding: 10,
+    padding: 20,
     borderColor: colors.trenaGreen,
     borderWidth: 1,
     borderRadius: 15,
     backgroundColor: colors.dark,
-    width: "95%",
-    height: 600,
+    width: "100%",
+    
   },
   titleModal: {
     textAlign: "center",

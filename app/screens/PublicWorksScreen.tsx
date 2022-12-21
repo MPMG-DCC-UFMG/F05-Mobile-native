@@ -258,13 +258,12 @@ const styles = StyleSheet.create({
   modal: {
     marginTop: "15%",
     alignSelf: "center",
-    padding: 10,
+    padding: 20,
     borderColor: colors.trenaGreen,
     borderWidth: 1,
     borderRadius: 15,
     backgroundColor: colors.dark,
-    width: "95%",
-    height: 600,
+    width: "100%",
   },
   titleModal: {
     textAlign: "center",
