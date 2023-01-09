@@ -53,6 +53,30 @@ export default function WelcomeScreen() {
   const [password, setPassword] = useState("12345678aA");
   const [showLogo, setShowLogo] = useState(true);
 
+  // fetch(
+  //   "https://viacep.com.br/ws/35931333/json"
+  //   // "https://optables.com.br/typeworks/?X-TRENA-KEY=0a944fb8-2bbc-4f03-a81a-bf84899cd4f2"
+  // )
+  //   .then((response) => {
+  //     response.json();
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   })
+  //   .then((data) => console.log(data));
+
+  useEffect(() => {
+    // `https://optables.com.br/typeworks/?X-TRENA-KEY=0a944fb8-2bbc-4f03-a81a-bf84899cd4f2`,
+    fetch("https://reactnative.dev/movies.json")
+      .then((response) => response.json())
+      .then((json) => {
+        return json.movies;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   async function handleGoogleSignIn() {
     try {
       // Connect to google oauth API

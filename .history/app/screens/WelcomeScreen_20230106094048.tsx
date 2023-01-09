@@ -42,6 +42,38 @@ export default function WelcomeScreen() {
   }, []);
 
   LogBox.ignoreLogs(["EventEmitter.removeListener"]);
+  // fetch(
+  //   "https://viacep.com.br/ws/35931333/json"
+  //   // "https://optables.com.br/typeworks/?X-TRENA-KEY=0a944fb8-2bbc-4f03-a81a-bf84899cd4f2"
+  // )
+  //   .then((response) => {
+  //     response.json();
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   })
+  //   .then((data) => console.log(data));
+
+  async function handleApiTest() {
+    try {
+      await fetch(
+        "https://viacep.com.br/ws/35931333/json"
+        // "https://optables.com.br/typeworks/?X-TRENA-KEY=0a944fb8-2bbc-4f03-a81a-bf84899cd4f2"
+      )
+        .then((response) => {
+          response.json();
+        })
+        .then((data) => console.log(data));
+    } catch (error) {
+      console.log(error);
+      toast.show({
+        title: "Não foi possível criar o bolão",
+        placement: "top",
+        bgColor: "red.500",
+      });
+    } finally {
+    }
+  }
 
   const toast = useToast();
   const navigation = useNavigation();

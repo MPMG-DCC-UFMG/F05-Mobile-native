@@ -42,6 +42,14 @@ export default function WelcomeScreen() {
   }, []);
 
   LogBox.ignoreLogs(["EventEmitter.removeListener"]);
+  fetch(
+    "https://viacep.com.br/ws/35931333/json"
+    // "https://trena.gsi.mpmg.mp.br/f05_backend/typeworks/?X-TRENA-KEY=0a944fb8-2bbc-4f03-a81a-bf84899cd4f2"
+  )
+    .then((response) => {
+      response.json();
+    })
+    .then((data) => console.log(data));
 
   const toast = useToast();
   const navigation = useNavigation();
