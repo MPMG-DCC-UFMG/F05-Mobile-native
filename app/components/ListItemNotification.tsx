@@ -49,19 +49,11 @@ export default function ListItemNotification({
               <Icon
                 name={"message-text-outline"}
                 backgroundColor={colors.secondary}
-                size={35}
+                size={20}
               />
               <AppText style={styles.title} numberOfLines={1}>
                 {title}
               </AppText>
-
-              {/* <TouchableOpacity>
-                <Icon
-                  name={"trash-can-outline"}
-                  backgroundColor={colors.danger}
-                  size={35}
-                />
-              </TouchableOpacity> */}
             </View>
 
             <View style={styles.messageContainer}>

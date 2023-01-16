@@ -46,6 +46,8 @@ export default function useNotifications(notificationListener?: any) {
       const token = await Notifications.getExpoPushTokenAsync();
       expoPushTokensApi.register(token.data);
 
+      console.log(token)
+
 
       if (Platform.OS === 'android') {
         Notifications.setNotificationChannelAsync('default', {

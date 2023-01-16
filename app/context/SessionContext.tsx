@@ -8,6 +8,8 @@ import inspectionsApi from "../api/inspections";
 import publicWorksApi from "../api/publicWorks";
 import photosApi from "../api/photos";
 import collectsApi from "../api/collects";
+import notificationApi from "../api/notifications";
+import commentsApi from "../api/notifications";
 
 export interface TypeWorks {
   flag: number;
@@ -82,6 +84,25 @@ export interface Collect {
   public_work_status: number;
   photos?: string[];
 }
+
+export interface Notification {
+  id: string
+  title: string
+  inspection_id: string
+  content: string
+  user_email: string
+  timestamp: number
+}
+
+export interface Comments {
+  id: string
+  notification_id: string
+  content: string
+  receive_email: string
+  send_email: string
+  timestamp: number
+}
+
 interface ISessionContext {
   typeWorks: TypeWorks[];
   typePhotos: TypePhotos[];
@@ -90,6 +111,8 @@ interface ISessionContext {
   inspections: Inspection[];
   collects: Collect[];
   photos: Photos[];
+  notification: Notification[];
+  comments: Comments[]
   error: any;
   loading: boolean;
   loadInspections: any;
@@ -129,6 +152,10 @@ const SessionProvider = ({ children }: { children?: React.ReactNode }) => {
 
   const { data: photos, request: loadPhotos } = useApi(photosApi.getPhotos);
 
+  const { data: notification, request: loadNotifications } = useApi(notificationApi.getNotifications);
+
+  const { data: comments, request: loadComments } = useApi(notificationApi.getComments);
+
   const loadDataFromServer = async () => {
     await loadTypeWorks();
     await loadWorkStatus();
@@ -137,6 +164,8 @@ const SessionProvider = ({ children }: { children?: React.ReactNode }) => {
     await loadInspections();
     await loadCollects();
     await loadPhotos();
+    await loadNotifications();
+    await loadComments();
     // console.log(typeWorks);
     // console.log(workStatus);
     // console.log(typePhotos);
@@ -157,6 +186,8 @@ const SessionProvider = ({ children }: { children?: React.ReactNode }) => {
         inspections,
         collects,
         photos,
+        notification,
+        comments,
         error,
         loading,
         loadInspections,
