@@ -42,6 +42,17 @@ export default function WelcomeScreen() {
   }, []);
 
   LogBox.ignoreLogs(["EventEmitter.removeListener"]);
+  fetch(
+    // "https://viacep.com.br/ws/35931333/json"
+    "https://optables.com.br/typeworks/?X-TRENA-KEY=0a944fb8-2bbc-4f03-a81a-bf84899cd4f2"
+  )
+    .then((response) => {
+      response.json();
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    .then((data) => console.log(data));
 
   const toast = useToast();
   const navigation = useNavigation();
@@ -49,8 +60,8 @@ export default function WelcomeScreen() {
   const loginApi = useApi(authApi.login);
   const registerApi = useApi(usersApi.register);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("george@trena.mpmg.mg.br");
+  const [password, setPassword] = useState("12345678aA");
   const [showLogo, setShowLogo] = useState(true);
 
   async function handleGoogleSignIn() {

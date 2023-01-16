@@ -13,9 +13,8 @@ import { SessionProvider } from "./app/context/SessionContext";
 import { StatusBar } from "react-native";
 import { NativeBaseProvider, useToast } from "native-base";
 import { THEME } from "./app/config/theme";
-import Bugsnag from "@bugsnag/expo";
 
-Bugsnag.start();
+// logger.start();
 
 export default function App() {
   const [user, setUser] = useState();

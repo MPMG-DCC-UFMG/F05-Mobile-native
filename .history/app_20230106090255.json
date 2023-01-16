@@ -2,7 +2,6 @@
   "expo": {
     "name": "Trena",
     "slug": "trena",
-    "privacy": "public",
     "scheme": "trena",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -46,7 +45,7 @@
     ],
     "extra": {
       "bugsnag": {
-        "apiKey": "e37a2387dade04f2a67e08b1742f2cc0"
+        "apiKey": "d22ee9b91da506f9b443aa0fef53efda"
       },
       "eas": {
         "projectId": "457d08a2-b855-4c79-b936-73cfe03e4d61"

@@ -2850,9 +2850,9 @@
     "@types/react" "*"
 
 "@types/react-native@~0.70.6":
-  version "0.70.7"
-  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.70.7.tgz#1708e5f746bbce2ea4e0bd5a2627560667804d46"
-  integrity sha512-hBzeUWwk8sfj3vDfwEXb4hbjWjl0jb5CvWlu2gLrOUJyFHVzJ+x6Y9ilO2eVtJW7l5QmmNLILE1PkVfKRkqYuQ==
+  version "0.70.8"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.70.8.tgz#3302a0f7eddcd3350448ca17a9e415d02b1efde6"
+  integrity sha512-jvs5QMOrlyi0ScfT5Brha2roDoOWtbIOadNkp0jsueVen5+pH4SQAYtzL6xu0+dIcx3J/5LtZ/JYby2C1/zUug==
   dependencies:
     "@types/react" "*"
 
@@ -4387,10 +4387,10 @@ expo-application@~4.2.0, expo-application@~4.2.2:
   resolved "https://registry.npmjs.org/expo-application/-/expo-application-4.2.2.tgz"
   integrity sha512-bFEaFRUdV6aK2iBd+HzkHNPYsyj88EAhaQW5leznmO0qQMJxpAQ3eoUXMey1hfDBh1qgkkHgSyCZ9BIgMAGJ1g==
 
-expo-asset@~8.6.1:
-  version "8.6.1"
-  resolved "https://registry.npmjs.org/expo-asset/-/expo-asset-8.6.1.tgz"
-  integrity sha512-urbUp1YtwH2J0Qc3inGQJdqTjWKML77SeMNgff+iR9MUE8gDkFqSCDjrBi7i5Oj5DDtq43mmtDg8G8ei6Vchcg==
+expo-asset@~8.6.3:
+  version "8.6.3"
+  resolved "https://registry.npmjs.org/expo-asset/-/expo-asset-8.6.3.tgz"
+  integrity sha512-AOuB0FBbwYUfuLKtQtIsKUvm08d9OAPWZu9NZjUyIvAxmmdVKPUdN5tFUZQXXLRy3SYmk2z76JVQCoaHgJ5wvw==
   dependencies:
     blueimp-md5 "^2.10.0"
     expo-constants "~13.2.2"
@@ -4567,10 +4567,10 @@ expo-modules-autolinking@0.10.3:
     find-up "^5.0.0"
     fs-extra "^9.1.0"
 
-expo-modules-core@0.11.9:
-  version "0.11.9"
-  resolved "https://registry.yarnpkg.com/expo-modules-core/-/expo-modules-core-0.11.9.tgz#43763bca72b72f268ad5d7f1f0fc1c7cc75a6e9f"
-  integrity sha512-6AlOE4KHN3/WWbY8hH7W6ceuIFj0qbk1N+UhmMhiCEUas3NvXA6wcH3xjO+8JZ+BRcIB9M4QEeX72j6vDDuExg==
+expo-modules-core@0.11.10:
+  version "0.11.10"
+  resolved "https://registry.npmjs.org/expo-modules-core/-/expo-modules-core-0.11.10.tgz"
+  integrity sha512-wn7bdL1AXMNuuDEFhuIeE65A+dlvBL+6nC5fGy4NO7x3TXPBR1xCgL28i8d8WWyK5evI4z4TVvJp3YYzdapbqQ==
   dependencies:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
@@ -4657,9 +4657,9 @@ expo-web-browser@~11.0.0:
     compare-urls "^2.0.0"
 
 expo@~46.0.17:
-  version "46.0.17"
-  resolved "https://registry.yarnpkg.com/expo/-/expo-46.0.17.tgz#d558aa11056007269d2a38481982f1ebbe0852f3"
-  integrity sha512-rB+KMvjU3lFMkec5LcVFFn0Q2iJUEIoyB9TckKMirA15H5mW4yZMao0ilR7239fJ5ytVoDC8SIf7ZAvTmiMuMw==
+  version "46.0.19"
+  resolved "https://registry.npmjs.org/expo/-/expo-46.0.19.tgz"
+  integrity sha512-nOMwWd54Y5awLYMo7Skf0jFyD83xeLph8Vb9z0awsTctlAhxPulHFHD/nzN2LxvzfCOQORUctvtX+qknL7MEDQ==
   dependencies:
     "@babel/runtime" "^7.14.0"
     "@expo/cli" "0.3.2"
@@ -4667,13 +4667,13 @@ expo@~46.0.17:
     babel-preset-expo "~9.2.0"
     cross-spawn "^6.0.5"
     expo-application "~4.2.2"
-    expo-asset "~8.6.1"
+    expo-asset "~8.6.3"
     expo-constants "~13.2.4"
     expo-file-system "~14.1.0"
     expo-font "~10.2.1"
     expo-keep-awake "~10.2.0"
     expo-modules-autolinking "0.10.3"
-    expo-modules-core "0.11.9"
+    expo-modules-core "0.11.10"
     fbemitter "^3.0.0"
     getenv "^1.0.0"
     invariant "^2.2.4"

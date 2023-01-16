@@ -49,9 +49,47 @@ export default function WelcomeScreen() {
   const loginApi = useApi(authApi.login);
   const registerApi = useApi(usersApi.register);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("george@trena.mpmg.mg.br");
+  const [password, setPassword] = useState("12345678aA");
   const [showLogo, setShowLogo] = useState(true);
+
+  // fetch(
+  //   "https://viacep.com.br/ws/35931333/json"
+  //   // "https://optables.com.br/typeworks/?X-TRENA-KEY=0a944fb8-2bbc-4f03-a81a-bf84899cd4f2"
+  // )
+  //   .then((response) => {
+  //     response.json();
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   })
+  //   .then((data) => console.log(data));
+
+  useEffect(() => {
+    fetch(`https://ws.apicep.com/cep/35931333.json`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.ok) {
+          console.log(data);
+        } else {
+          toast.show({
+            title: "CEP informado não foi encontrado",
+            placement: "top",
+            bgColor: "red.500",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.show({
+          title: "Não foi possível carregar dados pelo CEP",
+          placement: "top",
+          bgColor: "red.500",
+        });
+      })
+      .finally(() => {});
+  }, []);
 
   async function handleGoogleSignIn() {
     try {
